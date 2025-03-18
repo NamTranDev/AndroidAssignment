@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
@@ -31,7 +29,6 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.PageIndicator
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.model.PageInfo.Companion.pageInfos
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun OnBoardingScreen(event : (OnBoardingEvent) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
