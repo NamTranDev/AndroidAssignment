@@ -26,13 +26,14 @@ import nam.tran.home.assignment.jetpack.compose.ui.Dimens.mediumPadding
 import nam.tran.home.assignment.jetpack.compose.ui.Dimens.pageIndicatorWidth
 import nam.tran.home.assignment.jetpack.compose.ui.Dimens.spaceHeight
 import nam.tran.home.assignment.jetpack.compose.ui.common.ButtonApp
+import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.OnBoardingEvent
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.OnBoardingPage
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.PageIndicator
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.model.PageInfo.Companion.pageInfos
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingScreen() {
+fun OnBoardingScreen(event : (OnBoardingEvent) -> Unit) {
     Column(modifier = Modifier.fillMaxSize()) {
 
         val pageState = rememberPagerState(initialPage = 0) {
@@ -80,7 +81,7 @@ fun OnBoardingScreen() {
                 ButtonApp(onClick = {
                     scope.launch {
                         if (pageState.currentPage == pageState.pageCount - 1) {
-                            //go to home page
+                            event.invoke(OnBoardingEvent.SaveOnBoaringEntry)
                         } else {
                             pageState.animateScrollToPage(page = pageState.currentPage + 1)
                         }
