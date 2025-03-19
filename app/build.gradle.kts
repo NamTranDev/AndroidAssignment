@@ -77,4 +77,6 @@ dependencies {
     kapt(libs.hilt.android.compiler)
 
     implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.accompanist.systemuicontroller)
 }
