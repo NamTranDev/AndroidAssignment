@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose.network
+package nam.tran.home.assignment.jetpack.compose.data.network
 
 import android.app.Application
 import com.google.gson.GsonBuilder
@@ -8,7 +8,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nam.tran.home.assignment.jetpack.compose.BuildConfig
 import nam.tran.home.assignment.jetpack.compose.model.response.BaseResponse
-import nam.tran.home.assignment.jetpack.compose.network.named.HasDeserializer
+import nam.tran.home.assignment.jetpack.compose.data.network.api.CategoryApi
+import nam.tran.home.assignment.jetpack.compose.data.network.api.ProductApi
+import nam.tran.home.assignment.jetpack.compose.data.network.named.HasDeserializer
 import okhttp3.Cache
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -81,15 +83,15 @@ class NetModule {
             .build()
     }
 
-//    @Provides
-//    @Singleton
-//    fun makeServiceApi(@HasDeserializer retrofit: Retrofit): ApiServices {
-//        return retrofit.create(ApiServices::class.java)
-//    }
-//
-//    @Provides
-//    @Singleton
-//    fun makeServiceApiDefault(retrofit: Retrofit): ApiServicesDefault {
-//        return retrofit.create(ApiServicesDefault::class.java)
-//    }
+    @Provides
+    @Singleton
+    fun makeCategoryApi(@HasDeserializer retrofit: Retrofit): CategoryApi {
+        return retrofit.create(CategoryApi::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun makeProductApi(@HasDeserializer retrofit: Retrofit): ProductApi {
+        return retrofit.create(ProductApi::class.java)
+    }
 }

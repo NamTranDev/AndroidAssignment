@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose.network
+package nam.tran.home.assignment.jetpack.compose.data.network
 
 import com.google.gson.*
 import nam.tran.home.assignment.jetpack.compose.model.response.BaseResponse

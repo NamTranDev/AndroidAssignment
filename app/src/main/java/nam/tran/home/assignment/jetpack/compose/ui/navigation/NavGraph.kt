@@ -7,6 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeViewModel
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen.HomeScreen
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.OnBoardingViewModel
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.screen.OnBoardingScreen
 
@@ -29,8 +31,8 @@ fun NavGraph(
         navigation(route = Route.NewNavigation.route,
             startDestination = Route.HomeScreen.route){
             composable(route = Route.HomeScreen.route) {
-
-                Text(text = "This is HomeScreen")
+                val viewModel : HomeViewModel = hiltViewModel()
+                HomeScreen()
 
             }
         }

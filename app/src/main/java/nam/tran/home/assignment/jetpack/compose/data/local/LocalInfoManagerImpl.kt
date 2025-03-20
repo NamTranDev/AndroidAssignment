@@ -1,7 +1,6 @@
-package nam.tran.home.assignment.jetpack.compose.data.manager
+package nam.tran.home.assignment.jetpack.compose.data.local
 
 import android.content.Context
-import android.preference.PreferenceDataStore
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
