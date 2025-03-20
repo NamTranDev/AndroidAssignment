@@ -20,6 +20,7 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "NAME_DATA_STORE", "\"NamTranDev\"")
+        buildConfigField("String", "API_URL", "\"https://dummyjson.com/\"")
     }
 
     buildTypes {
@@ -79,4 +80,9 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.accompanist.systemuicontroller)
+
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+    implementation(libs.logging.interceptor)
+    implementation(libs.converter.scalars)
 }
