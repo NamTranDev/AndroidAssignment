@@ -6,5 +6,4 @@ import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 interface HomeUseCase {
     fun loadCategories() : Flow<List<CategoryResponse>>
-    fun loadProductByCategory(category : String?,idFrom : Int) : Flow<List<ProductResponse>>
 }

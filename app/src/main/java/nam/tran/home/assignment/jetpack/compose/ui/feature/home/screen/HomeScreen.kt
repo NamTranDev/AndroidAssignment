@@ -26,6 +26,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
 import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeViewModel
@@ -34,9 +36,8 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeViewModel
 fun HomeScreen(viewModel: HomeViewModel) {
     val categories by viewModel.categoriesState.collectAsState()
     val isLoadingCategories by viewModel.isLoadingCategoryState.collectAsState()
-    val isLoadingProducts by viewModel.isLoadingProductState.collectAsState()
-    val products by viewModel.productsState.collectAsState()
     val selectedCategory by viewModel.selectedCategoryState.collectAsState()
+    val products = viewModel.productsState.collectAsLazyPagingItems()
 
     Scaffold { paddingValue ->
         Box(modifier = Modifier.fillMaxSize().padding(paddingValue)) {
@@ -48,39 +49,50 @@ fun HomeScreen(viewModel: HomeViewModel) {
                     CircularProgressIndicator()
                 }
             } else {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    if (isLoadingProducts) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
-                        ) {
+                Column(modifier = Modifier.fillMaxSize()){
+                    Box(modifier = Modifier.fillMaxWidth().weight(1f),contentAlignment = Alignment.Center) {
+                        if (products.loadState.refresh is LoadState.Loading) {
                             CircularProgressIndicator()
-                        }
-                    } else {
-                        LazyColumn(
-                            modifier = Modifier.weight(1f)
-                        ) {
-                            items(products) { product ->
-                                ProductItem(product)
+                        } else {
+                            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                                items(products.itemCount) { index ->
+                                    val product = products[index]
+                                    if (product != null) {
+                                        ProductItem(product)
+                                    }
+                                }
+
+                                products.apply {
+                                    when {
+                                        loadState.append is LoadState.Loading -> {
+                                            item {
+                                                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+                                                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                                                }
+                                            }
+                                        }
+                                        loadState.append is LoadState.Error -> {
+                                            val error = (loadState.append as LoadState.Error).error
+                                            item { Text("Lỗi tải thêm dữ liệu: ${error.localizedMessage}") }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
-                }
 
-                LazyRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .align(Alignment.BottomCenter)
-                        .background(Color.LightGray)
-                        .padding(vertical = 8.dp),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    contentPadding = PaddingValues(horizontal = 16.dp)
-                ) {
-                    items(categories) { category ->
-                        CategoryItem(category, category == selectedCategory) {
-                            viewModel.selectCategory(category)
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(Color.LightGray)
+                            .padding(vertical = 8.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        contentPadding = PaddingValues(horizontal = 16.dp)
+                    ) {
+                        items(categories) { category ->
+                            CategoryItem(category, category == selectedCategory) {
+                                viewModel.selectCategory(category)
+                            }
                         }
                     }
                 }

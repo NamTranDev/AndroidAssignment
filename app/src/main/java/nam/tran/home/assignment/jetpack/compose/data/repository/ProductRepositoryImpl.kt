@@ -9,9 +9,14 @@ class ProductRepositoryImpl(
 ) : ProductRepository {
     override suspend fun getProductByCategory(
         category: String?,
-        idFrom: Int,
+        offset: Int,
+        limit: Int
     ): List<ProductResponse> {
-        return productApi.getProductByCategory(category = category, skip = idFrom).products
+        return productApi.getProductByCategory(
+            category = category,
+            offset = offset,
+            limit = limit
+        ).products
     }
 
 

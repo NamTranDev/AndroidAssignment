@@ -3,7 +3,6 @@ package nam.tran.home.assignment.jetpack.compose.domain.usecase
 import io.lifestyle.plus.utils.Logger
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import nam.tran.home.assignment.jetpack.compose.domain.repository.CategoryRepository
@@ -19,14 +18,6 @@ class HomeUseCaseImpl(
         return flow {
             val categories = categoryRepository.getCategories()
             emit(categories)
-        }.flowOn(Dispatchers.IO)
-    }
-
-    override fun loadProductByCategory(category: String?, idFrom: Int): Flow<List<ProductResponse>> {
-        return flow {
-            val products = productRepository.getProductByCategory(category = category, idFrom = idFrom)
-            Logger.debug(products)
-            emit(products)
         }.flowOn(Dispatchers.IO)
     }
 }

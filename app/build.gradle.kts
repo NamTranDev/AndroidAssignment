@@ -85,4 +85,7 @@ dependencies {
     implementation(libs.converter.gson)
     implementation(libs.logging.interceptor)
     implementation(libs.converter.scalars)
+
+    implementation("androidx.paging:paging-runtime:3.3.6")
+    implementation("androidx.paging:paging-compose:3.3.6")
 }
