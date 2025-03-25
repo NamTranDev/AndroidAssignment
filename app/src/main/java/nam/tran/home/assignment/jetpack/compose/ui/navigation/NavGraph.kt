@@ -1,6 +1,5 @@
 package nam.tran.home.assignment.jetpack.compose.ui.navigation
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
@@ -32,8 +31,7 @@ fun NavGraph(
             startDestination = Route.HomeScreen.route){
             composable(route = Route.HomeScreen.route) {
                 val viewModel : HomeViewModel = hiltViewModel()
-                HomeScreen()
-
+                HomeScreen(viewModel)
             }
         }
     }
