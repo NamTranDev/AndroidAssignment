@@ -16,8 +16,13 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
+import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -32,6 +37,7 @@ import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeViewModel
 
+@ExperimentalMaterial3Api
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
     val categories by viewModel.categoriesState.collectAsState()
@@ -54,26 +60,46 @@ fun HomeScreen(viewModel: HomeViewModel) {
                         if (products.loadState.refresh is LoadState.Loading) {
                             CircularProgressIndicator()
                         } else {
-                            LazyColumn(modifier = Modifier.fillMaxSize()) {
-                                items(products.itemCount) { index ->
-                                    val product = products[index]
-                                    if (product != null) {
-                                        ProductItem(product)
-                                    }
+                            val refreshing = products.loadState.refresh is LoadState.Loading
+                            val pullRefreshState = rememberPullToRefreshState()
+                            PullToRefreshBox(
+                                modifier = Modifier.fillMaxSize(),
+                                isRefreshing = refreshing,
+                                onRefresh = {
+                                    products.refresh()
+                                },
+                                state = pullRefreshState,
+                                indicator = {
+                                    Indicator(modifier = Modifier.align(Alignment.TopCenter),
+                                        isRefreshing = refreshing,
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                        state = pullRefreshState)
                                 }
+                            ) {
+                                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                                    items(products.itemCount) { index ->
+                                        val product = products[index]
+                                        if (product != null) {
+                                            ProductItem(product)
+                                        }
+                                    }
 
-                                products.apply {
-                                    when {
-                                        loadState.append is LoadState.Loading -> {
-                                            item {
-                                                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
-                                                    CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                                    products.apply {
+                                        when (loadState.append) {
+                                            is LoadState.Loading -> {
+                                                item {
+                                                    Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center){
+                                                        CircularProgressIndicator(modifier = Modifier.padding(16.dp))
+                                                    }
                                                 }
                                             }
-                                        }
-                                        loadState.append is LoadState.Error -> {
-                                            val error = (loadState.append as LoadState.Error).error
-                                            item { Text("Lỗi tải thêm dữ liệu: ${error.localizedMessage}") }
+
+                                            is LoadState.Error -> {
+                                                val error = (loadState.append as LoadState.Error).error
+                                                item { Text("Lỗi tải thêm dữ liệu: ${error.localizedMessage}") }
+                                            }
+                                            else -> {}
                                         }
                                     }
                                 }

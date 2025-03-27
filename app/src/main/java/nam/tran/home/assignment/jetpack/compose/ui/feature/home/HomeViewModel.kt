@@ -64,8 +64,4 @@ class HomeViewModel @Inject constructor(
     fun selectCategory(category: CategoryResponse) {
         _selectedCategoryState.value = category
     }
-
-    fun refresh(){
-
-    }
 }

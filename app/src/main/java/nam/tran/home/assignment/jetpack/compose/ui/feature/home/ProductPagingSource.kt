@@ -12,7 +12,7 @@ class ProductPagingSource(
 ) : PagingSource<Int, ProductResponse>() {
 
     override fun getRefreshKey(state: PagingState<Int, ProductResponse>): Int? {
-        return state.anchorPosition
+        return 0
     }
 
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductResponse> {
