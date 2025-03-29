@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -26,6 +27,7 @@ import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,13 +39,14 @@ import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeViewModel
 
-@ExperimentalMaterial3Api
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(viewModel: HomeViewModel) {
     val categories by viewModel.categoriesState.collectAsState()
     val isLoadingCategories by viewModel.isLoadingCategoryState.collectAsState()
     val selectedCategory by viewModel.selectedCategoryState.collectAsState()
     val products = viewModel.productsState.collectAsLazyPagingItems()
+    val scrollState by viewModel.scrollState.collectAsState()
 
     Scaffold { paddingValue ->
         Box(modifier = Modifier.fillMaxSize().padding(paddingValue)) {
@@ -57,27 +60,25 @@ fun HomeScreen(viewModel: HomeViewModel) {
             } else {
                 Column(modifier = Modifier.fillMaxSize()){
                     Box(modifier = Modifier.fillMaxWidth().weight(1f),contentAlignment = Alignment.Center) {
-                        if (products.loadState.refresh is LoadState.Loading) {
-                            CircularProgressIndicator()
-                        } else {
-                            val refreshing = products.loadState.refresh is LoadState.Loading
-                            val pullRefreshState = rememberPullToRefreshState()
-                            PullToRefreshBox(
-                                modifier = Modifier.fillMaxSize(),
-                                isRefreshing = refreshing,
-                                onRefresh = {
-                                    products.refresh()
-                                },
-                                state = pullRefreshState,
-                                indicator = {
-                                    Indicator(modifier = Modifier.align(Alignment.TopCenter),
-                                        isRefreshing = refreshing,
-                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        state = pullRefreshState)
-                                }
-                            ) {
-                                LazyColumn(modifier = Modifier.fillMaxSize()) {
+                        val refreshing = products.loadState.refresh is LoadState.Loading
+                        val pullRefreshState = rememberPullToRefreshState()
+                        PullToRefreshBox(
+                            modifier = Modifier.fillMaxSize(),
+                            isRefreshing = refreshing,
+                            onRefresh = {
+                                products.refresh()
+                            },
+                            state = pullRefreshState,
+                            indicator = {
+                                Indicator(modifier = Modifier.align(Alignment.TopCenter),
+                                    isRefreshing = refreshing,
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    state = pullRefreshState)
+                            }
+                        ) {
+                            if (products.loadState.refresh !is LoadState.Loading) {
+                                LazyColumn(modifier = Modifier.fillMaxSize(), state = scrollState) {
                                     items(products.itemCount) { index ->
                                         val product = products[index]
                                         if (product != null) {
