@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
@@ -27,6 +28,7 @@ import kotlinx.coroutines.launch
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCase
 import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,8 +37,11 @@ class HomeViewModel @Inject constructor(
     private val productPagingRepository: ProductPagingRepository
 ) : ViewModel() {
 
-    private val _isLoadingCategoryState = MutableStateFlow(true)
-    val isLoadingCategoryState: StateFlow<Boolean> = _isLoadingCategoryState
+    private val _statusStateCategory = MutableStateFlow<StatusState>(StatusState.Loading)
+    val statusStateCategory: StateFlow<StatusState> = _statusStateCategory
+
+    private val _categoriesDataState = MutableStateFlow<List<CategoryResponse>>(emptyList())
+    val categoriesDataState: StateFlow<List<CategoryResponse>> = _categoriesDataState
 
     private val _selectedCategoryState = MutableStateFlow<CategoryResponse?>(null)
     val selectedCategoryState: StateFlow<CategoryResponse?> = _selectedCategoryState
@@ -54,15 +59,6 @@ class HomeViewModel @Inject constructor(
         }
     }.stateIn(viewModelScope, SharingStarted.Lazily, LazyListState())
 
-    val categoriesState = useCase.loadCategories()
-        .onStart {
-            _isLoadingCategoryState.value = true
-        }
-        .catch {
-            _isLoadingCategoryState.value = false
-        }
-        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
-
     val productsState = _selectedCategoryState.filter {
         it?.slug?.isNotEmpty() == true
     }.flatMapLatest {
@@ -74,13 +70,23 @@ class HomeViewModel @Inject constructor(
     }
 
     init {
+        loadCategories()
+    }
+
+    fun loadCategories() {
         viewModelScope.launch {
-            categoriesState.collect { categories ->
-                _isLoadingCategoryState.value = false
-                if (categories.isNotEmpty() && selectedCategoryState.value == null) {
-                    selectCategory(categories.first())
+            useCase.loadCategories()
+                .onStart {
+                    _statusStateCategory.value = StatusState.Loading
                 }
-            }
+                .catch {
+                    _statusStateCategory.value = StatusState.Error(error = it)
+                }
+                .collectLatest {
+                    _statusStateCategory.value = StatusState.Success
+                    _categoriesDataState.value = it
+                    selectCategory(it.get(0))
+                }
         }
     }
 
