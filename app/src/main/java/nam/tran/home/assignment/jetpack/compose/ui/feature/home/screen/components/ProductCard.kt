@@ -39,13 +39,13 @@ fun ProductCard(
 ) {
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
-    val widthCard = screenWidth * 3 / 5
+    val widthCard = screenWidth * 4 / 6
 
-    Box(modifier = Modifier.padding(all = 10.dp)){
+    Box(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, start = 5.dp, end = 20.dp)){
         Card(
             modifier = Modifier.width(widthCard),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
         ) {
             Column {
                 AsyncImage(
@@ -53,7 +53,6 @@ fun ProductCard(
                         .fillMaxWidth()
                         .height(widthCard * 1.2f).background(color = Color.Gray.copy(alpha = 0.2f)),
                     model = ImageRequest.Builder(context).data(productResponse?.thumbnail).build(),
-                    contentScale = ContentScale.Inside,
                     contentDescription = null,
                 )
                 Text(

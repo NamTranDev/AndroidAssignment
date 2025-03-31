@@ -1,9 +1,8 @@
-package nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen.components
+package nam.tran.home.assignment.jetpack.compose.ui.common
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,11 +20,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.ui.common.ButtonApp
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
-fun CategoryErrorDisplay(message: String?, onRetry: (() -> Unit)? = null) {
+fun ErrorDisplay(message: String?, onRetry: (() -> Unit)? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,8 +61,8 @@ fun CategoryErrorDisplay(message: String?, onRetry: (() -> Unit)? = null) {
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-private fun CategoryErrorDisplay() {
+private fun ErrorDisplayPreview() {
     JetpackComposeHomeAssignmentTheme {
-        CategoryErrorDisplay("Cannot connect to internet")
+        ErrorDisplay("Cannot connect to internet")
     }
 }
