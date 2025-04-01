@@ -1,9 +1,12 @@
 package nam.tran.home.assignment.jetpack.compose.ui.feature.home
 
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
@@ -58,6 +61,18 @@ class HomeViewModel @Inject constructor(
             MutableStateFlow(LazyListState())
         }
     }.stateIn(viewModelScope, SharingStarted.Lazily, LazyListState())
+
+    val currentIndicator = scrollState.flatMapLatest { state ->
+        snapshotFlow {
+            val firstVisibleIndex = state.firstVisibleItemIndex
+            val layoutInfo = state.layoutInfo
+            val visibleItems = layoutInfo.visibleItemsInfo
+            val lastFullyVisibleItem =
+                visibleItems.lastOrNull { it.offset >= 0 && it.offset + it.size <= layoutInfo.viewportEndOffset }
+            val index = lastFullyVisibleItem?.index?.plus(1) ?: (firstVisibleIndex + 1)
+            index - 1
+        }
+    }.stateIn(viewModelScope, SharingStarted.Lazily, 0)
 
     val productsState = _selectedCategoryState.filter {
         it?.slug?.isNotEmpty() == true

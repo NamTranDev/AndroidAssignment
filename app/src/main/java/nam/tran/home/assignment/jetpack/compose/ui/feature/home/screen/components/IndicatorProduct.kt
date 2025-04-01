@@ -20,26 +20,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
-fun IndicatorProduct(listState: LazyListState, total: Int) {
-    val firstVisibleIndex by remember { derivedStateOf { listState.firstVisibleItemIndex } }
-    val layoutInfo by remember { derivedStateOf { listState.layoutInfo } }
-    val currentIndicator by remember {
-        derivedStateOf {
-            val visibleItems = layoutInfo.visibleItemsInfo
-            val lastFullyVisibleItem =
-                visibleItems.lastOrNull { it.offset >= 0 && it.offset + it.size <= layoutInfo.viewportEndOffset }
-            val index = lastFullyVisibleItem?.index?.plus(1) ?: (firstVisibleIndex + 1)
-            index - 1
-        }
-    }
+fun IndicatorProduct(current: Int, total: Int) {
 
     Column(modifier = Modifier.padding(start = 5.dp)) {
         Row {
             Text(
-                text = "${currentIndicator + 1}",
+                text = "${current + 1}",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.primary
             )
@@ -53,7 +44,7 @@ fun IndicatorProduct(listState: LazyListState, total: Int) {
             Text(
                 text = "$total",
                 style = MaterialTheme.typography.bodyMedium,
-                color = if (currentIndicator + 1 == total) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(
+                color = if (current + 1 == total) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.primary.copy(
                     alpha = 0.5f
                 )
             )
@@ -73,7 +64,7 @@ fun IndicatorProduct(listState: LazyListState, total: Int) {
                         .weight(1f)
                         .fillMaxHeight()
                         .background(
-                            if (index <= currentIndicator) Color.Gray else Color.Transparent,
+                            if (index <= current) Color.Gray else Color.Transparent,
                             RoundedCornerShape(
                                 topStart = 0.dp,
                                 bottomStart = 0.dp,
@@ -86,5 +77,13 @@ fun IndicatorProduct(listState: LazyListState, total: Int) {
         }
 
         Spacer(modifier = Modifier.height(50.dp))
+    }
+}
+
+@Preview
+@Composable
+private fun IndicatorProductPreiew() {
+    JetpackComposeHomeAssignmentTheme {
+        IndicatorProduct(0,5)
     }
 }
