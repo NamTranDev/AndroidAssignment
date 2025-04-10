@@ -5,14 +5,15 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowInsetsControllerCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 import nam.tran.home.assignment.jetpack.compose.ui.navigation.NavGraph
@@ -21,7 +22,7 @@ import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssig
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel by viewModels<SplashViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,18 +38,24 @@ class MainActivity : ComponentActivity() {
             JetpackComposeHomeAssignmentTheme {
                 val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemController = rememberSystemUiController()
+                val backgroundColor = MaterialTheme.colorScheme.background
 
                 SideEffect {
                     systemController.setSystemBarsColor(
-                        color = Color.Transparent,
+                        color = backgroundColor,
                         darkIcons = !isSystemInDarkMode
                     )
                 }
-                Box(modifier = Modifier.background(MaterialTheme.colorScheme.background)) {
+
+                Surface(
+                    modifier = Modifier.systemBarsPadding(),
+                    color = backgroundColor
+                ) {
                     val startDestination = viewModel.startDestination
                     NavGraph(startDestination = startDestination)
                 }
             }
         }
+        window.decorView.systemUiVisibility = WindowInsetsControllerCompat.BEHAVIOR_SHOW_BARS_BY_SWIPE
     }
 }

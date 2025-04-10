@@ -1,6 +1,10 @@
 package nam.tran.home.assignment.jetpack.compose.ui.navigation
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -19,20 +23,19 @@ fun NavGraph(
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = startDestination) {
-        navigation(route = Route.AppStartNavigation.route,
-            startDestination = Route.OnBoardingScreen.route){
-            composable(route = Route.OnBoardingScreen.route) {
-                val viewModel : OnBoardingViewModel = hiltViewModel()
-                OnBoardingScreen(viewModel::onEvent)
+        composable(route = Route.OnLoadingScreen.route) {
+            Box(modifier = Modifier.fillMaxSize()){
+                CircularProgressIndicator()
             }
         }
+        composable(route = Route.OnBoardingScreen.route) {
+            val viewModel : OnBoardingViewModel = hiltViewModel()
+            OnBoardingScreen(viewModel::onEvent)
+        }
 
-        navigation(route = Route.NewNavigation.route,
-            startDestination = Route.HomeScreen.route){
-            composable(route = Route.HomeScreen.route) {
-                val viewModel : HomeViewModel = hiltViewModel()
-                HomeScreen(viewModel)
-            }
+        composable(route = Route.HomeScreen.route) {
+            val viewModel : HomeViewModel = hiltViewModel()
+            HomeScreen(viewModel)
         }
     }
 }

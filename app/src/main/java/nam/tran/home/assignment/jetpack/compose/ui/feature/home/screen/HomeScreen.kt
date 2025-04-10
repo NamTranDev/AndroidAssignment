@@ -43,125 +43,121 @@ fun HomeScreen(viewModel: HomeViewModel) {
     val scrollState by viewModel.scrollState.collectAsState()
     val currentIndicator by viewModel.currentIndicator.collectAsState()
 
-    Scaffold { paddingValue ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValue)
-        ) {
-            when (statusStateCategory) {
-                is StatusState.Loading -> {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+    ) {
+        when (statusStateCategory) {
+            is StatusState.Loading -> {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            }
+
+            is StatusState.Error -> {
+                ErrorDisplay((statusStateCategory as StatusState.Error).error.message) {
+                    viewModel.loadCategories()
+                }
+            }
+
+            is StatusState.Success -> {
+                Column(modifier = Modifier.fillMaxSize()) {
                     Box(
-                        modifier = Modifier.fillMaxSize(),
-                        contentAlignment = Alignment.Center
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f),
                     ) {
-                        CircularProgressIndicator()
-                    }
-                }
-
-                is StatusState.Error -> {
-                    ErrorDisplay((statusStateCategory as StatusState.Error).error.message) {
-                        viewModel.loadCategories()
-                    }
-                }
-
-                is StatusState.Success -> {
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        Box(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .weight(1f),
-                            contentAlignment = Alignment.Center
+                        val refreshing = products.loadState.refresh is LoadState.Loading
+                        val pullRefreshState = rememberPullToRefreshState()
+                        PullToRefreshBox(
+                            modifier = Modifier.fillMaxSize(),
+                            isRefreshing = refreshing,
+                            onRefresh = {
+                                products.refresh()
+                            },
+                            state = pullRefreshState,
+                            indicator = {
+                                Indicator(
+                                    modifier = Modifier.align(Alignment.TopCenter),
+                                    isRefreshing = refreshing,
+                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                    state = pullRefreshState
+                                )
+                            }
                         ) {
-                            val refreshing = products.loadState.refresh is LoadState.Loading
-                            val pullRefreshState = rememberPullToRefreshState()
-                            PullToRefreshBox(
-                                modifier = Modifier.fillMaxSize(),
-                                isRefreshing = refreshing,
-                                onRefresh = {
-                                    products.refresh()
-                                },
-                                state = pullRefreshState,
-                                indicator = {
-                                    Indicator(
-                                        modifier = Modifier.align(Alignment.TopCenter),
-                                        isRefreshing = refreshing,
-                                        containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                        color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                        state = pullRefreshState
-                                    )
-                                }
+                            Column(
+                                Modifier
+                                    .fillMaxSize()
+                                    .padding(top = 20.dp, bottom = 20.dp, start = 20.dp)
                             ) {
-                                Column(
-                                    Modifier
-                                        .fillMaxSize()
-                                        .padding(top = 20.dp, bottom = 20.dp, start = 20.dp)
-                                ) {
 
-                                    Text(
-                                        "Products".uppercase(),
-                                        modifier = Modifier.padding(start = 5.dp),
-                                        style = MaterialTheme.typography.headlineLarge.copy(
-                                            fontWeight = FontWeight.Bold
-                                        )
+                                Text(
+                                    "Products".uppercase(),
+                                    modifier = Modifier.padding(start = 5.dp),
+                                    style = MaterialTheme.typography.headlineLarge.copy(
+                                        fontWeight = FontWeight.Bold
                                     )
+                                )
 
-                                    if (products.loadState.refresh !is LoadState.Loading) {
-                                        val total = products.itemCount
+                                if (products.loadState.refresh !is LoadState.Loading) {
+                                    val total = products.itemCount
 
-                                        LazyRow(
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .weight(1f),
-                                            state = scrollState,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            items(total) { index ->
-                                                val product = products[index]
-                                                ProductCard(product)
-                                            }
-
-                                            products.apply {
-                                                when (loadState.append) {
-                                                    is LoadState.Loading -> {
-                                                        item {
-                                                            Box(
-                                                                modifier = Modifier.fillMaxWidth(),
-                                                                contentAlignment = Alignment.Center
-                                                            ) {
-                                                                CircularProgressIndicator(
-                                                                    modifier = Modifier.padding(
-                                                                        16.dp
-                                                                    )
-                                                                )
-                                                            }
-                                                        }
-                                                    }
-
-                                                    is LoadState.Error -> {
-                                                        item {
-                                                            val error =
-                                                                (loadState.append as LoadState.Error).error
-                                                            ErrorDisplay(message = error.message) {
-                                                                products.refresh()
-                                                            }
-                                                        }
-                                                    }
-
-                                                    else -> {}
-                                                }
-                                            }
+                                    LazyRow(
+                                        modifier = Modifier
+                                            .fillMaxSize()
+                                            .weight(1f),
+                                        state = scrollState,
+                                        verticalAlignment = Alignment.CenterVertically
+                                    ) {
+                                        items(total) { index ->
+                                            val product = products[index]
+                                            ProductCard(product)
                                         }
 
-                                        IndicatorProduct(current = currentIndicator, total = total)
+                                        products.apply {
+                                            when (loadState.append) {
+                                                is LoadState.Loading -> {
+                                                    item {
+                                                        Box(
+                                                            modifier = Modifier.fillMaxWidth(),
+                                                            contentAlignment = Alignment.Center
+                                                        ) {
+                                                            CircularProgressIndicator(
+                                                                modifier = Modifier.padding(
+                                                                    16.dp
+                                                                )
+                                                            )
+                                                        }
+                                                    }
+                                                }
+
+                                                is LoadState.Error -> {
+                                                    item {
+                                                        val error =
+                                                            (loadState.append as LoadState.Error).error
+                                                        ErrorDisplay(message = error.message) {
+                                                            products.refresh()
+                                                        }
+                                                    }
+                                                }
+
+                                                else -> {}
+                                            }
+                                        }
                                     }
+
+                                    IndicatorProduct(current = currentIndicator, total = total)
                                 }
                             }
                         }
+                    }
 
-                        CategorySurface(categories, selectedCategory) { category ->
-                            viewModel.selectCategory(category)
-                        }
+                    CategorySurface(categories, selectedCategory) { category ->
+                        viewModel.selectCategory(category)
                     }
                 }
             }
