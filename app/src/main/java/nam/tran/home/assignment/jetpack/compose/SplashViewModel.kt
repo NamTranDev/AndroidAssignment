@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCase
-import nam.tran.home.assignment.jetpack.compose.ui.navigation.Route
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,16 +20,16 @@ class SplashViewModel @Inject constructor(
     var splashCondition by mutableStateOf(true)
         private set
 
-    var startDestination by mutableStateOf(Route.OnLoadingScreen.route)
+    var startDestination by mutableStateOf(Screen.Loading.route)
         private set
 
     init {
         viewModelScope.launch {
             onBoardingUseCase.readAppOnboarding().collect { shouldStartHomeScreen ->
                 startDestination = if (shouldStartHomeScreen){
-                    Route.HomeScreen.route
+                    Screen.Home.route
                 }else{
-                    Route.OnBoardingScreen.route
+                    Screen.OnBoarding.route
                 }
                 delay(300)
                 splashCondition = false

@@ -1,6 +1,5 @@
-package nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.screen
+package nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,7 +23,6 @@ import nam.tran.home.assignment.jetpack.compose.ui.Dimens.mediumPadding
 import nam.tran.home.assignment.jetpack.compose.ui.Dimens.pageIndicatorWidth
 import nam.tran.home.assignment.jetpack.compose.ui.Dimens.spaceHeight
 import nam.tran.home.assignment.jetpack.compose.ui.common.ButtonApp
-import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.OnBoardingEvent
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.OnBoardingPage
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.PageIndicator
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.model.PageInfo.Companion.pageInfos

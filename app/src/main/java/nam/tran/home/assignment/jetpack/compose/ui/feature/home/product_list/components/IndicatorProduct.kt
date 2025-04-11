@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen.components
+package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

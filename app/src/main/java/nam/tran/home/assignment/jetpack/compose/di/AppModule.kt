@@ -18,7 +18,7 @@ import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCase
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCaseImpl
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCase
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCaseImpl
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.ProductPagingRepository
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepository
 import javax.inject.Singleton
 
 @Module(includes = [NetModule::class])

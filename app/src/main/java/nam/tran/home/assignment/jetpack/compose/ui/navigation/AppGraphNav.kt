@@ -8,34 +8,31 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeViewModel
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen.HomeScreen
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeScreen
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.OnBoardingViewModel
-import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.screen.OnBoardingScreen
+import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.OnBoardingScreen
 
 @Composable
-fun NavGraph(
+fun AppGraphNav(
     startDestination : String
 ) {
 
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = startDestination) {
-        composable(route = Route.OnLoadingScreen.route) {
+        composable(route = Screen.Loading.route) {
             Box(modifier = Modifier.fillMaxSize()){
                 CircularProgressIndicator()
             }
         }
-        composable(route = Route.OnBoardingScreen.route) {
+        composable(route = Screen.OnBoarding.route) {
             val viewModel : OnBoardingViewModel = hiltViewModel()
             OnBoardingScreen(viewModel::onEvent)
         }
 
-        composable(route = Route.HomeScreen.route) {
-            val viewModel : HomeViewModel = hiltViewModel()
-            HomeScreen(viewModel)
+        composable(route = Screen.Home.route) {
+            HomeScreen()
         }
     }
 }

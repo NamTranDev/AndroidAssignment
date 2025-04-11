@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen
+package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,16 +9,13 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
 import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,15 +24,14 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.HomeViewModel
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen.components.CategorySurface
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen.components.IndicatorProduct
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.screen.components.ProductCard
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.CategorySurface
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.IndicatorProduct
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen(viewModel: HomeViewModel) {
+fun ProductListScreenTab(viewModel: ProductListViewModel) {
     val categories by viewModel.categoriesDataState.collectAsState()
     val selectedCategory by viewModel.selectedCategoryState.collectAsState()
     val statusStateCategory by viewModel.statusStateCategory.collectAsState()

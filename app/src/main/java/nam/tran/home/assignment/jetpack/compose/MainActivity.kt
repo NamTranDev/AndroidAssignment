@@ -11,12 +11,11 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
-import nam.tran.home.assignment.jetpack.compose.ui.navigation.NavGraph
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.AppGraphNav
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @AndroidEntryPoint
@@ -52,7 +51,7 @@ class MainActivity : ComponentActivity() {
                     color = backgroundColor
                 ) {
                     val startDestination = viewModel.startDestination
-                    NavGraph(startDestination = startDestination)
+                    AppGraphNav(startDestination = startDestination)
                 }
             }
         }

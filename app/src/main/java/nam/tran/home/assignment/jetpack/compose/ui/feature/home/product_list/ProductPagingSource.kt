@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose.ui.feature.home
+package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
