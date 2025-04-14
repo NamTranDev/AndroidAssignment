@@ -14,17 +14,17 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -36,13 +36,13 @@ import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssig
 
 @Composable
 fun ProductCard(
-    productResponse: ProductResponse?
+    productResponse: ProductResponse?,
 ) {
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val widthCard = screenWidth * 4 / 6
 
-    Box(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, start = 5.dp, end = 20.dp)){
+    Box(modifier = Modifier.padding(top = 10.dp, bottom = 10.dp, start = 5.dp, end = 20.dp)) {
         Card(
             modifier = Modifier.width(widthCard),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -52,7 +52,8 @@ fun ProductCard(
                 AsyncImage(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(widthCard * 1.2f).background(color = Color.Gray.copy(alpha = 0.2f)),
+                        .height(widthCard * 1.2f)
+                        .background(color = Color.Gray.copy(alpha = 0.2f)),
                     model = ImageRequest.Builder(context).data(productResponse?.thumbnail).build(),
                     contentDescription = null,
                 )
@@ -68,7 +69,8 @@ fun ProductCard(
 
                 Text(
                     modifier = Modifier
-                        .fillMaxWidth().height(60.dp)
+                        .fillMaxWidth()
+                        .height(60.dp)
                         .padding(top = 5.dp, start = 10.dp, end = 10.dp),
                     maxLines = 3,
                     overflow = TextOverflow.Ellipsis,
@@ -78,9 +80,11 @@ fun ProductCard(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Row(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(all = 10.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(all = 10.dp)
+                ) {
                     Text(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -95,6 +99,11 @@ fun ProductCard(
                     )
                 }
             }
+        }
+        IconButton(modifier = Modifier.align(Alignment.TopEnd), onClick = {
+
+        }) {
+            Icon(painterResource(R.drawable.ic_bookmark), contentDescription = null)
         }
     }
 }

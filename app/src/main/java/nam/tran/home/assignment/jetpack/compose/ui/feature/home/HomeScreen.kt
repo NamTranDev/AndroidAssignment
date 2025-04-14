@@ -1,5 +1,7 @@
 package nam.tran.home.assignment.jetpack.compose.ui.feature.home
 
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.BottomNavigationItem
@@ -13,32 +15,26 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavGraph.Companion.findStartDestination
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkScreenTab
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListScreenTab
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListViewModel
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.SearchScreenTab
-import nam.tran.home.assignment.jetpack.compose.ui.navigation.Tab
-import nam.tran.home.assignment.jetpack.compose.ui.navigation.Tab.Companion.bottomNavHomeItems
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.HomeGraphNav
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.Tab.Bookmark
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.Tab.ProductList
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.Tab.Profile
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(viewModel: TabStateViewModel = hiltViewModel()) {
     val navController = rememberNavController()
-
+    val currentTab = viewModel.currentTab.value
     Scaffold(
         bottomBar = {
             BottomNavigation(backgroundColor = MaterialTheme.colorScheme.background) {
-                val currentRoute =
-                    navController.currentBackStackEntryAsState().value?.destination?.route
-                bottomNavHomeItems.forEach { screen ->
+                listOf(ProductList, Bookmark, Profile).forEach { screen ->
                     BottomNavigationItem(
-                        selected = currentRoute == screen.tab,
+                        selected = currentTab == screen.tab,
                         onClick = {
+                            viewModel.selectTab(screen.tab)
                             navController.navigate(screen.tab) {
                                 popUpTo(navController.graph.findStartDestination().id) {
                                     saveState = true
@@ -51,7 +47,7 @@ fun HomeScreen() {
                             Icon(
                                 painter = painterResource(screen.icon),
                                 contentDescription = screen.tab,
-                                tint =  colorResource(if (currentRoute == screen.tab) R.color.icon_bottom_bar_select else R.color.icon_bottom_bar_unselect)
+                                tint =  colorResource(if (currentTab == screen.tab) R.color.icon_bottom_bar_select else R.color.icon_bottom_bar_unselect)
                             )
                         },
 //                        label = { Text(LocalContext.current.getString(screen.title)) }
@@ -60,21 +56,10 @@ fun HomeScreen() {
             }
         }
     ) { paddingValues ->
-        NavHost(
-            navController = navController,
-            startDestination = Tab.ProductList.tab,
-            modifier = Modifier.padding(paddingValues)
-        ) {
-            composable(Tab.ProductList.tab) {
-                val viewModel: ProductListViewModel = hiltViewModel()
-                ProductListScreenTab(viewModel)
-            }
-            composable(Tab.Search.tab) {
-                SearchScreenTab()
-            }
-            composable(Tab.Bookmark.tab) {
-                BookmarkScreenTab()
-            }
+        Box(modifier = Modifier
+            .fillMaxSize()
+            .padding(paddingValues)) {
+            HomeGraphNav(navController)
         }
     }
 }
@@ -83,6 +68,6 @@ fun HomeScreen() {
 @Composable
 private fun HomeScreenPreview() {
     JetpackComposeHomeAssignmentTheme {
-        HomeScreen()
+//        HomeScreen()
     }
 }
