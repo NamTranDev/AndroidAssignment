@@ -19,6 +19,7 @@ import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCaseImpl
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCase
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCaseImpl
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepository
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepository
 import javax.inject.Singleton
 
 @Module(includes = [NetModule::class])
@@ -34,13 +35,13 @@ class AppModule {
     @Provides
     @Singleton
     fun provideCategoryRepository(
-        categoryApi: CategoryApi
+        categoryApi: CategoryApi,
     ): CategoryRepository = CategoryRepositoryImpl(categoryApi)
 
     @Provides
     @Singleton
     fun provideProductRepository(
-        productApi: ProductApi
+        productApi: ProductApi,
     ): ProductRepository = ProductRepositoryImpl(productApi)
 
     @Provides
@@ -61,4 +62,10 @@ class AppModule {
     fun provideProductPagingRepository(
         productRepository: ProductRepository,
     ): ProductPagingRepository = ProductPagingRepository(productRepository)
+
+    @Provides
+    @Singleton
+    fun provideProductSearchPagingRepository(
+        productRepository: ProductRepository,
+    ): ProductSearchPagingRepository = ProductSearchPagingRepository(productRepository)
 }

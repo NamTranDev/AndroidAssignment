@@ -8,4 +8,10 @@ interface ProductRepository {
         offset: Int,
         limit: Int
     ): List<ProductResponse>
+
+    suspend fun searchProduct(
+        query : String?,
+        offset: Int,
+        limit: Int
+    ) : List<ProductResponse>
 }

@@ -19,5 +19,11 @@ class ProductRepositoryImpl(
         ).products
     }
 
-
+    override suspend fun searchProduct(query: String?, offset: Int, limit: Int) : List<ProductResponse>{
+        return productApi.searchProduct(
+            query = query,
+            offset = offset,
+            limit = limit
+        ).products
+    }
 }

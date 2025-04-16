@@ -14,4 +14,8 @@
 
     <color name="icon_bottom_bar_select">#000000</color>
     <color name="icon_bottom_bar_unselect">#4C403C3C</color>
+
+    <color name="body">#4E4B66</color>
+    <color name="input_background">#fff</color>
+    <color name="placeholder">#A0A3BD</color>
 </resources>

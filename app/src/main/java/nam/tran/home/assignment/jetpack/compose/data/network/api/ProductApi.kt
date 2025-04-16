@@ -12,4 +12,11 @@ interface ProductApi {
         @Query("skip") offset: Int,
         @Query("limit") limit: Int = 10,
     ): ProductListResponse
+
+    @GET("products/search")
+    suspend fun searchProduct(
+        @Query("q") query: String?,
+        @Query("skip") offset: Int,
+        @Query("limit") limit: Int = 10,
+    ): ProductListResponse
 }

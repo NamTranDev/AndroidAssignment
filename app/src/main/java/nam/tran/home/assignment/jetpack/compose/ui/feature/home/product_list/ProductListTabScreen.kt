@@ -3,9 +3,12 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -36,7 +39,7 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.com
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductListScreenTab(viewModel: ProductListViewModel,openSearch : () -> Unit) {
+fun ProductListTabScreen(viewModel: ProductListViewModel, openSearch : () -> Unit) {
     val categories by viewModel.categoriesDataState.collectAsState()
     val selectedCategory by viewModel.selectedCategoryState.collectAsState()
     val statusStateCategory by viewModel.statusStateCategory.collectAsState()
@@ -66,6 +69,21 @@ fun ProductListScreenTab(viewModel: ProductListViewModel,openSearch : () -> Unit
 
             is StatusState.Success -> {
                 Column(modifier = Modifier.fillMaxSize()) {
+                    Row(modifier = Modifier.fillMaxWidth().padding(top = 15.dp,start = 20.dp, end = 10.dp)){
+                        Text(
+                            "Products".uppercase(),
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.headlineLarge.copy(
+                                fontWeight = FontWeight.Bold
+                            )
+                        )
+                        IconButton(onClick = {
+                            openSearch.invoke()
+                        }) {
+                            Icon(painter = painterResource(R.drawable.ic_search), contentDescription = null,modifier = Modifier.size(30.dp))
+                        }
+                    }
+
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -91,25 +109,8 @@ fun ProductListScreenTab(viewModel: ProductListViewModel,openSearch : () -> Unit
                             }
                         ) {
                             Column(
-                                Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 20.dp, bottom = 20.dp, start = 20.dp)
+                                Modifier.fillMaxSize()
                             ) {
-
-                                Row(modifier = Modifier.fillMaxWidth()){
-                                    Text(
-                                        "Products".uppercase(),
-                                        modifier = Modifier.padding(start = 5.dp).weight(1f),
-                                        style = MaterialTheme.typography.headlineLarge.copy(
-                                            fontWeight = FontWeight.Bold
-                                        )
-                                    )
-                                    IconButton(onClick = {
-                                        openSearch.invoke()
-                                    }) {
-                                        Icon(painterResource(R.drawable.ic_search), contentDescription = null)
-                                    }
-                                }
 
                                 if (products.loadState.refresh !is LoadState.Loading) {
                                     val total = products.itemCount
@@ -123,7 +124,7 @@ fun ProductListScreenTab(viewModel: ProductListViewModel,openSearch : () -> Unit
                                     ) {
                                         items(total) { index ->
                                             val product = products[index]
-                                            ProductCard(product)
+                                            ProductCard(modifier = Modifier.padding(start = if (index == 0) 20.dp else 0.dp),product = product)
                                         }
 
                                         products.apply {
@@ -158,7 +159,9 @@ fun ProductListScreenTab(viewModel: ProductListViewModel,openSearch : () -> Unit
                                         }
                                     }
 
-                                    IndicatorProduct(current = currentIndicator, total = total)
+                                    Spacer(Modifier.height(15.dp))
+
+                                    IndicatorProduct(modifier = Modifier.padding(start = 15.dp),current = currentIndicator, total = total)
                                 }
                             }
                         }
