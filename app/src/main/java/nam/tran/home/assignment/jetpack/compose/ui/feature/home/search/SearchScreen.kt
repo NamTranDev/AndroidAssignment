@@ -36,7 +36,8 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.component
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel
+    viewModel: SearchViewModel,
+    onBack : () -> Unit
 ) {
 
     val queryState by viewModel.searchState.collectAsState()
@@ -52,7 +53,7 @@ fun SearchScreen(
             SearchBar(text = queryState, onValueChange = {
                 viewModel.updateSearch(it)
             }, onBack = {
-
+                onBack.invoke()
             })
 
             Spacer(modifier = Modifier.height(20.dp))

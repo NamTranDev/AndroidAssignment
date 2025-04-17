@@ -32,7 +32,9 @@ fun HomeGraphNav(navController : NavHostController){
         }
         composable(Screen.Search.route) {
             val viewModel: SearchViewModel = hiltViewModel()
-            SearchScreen(viewModel)
+            SearchScreen(viewModel){
+                navController.popBackStack()
+            }
         }
     }
 }

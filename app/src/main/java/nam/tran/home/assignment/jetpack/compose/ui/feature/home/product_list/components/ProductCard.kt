@@ -3,6 +3,7 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.co
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -27,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,8 +37,11 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import dagger.hilt.android.EntryPointAccessors
 import nam.tran.home.assignment.jetpack.compose.R
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.NavigationDispatcherEntryPoint
+import nam.tran.home.assignment.jetpack.compose.ui.navigation.NavigationEvent
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
@@ -48,10 +53,19 @@ fun ProductCard(
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val widthCard = screenWidth * 4 / 6
 
+    val dispatcher = EntryPointAccessors.fromApplication(
+        LocalContext.current.applicationContext,
+        NavigationDispatcherEntryPoint::class.java
+    ).navigationDispatcher()
+
     Box(modifier = modifier
         .padding(top = 10.dp, bottom = 10.dp, end = if (isHorizontal) 20.dp else 0.dp)) {
         Card(
-            modifier = if (isHorizontal) Modifier.width(widthCard) else Modifier.fillMaxWidth(),
+            modifier = (if (isHorizontal) Modifier.width(widthCard) else Modifier.fillMaxWidth()).clickable {
+                product?.id?.run {
+                    dispatcher.tryEmit(NavigationEvent.NavigateToProductDetail(this))
+                }
+            },
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
             elevation = CardDefaults.cardElevation(defaultElevation = 5.dp)
         ) {

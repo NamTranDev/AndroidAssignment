@@ -11,7 +11,9 @@ sealed class Screen(
     data object Home : Screen(route = "home")
     data object Search : Screen(route = "search")
     data object About : Screen(route = "about")
-    data class ProductDetail(val productId: String) : Screen("detail/$productId")
+    data object ProductDetail : Screen(route = "detail/{productId}") {
+        fun routeWithArgs(productId: Int) = "detail/$productId"
+    }
 }
 
 sealed class Tab(val tab: String, val title: Int, val icon: Int) {
