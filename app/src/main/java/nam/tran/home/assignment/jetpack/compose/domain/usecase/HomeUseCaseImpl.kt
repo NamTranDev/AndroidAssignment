@@ -10,7 +10,6 @@ import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 
 class HomeUseCaseImpl(
     private val categoryRepository: CategoryRepository,
-    private val productRepository: ProductRepository,
 ): HomeUseCase {
     override fun loadCategories(): Flow<List<CategoryResponse>> {
         return flow {

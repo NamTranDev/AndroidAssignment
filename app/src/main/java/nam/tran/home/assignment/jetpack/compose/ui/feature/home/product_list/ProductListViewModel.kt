@@ -49,7 +49,7 @@ class ProductListViewModel @Inject constructor(
     }.filter {
         it?.isNotEmpty() == true
     }.flatMapLatest {
-        _scrollStates.getOrPut(it!!){
+        _scrollStates.getOrPut(it!!) {
             MutableStateFlow(LazyListState())
         }
     }.stateIn(viewModelScope, SharingStarted.Lazily, LazyListState())

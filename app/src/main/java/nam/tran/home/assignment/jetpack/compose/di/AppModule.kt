@@ -6,12 +6,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import nam.tran.home.assignment.jetpack.compose.data.local.LocalInfoManagerImpl
+import nam.tran.home.assignment.jetpack.compose.data.local.db.ProductDao
 import nam.tran.home.assignment.jetpack.compose.data.network.NetModule
 import nam.tran.home.assignment.jetpack.compose.data.network.api.CategoryApi
 import nam.tran.home.assignment.jetpack.compose.data.network.api.ProductApi
+import nam.tran.home.assignment.jetpack.compose.data.repository.BookmarkRepositoryImpl
 import nam.tran.home.assignment.jetpack.compose.data.repository.CategoryRepositoryImpl
 import nam.tran.home.assignment.jetpack.compose.data.repository.ProductRepositoryImpl
 import nam.tran.home.assignment.jetpack.compose.domain.manager.LocalInfoManager
+import nam.tran.home.assignment.jetpack.compose.domain.repository.BookmarkRepository
 import nam.tran.home.assignment.jetpack.compose.domain.repository.CategoryRepository
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCase
@@ -22,7 +25,7 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.Pro
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepository
 import javax.inject.Singleton
 
-@Module(includes = [NetModule::class])
+@Module(includes = [NetModule::class,DatabaseModule::class])
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
@@ -46,6 +49,12 @@ class AppModule {
 
     @Provides
     @Singleton
+    fun provideBookmarkRepository(
+        productDao: ProductDao
+    ): BookmarkRepository = BookmarkRepositoryImpl(productDao)
+
+    @Provides
+    @Singleton
     fun provideOnBoardingUseCase(
         localInfoManager: LocalInfoManager,
     ): OnBoardingUseCase = OnBoardingUseCaseImpl(localInfoManager)
@@ -54,18 +63,17 @@ class AppModule {
     @Singleton
     fun provideHomeUseCase(
         categoryRepository: CategoryRepository,
-        productRepository: ProductRepository,
-    ): HomeUseCase = HomeUseCaseImpl(categoryRepository, productRepository)
+    ): HomeUseCase = HomeUseCaseImpl(categoryRepository)
 
     @Provides
     @Singleton
     fun provideProductPagingRepository(
-        productRepository: ProductRepository,
+        productRepository: ProductRepository
     ): ProductPagingRepository = ProductPagingRepository(productRepository)
 
     @Provides
     @Singleton
     fun provideProductSearchPagingRepository(
-        productRepository: ProductRepository,
+        productRepository: ProductRepository
     ): ProductSearchPagingRepository = ProductSearchPagingRepository(productRepository)
 }

@@ -33,7 +33,6 @@ class SearchViewModel @Inject constructor(
             productSearchPagingRepository.searchProducts(it)
         }
         .cachedIn(viewModelScope)
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), PagingData.empty())
 
     fun updateSearch(it: String) {
         _searchState.value = it

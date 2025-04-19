@@ -58,8 +58,10 @@ fun ProductCard(
         NavigationDispatcherEntryPoint::class.java
     ).navigationDispatcher()
 
-    Box(modifier = modifier
-        .padding(top = 10.dp, bottom = 10.dp, end = if (isHorizontal) 20.dp else 0.dp)) {
+    Box(
+        modifier = modifier
+            .padding(top = 10.dp, bottom = 10.dp, end = if (isHorizontal) 20.dp else 0.dp)
+    ) {
         Card(
             modifier = (if (isHorizontal) Modifier.width(widthCard) else Modifier.fillMaxWidth()).clickable {
                 product?.id?.run {
@@ -131,15 +133,7 @@ fun ProductCard(
                 }
             }
         }
-        IconButton(modifier = Modifier.align(Alignment.TopEnd), onClick = {
-
-        }) {
-            Icon(
-                painterResource(R.drawable.ic_bookmark),
-                contentDescription = null,
-                tint = if (isSystemInDarkTheme()) Color.White else Color.Black
-            )
-        }
+        BookmarkToggle(modifier = Modifier.align(Alignment.TopEnd), product = product)
     }
 }
 
