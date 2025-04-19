@@ -24,12 +24,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import io.lifestyle.plus.utils.Logger
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkShareViewModel
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.components.SearchBar
 
@@ -91,7 +88,6 @@ fun SearchScreen(
                                 ProductCard(
                                     modifier = Modifier.fillMaxWidth().padding(start = 10.dp,end = 10.dp),
                                     product = product,
-                                    isHorizontal = false,
                                 )
                             }
 

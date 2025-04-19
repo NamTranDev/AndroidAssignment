@@ -48,7 +48,7 @@ import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssig
 fun ProductCard(
     modifier: Modifier = Modifier,
     product: ProductResponse?,
-    isHorizontal: Boolean = true,
+    isHorizontal: Boolean = false,
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val widthCard = screenWidth * 4 / 6
