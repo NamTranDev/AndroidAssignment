@@ -27,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import nam.tran.home.assignment.jetpack.compose.R
@@ -39,7 +40,10 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.com
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun ProductListTabScreen(viewModel: ProductListViewModel, openSearch: () -> Unit) {
+fun ProductListTabScreen(
+    viewModel: ProductListViewModel = hiltViewModel(),
+    openSearch: () -> Unit
+) {
     val categories by viewModel.categoriesDataState.collectAsState()
     val selectedCategory by viewModel.selectedCategoryState.collectAsState()
     val statusStateCategory by viewModel.statusStateCategory.collectAsState()

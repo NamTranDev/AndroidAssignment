@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import nam.tran.home.assignment.jetpack.compose.ui.Dimens.mediumPadding
 import nam.tran.home.assignment.jetpack.compose.ui.Dimens.pageIndicatorWidth
@@ -28,7 +29,7 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.model.PageInfo.Companion.pageInfos
 
 @Composable
-fun OnBoardingScreen(event : (OnBoardingEvent) -> Unit) {
+fun OnBoardingScreen(viewModel: OnBoardingViewModel = hiltViewModel()) {
     Column(modifier = Modifier.fillMaxSize()) {
 
         val pageState = rememberPagerState(initialPage = 0) {
@@ -76,7 +77,7 @@ fun OnBoardingScreen(event : (OnBoardingEvent) -> Unit) {
                 ButtonApp(onClick = {
                     scope.launch {
                         if (pageState.currentPage == pageState.pageCount - 1) {
-                            event.invoke(OnBoardingEvent.SaveOnBoaringEntry)
+                            viewModel.saveOnBoaringEntry()
                         } else {
                             pageState.animateScrollToPage(page = pageState.currentPage + 1)
                         }

@@ -24,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
@@ -33,7 +34,7 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.component
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SearchScreen(
-    viewModel: SearchViewModel,
+    viewModel: SearchViewModel = hiltViewModel(),
     onBack : () -> Unit
 ) {
     val queryState by viewModel.searchState.collectAsState()

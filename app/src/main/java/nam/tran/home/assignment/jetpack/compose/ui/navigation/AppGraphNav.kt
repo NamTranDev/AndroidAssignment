@@ -52,8 +52,7 @@ fun AppGraphNav(
             }
         }
         composable(route = Screen.OnBoarding.route) {
-            val viewModel : OnBoardingViewModel = hiltViewModel()
-            OnBoardingScreen(viewModel::onEvent)
+            OnBoardingScreen()
         }
 
         composable(route = Screen.Home.route) {
