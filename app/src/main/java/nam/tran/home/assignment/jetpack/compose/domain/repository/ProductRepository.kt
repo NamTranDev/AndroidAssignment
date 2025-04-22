@@ -2,6 +2,7 @@ package nam.tran.home.assignment.jetpack.compose.domain.repository
 
 import kotlinx.coroutines.flow.Flow
 import nam.tran.home.assignment.jetpack.compose.data.local.model.ProductEntity
+import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 interface ProductRepository {
@@ -16,4 +17,6 @@ interface ProductRepository {
         offset: Int,
         limit: Int
     ) : List<ProductResponse>
+
+    suspend fun getProductDetail(productId : String?) : ProductDetailResponse
 }

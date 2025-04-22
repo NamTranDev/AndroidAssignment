@@ -59,8 +59,7 @@ fun AppGraphNav(
             HomeScreen()
         }
 
-        composable(route = Screen.ProductDetail.route) { backStackEntry ->
-            val productId = backStackEntry.arguments?.getString("productId")
+        composable(route = Screen.ProductDetail.route) {
             ProductDetailScreen()
         }
     }

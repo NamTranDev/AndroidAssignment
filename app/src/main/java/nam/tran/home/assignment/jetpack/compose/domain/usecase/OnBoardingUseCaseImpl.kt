@@ -3,7 +3,7 @@ package nam.tran.home.assignment.jetpack.compose.domain.usecase
 import kotlinx.coroutines.flow.Flow
 import nam.tran.home.assignment.jetpack.compose.domain.manager.LocalInfoManager
 
-class OnBoardingUseCaseImpl constructor(
+class OnBoardingUseCaseImpl(
     private val localManager : LocalInfoManager
 ) : OnBoardingUseCase{
     override suspend fun saveAppOnboarding() {

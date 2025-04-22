@@ -1,5 +1,6 @@
 package nam.tran.home.assignment.jetpack.compose.data.network.api
 
+import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,4 +20,9 @@ interface ProductApi {
         @Query("skip") offset: Int,
         @Query("limit") limit: Int = 10,
     ): ProductListResponse
+
+    @GET("products/{id}")
+    suspend fun productDetail(
+        @Path("id") id: String?,
+    ): ProductDetailResponse
 }
