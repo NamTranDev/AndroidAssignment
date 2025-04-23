@@ -113,24 +113,12 @@ fun ProductCard(
                 if (isHorizontal)
                     Spacer(modifier = Modifier.height(10.dp))
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(all = 10.dp)
-                ) {
-                    Text(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .weight(1f),
-                        text = ("$" + product?.price?.toString()),
-                        style = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold)
-                    )
-                    Icon(
-                        modifier = Modifier.size(20.dp),
-                        painter = painterResource(R.drawable.ic_add_cart),
-                        contentDescription = null,
-                    )
-                }
+                ProductPriceAndCart(
+                    modifier = Modifier.padding(all = 10.dp),
+                    price = product?.price?.toString(),
+                    textStyle = MaterialTheme.typography.labelMedium.copy(fontWeight = FontWeight.Bold),
+                    iconSize = 30.dp,
+                    onProductCartClick = {})
             }
         }
         BookmarkToggle(modifier = Modifier.align(Alignment.TopEnd), product = product)

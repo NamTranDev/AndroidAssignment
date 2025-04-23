@@ -12,7 +12,6 @@ class ProductDetailUseCaseImpl(
 
     override fun produceDetail(productId: String?): Flow<ProductDetailResponse> {
         return flow {
-            delay(2000)
             val productDetail = productRepository.getProductDetail(productId)
             emit(productDetail)
         }
