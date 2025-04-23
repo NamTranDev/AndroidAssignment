@@ -17,7 +17,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
 
 @Composable
-fun BookmarkScreenTab(
+fun BookmarkTabScreen(
     viewModel: BookmarkViewModel = hiltViewModel(),
 ) {
     val products by viewModel.bookmarkedProducts.collectAsState()

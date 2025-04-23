@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkScreenTab
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkTabScreen
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListTabScreen
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.profile.ProfileScreenTab
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.SearchScreen
@@ -21,7 +21,7 @@ fun HomeGraphNav(navController: NavHostController) {
             }
         }
         composable(Tab.Bookmark.tab) {
-            BookmarkScreenTab()
+            BookmarkTabScreen()
         }
         composable(Tab.Profile.tab) {
             ProfileScreenTab()

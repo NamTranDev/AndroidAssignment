@@ -33,6 +33,7 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import nam.tran.home.assignment.jetpack.compose.R
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
+import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.CategorySurface
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.IndicatorProduct
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
@@ -57,12 +58,7 @@ fun ProductListTabScreen(
     ) {
         when (statusStateCategory) {
             is StatusState.Loading -> {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    CircularProgressIndicator()
-                }
+                LoadingDisplay(modifier = Modifier.fillMaxSize())
             }
 
             is StatusState.Error -> {
