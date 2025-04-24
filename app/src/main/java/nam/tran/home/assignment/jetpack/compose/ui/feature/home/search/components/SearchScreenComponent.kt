@@ -1,5 +1,6 @@
 package nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,21 +15,28 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
+import androidx.paging.LoadStates
+import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.collectAsLazyPagingItems
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.flowOf
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.PullToRefresh
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
+import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
 fun SearchScreenComponent(
     query: String,
     products: LazyPagingItems<ProductResponse>,
     onSearchQuery: (String) -> Unit = {},
-    onBack: () -> Unit = {}
+    onBack: () -> Unit = {},
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -94,5 +102,47 @@ fun SearchScreenComponent(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun SearchScreenComponentPreview() {
+    val products = listOf(
+        ProductResponse(
+            id = 1,
+            title = "Horizontal Product",
+            description = "This is shown in horizontal layout.",
+            brand = "Brand A",
+            category = "Category A",
+            price = 12.34,
+            thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+        ),
+        ProductResponse(
+            id = 2,
+            title = "Horizontal Product",
+            description = "This is shown in horizontal layout.",
+            brand = "Brand A",
+            category = "Category A",
+            price = 12.34,
+            thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+        )
+    )
+
+    val flowPaging = MutableStateFlow(
+        PagingData.from(
+            data = products,
+            sourceLoadStates = LoadStates(
+                refresh = LoadState.NotLoading(false),
+                append = LoadState.NotLoading(false),
+                prepend = LoadState.NotLoading(false),
+            )
+        )
+    )
+    JetpackComposeHomeAssignmentTheme {
+        SearchScreenComponent(
+            query = "abc", products = flowPaging.collectAsLazyPagingItems()
+        )
     }
 }

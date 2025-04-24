@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkViewModel @Inject constructor(
-    private val bookmarkRepository: BookmarkRepository
+    bookmarkRepository: BookmarkRepository
 ) : ViewModel() {
 
     val bookmarkedProducts = bookmarkRepository.bookmarkedProducts.map { it ->
