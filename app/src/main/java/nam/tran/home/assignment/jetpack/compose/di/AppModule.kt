@@ -17,17 +17,25 @@ import nam.tran.home.assignment.jetpack.compose.domain.manager.LocalInfoManager
 import nam.tran.home.assignment.jetpack.compose.domain.repository.BookmarkRepository
 import nam.tran.home.assignment.jetpack.compose.domain.repository.CategoryRepository
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCase
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCaseImpl
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadBookmarkProductUseCase
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadBookmarkProductUseCaseImpl
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadCategoryUseCase
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadCategoryUseCaseImpl
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByCategoryUseCaseImpl
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByCategoryUsecase
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByQueryUseCaseImpl
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByQueryUsecase
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCase
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCaseImpl
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.ProductDetailUseCase
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.ProductDetailUseCaseImpl
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.ToggleBookmarkProductUseCase
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.ToggleBookmarkProductUseCaseImpl
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepository
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepository
 import javax.inject.Singleton
 
-@Module(includes = [NetModule::class,DatabaseModule::class])
+@Module(includes = [NetModule::class, DatabaseModule::class])
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
@@ -63,9 +71,33 @@ class AppModule {
 
     @Provides
     @Singleton
-    fun provideHomeUseCase(
+    fun provideLoadCategoryUseCase(
         categoryRepository: CategoryRepository,
-    ): HomeUseCase = HomeUseCaseImpl(categoryRepository)
+    ): LoadCategoryUseCase = LoadCategoryUseCaseImpl(categoryRepository)
+
+    @Provides
+    @Singleton
+    fun provideLoadProductByCategoryUseCase(
+        productRepository: ProductRepository
+    ): LoadProductByCategoryUsecase = LoadProductByCategoryUseCaseImpl(productRepository)
+
+    @Provides
+    @Singleton
+    fun provideLoadProductByQueryUseCase(
+        productRepository: ProductRepository
+    ): LoadProductByQueryUsecase = LoadProductByQueryUseCaseImpl(productRepository)
+
+    @Provides
+    @Singleton
+    fun provideLoadBookmarkProductUseCase(
+        bookmarRepository : BookmarkRepository
+    ): LoadBookmarkProductUseCase = LoadBookmarkProductUseCaseImpl(bookmarRepository)
+
+    @Provides
+    @Singleton
+    fun provideToggleBookmarkProductUseCase(
+        bookmarRepository : BookmarkRepository
+    ): ToggleBookmarkProductUseCase = ToggleBookmarkProductUseCaseImpl(bookmarRepository)
 
     @Provides
     @Singleton
@@ -76,12 +108,12 @@ class AppModule {
     @Provides
     @Singleton
     fun provideProductPagingRepository(
-        productRepository: ProductRepository
-    ): ProductPagingRepository = ProductPagingRepository(productRepository)
+        loadProductByCategoryUsecase: LoadProductByCategoryUsecase
+    ): ProductPagingRepository = ProductPagingRepository(loadProductByCategoryUsecase)
 
     @Provides
     @Singleton
     fun provideProductSearchPagingRepository(
-        productRepository: ProductRepository
-    ): ProductSearchPagingRepository = ProductSearchPagingRepository(productRepository)
+        loadProductByQueryUsecase: LoadProductByQueryUsecase
+    ): ProductSearchPagingRepository = ProductSearchPagingRepository(loadProductByQueryUsecase)
 }

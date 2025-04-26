@@ -11,16 +11,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.HomeUseCase
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadCategoryUseCase
 import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
@@ -28,7 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProductListViewModel @Inject constructor(
-    private val useCase: HomeUseCase,
+    private val categoryUseCase: LoadCategoryUseCase,
     private val productPagingRepository: ProductPagingRepository
 ) : ViewModel() {
 
@@ -82,18 +79,15 @@ class ProductListViewModel @Inject constructor(
 
     fun loadCategories() {
         viewModelScope.launch {
-            useCase.loadCategories()
-                .onStart {
-                    _statusStateCategory.value = StatusState.Loading
-                }
-                .catch {
-                    _statusStateCategory.value = StatusState.Error(error = it)
-                }
-                .collectLatest {
-                    _statusStateCategory.value = StatusState.Success
-                    _categoriesDataState.value = it
-                    selectCategory(it.get(0))
-                }
+            try {
+                _statusStateCategory.value = StatusState.Loading
+                val categories = categoryUseCase.execute(Unit)
+                _categoriesDataState.value = categories
+                selectCategory(categories.get(0))
+                _statusStateCategory.value = StatusState.Success
+            } catch (e: Exception) {
+                _statusStateCategory.value = StatusState.Error(error = e)
+            }
         }
     }
 

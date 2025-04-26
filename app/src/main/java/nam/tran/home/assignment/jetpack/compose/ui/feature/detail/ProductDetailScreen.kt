@@ -43,22 +43,23 @@ import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResp
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.feature.detail.components.DiscountBadge
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.BookmarkToggle
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductPriceAndCart
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
 fun ProductDetailScreen(
     viewModel: ProductDetailViewModel = hiltViewModel(),
-    onBack : () -> Unit
-){
+    onBack: () -> Unit
+) {
     val statusState by viewModel.statusState.collectAsState()
-    val productDetailState by viewModel.productDetailState.collectAsState()
+    val productDetailState by viewModel.detailDataState.collectAsState()
 
     Box(
         modifier = Modifier
             .fillMaxSize()
-    ){
-        when (statusState){
+    ) {
+        when (statusState) {
             is StatusState.Loading -> {
                 Box(
                     modifier = Modifier.fillMaxSize(),
@@ -70,19 +71,23 @@ fun ProductDetailScreen(
 
             is StatusState.Error -> {
                 ErrorDisplay((statusState as StatusState.Error).error.message) {
-                    viewModel.retry()
+                    viewModel.loadProductDetail()
                 }
             }
 
             is StatusState.Success -> {
-                ProductDetailContent(productDetail = productDetailState,onBack = onBack)
+                ProductDetailContent(productDetail = productDetailState, onBack = onBack)
             }
         }
     }
 }
 
 @Composable
-fun ProductDetailContent(productDetail: ProductDetailResponse?,onBack : () -> Unit = {}) {
+fun ProductDetailContent(
+    productDetail: ProductDetailResponse?,
+    onBack: () -> Unit = {},
+    isPreview: Boolean = false
+) {
     Logger.debug(productDetail)
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     Column {
@@ -127,6 +132,11 @@ fun ProductDetailContent(productDetail: ProductDetailResponse?,onBack : () -> Un
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .padding(start = 40.dp)
+            )
+            BookmarkToggle(
+                modifier = Modifier.align(Alignment.TopEnd),
+                product = productDetail?.toProduct(),
+                isPreview = isPreview
             )
         }
         Spacer(modifier = Modifier.weight(0.8f))
@@ -187,7 +197,8 @@ private fun ProductDetailPreview() {
                 brand = "Essence",
                 price = 8.0,
                 discountPercentage = 7.7
-            )
+            ),
+            isPreview = true
         )
     }
 }

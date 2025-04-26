@@ -8,10 +8,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import nam.tran.home.assignment.jetpack.compose.domain.repository.BookmarkRepository
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByQueryUsecase
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 class ProductSearchPagingRepository(
-    private val productRepository: ProductRepository
+    private val loadProductByQueryUsecase: LoadProductByQueryUsecase
 ){
     fun searchProducts(query: String?): Flow<PagingData<ProductResponse>> {
         return Pager(
@@ -19,7 +20,7 @@ class ProductSearchPagingRepository(
                 pageSize = 20,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { ProductSearchPagingSource(productRepository,query) }
+            pagingSourceFactory = { ProductSearchPagingSource(loadProductByQueryUsecase,query) }
         ).flow
     }
 }

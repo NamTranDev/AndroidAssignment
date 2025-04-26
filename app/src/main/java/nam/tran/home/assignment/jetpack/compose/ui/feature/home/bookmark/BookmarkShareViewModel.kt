@@ -13,21 +13,24 @@ import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import nam.tran.home.assignment.jetpack.compose.domain.repository.BookmarkRepository
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadBookmarkProductUseCase
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.ToggleBookmarkProductUseCase
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import javax.inject.Inject
 
 @HiltViewModel
 class BookmarkShareViewModel @Inject constructor(
-    private val bookmarkRepository: BookmarkRepository
+    loadBookmarkProductUseCase: LoadBookmarkProductUseCase,
+    private val toggleBookmarkProductUseCase: ToggleBookmarkProductUseCase
 ) : ViewModel() {
 
-    val bookmarkedIds = bookmarkRepository.bookmarkedProducts.map { it ->
+    val bookmarkedIds = loadBookmarkProductUseCase.execute(Unit).map { it ->
         it.map { it.id }.toSet()
     }.stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
 
     fun toggleBookmark(product: ProductResponse?) {
         viewModelScope.launch(Dispatchers.IO) {
-            bookmarkRepository.toggleBookmark(product)
+            toggleBookmarkProductUseCase.execute(product)
         }
     }
 }

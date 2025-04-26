@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.map
 import nam.tran.home.assignment.jetpack.compose.BuildConfig
 import nam.tran.home.assignment.jetpack.compose.domain.manager.LocalInfoManager
 
-class LocalInfoManagerImpl constructor(
+class LocalInfoManagerImpl(
     private val context : Context
 ) : LocalInfoManager {
     override suspend fun saveAppOnBoarding() {

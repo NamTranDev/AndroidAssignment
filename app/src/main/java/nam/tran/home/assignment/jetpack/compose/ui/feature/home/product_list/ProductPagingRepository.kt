@@ -5,10 +5,11 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByCategoryUsecase
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 class ProductPagingRepository(
-    private val productRepository: ProductRepository,
+    private val loadProductByCategoryUsecase: LoadProductByCategoryUsecase
 ){
     fun getProducts(category: String?): Flow<PagingData<ProductResponse>> {
         return Pager(
@@ -16,7 +17,7 @@ class ProductPagingRepository(
                 pageSize = 10,
                 enablePlaceholders = false
             ),
-            pagingSourceFactory = { ProductPagingSource(productRepository,category) }
+            pagingSourceFactory = { ProductPagingSource(loadProductByCategoryUsecase,category) }
         ).flow
     }
 }

@@ -1,8 +1,14 @@
 package nam.tran.home.assignment.jetpack.compose.domain.usecase
 
-import kotlinx.coroutines.flow.Flow
+import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 
-interface ProductDetailUseCase {
-    fun produceDetail(productId : String?) : Flow<ProductDetailResponse>
+interface ProductDetailUseCase : UseCase<String?,ProductDetailResponse?>
+
+class ProductDetailUseCaseImpl(
+    private val productRepository: ProductRepository
+) : ProductDetailUseCase {
+    override suspend fun execute(params: String?): ProductDetailResponse {
+        return productRepository.getProductDetail(params)
+    }
 }

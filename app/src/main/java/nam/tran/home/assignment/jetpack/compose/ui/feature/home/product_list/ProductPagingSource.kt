@@ -4,10 +4,12 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import io.lifestyle.plus.utils.Logger
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
+import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByCategoryUsecase
+import nam.tran.home.assignment.jetpack.compose.model.param.ProductByCategoryParam
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 class ProductPagingSource(
-    private val productRepository: ProductRepository,
+    private val loadProductByCategoryUsecase: LoadProductByCategoryUsecase,
     private val category: String?
 ) : PagingSource<Int, ProductResponse>() {
 
@@ -19,10 +21,8 @@ class ProductPagingSource(
         return try {
             val offset = params.key ?: 0
             val limit = params.loadSize
-            val response = productRepository.getProductByCategory(
-                category = category,
-                offset = offset,
-                limit = limit
+            val response = loadProductByCategoryUsecase.execute(
+                ProductByCategoryParam(category = category, offset = offset,limit = limit)
             )
 
             LoadResult.Page(

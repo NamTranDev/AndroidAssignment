@@ -13,38 +13,38 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.ProductDetailUseCase
+import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
-    useCase: ProductDetailUseCase,
+    private val savedStateHandle: SavedStateHandle,
+    private val useCase: ProductDetailUseCase,
 ) : ViewModel() {
+
+    private val _detailDataState = MutableStateFlow<ProductDetailResponse?>(null)
+    val detailDataState: StateFlow<ProductDetailResponse?> = _detailDataState
 
     private val _statusState = MutableStateFlow<StatusState>(StatusState.Loading)
     val statusState: StateFlow<StatusState> = _statusState
 
-    private val retryTrigger = MutableStateFlow(Unit)
+    init {
+        loadProductDetail()
+    }
 
-    val productDetailState: StateFlow<ProductDetailResponse?> =
-        retryTrigger
-            .flatMapLatest {
-               useCase.produceDetail(savedStateHandle.get("productId"))
-            }.onStart {
+    fun loadProductDetail(){
+        viewModelScope.launch {
+            try {
                 _statusState.value = StatusState.Loading
-            }
-            .onEach {
+                _detailDataState.value = useCase.execute(savedStateHandle.get("productId"))
                 _statusState.value = StatusState.Success
+            }catch (e : Exception){
+                _statusState.value = StatusState.Error(error = e)
             }
-            .catch {
-                _statusState.value = StatusState.Error(error = it)
-            }
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
-
-    fun retry() {
-        retryTrigger.value = Unit
+        }
     }
 }
