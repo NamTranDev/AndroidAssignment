@@ -1,5 +1,6 @@
 package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +10,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,11 +29,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.paging.LoadState
+import androidx.paging.PagingData
+import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
+import kotlinx.coroutines.flow.MutableStateFlow
 import nam.tran.home.assignment.jetpack.compose.R
+import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
+import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay
@@ -52,6 +61,39 @@ fun ProductListTabScreen(
     val scrollState by viewModel.scrollState.collectAsState()
     val currentIndicator by viewModel.currentIndicator.collectAsState()
 
+    ProductListTabScreenContent(
+        statusStateCategory = statusStateCategory,
+        categories = categories,
+        selectedCategory = selectedCategory,
+        products = products,
+        scrollState = scrollState,
+        currentIndicator = currentIndicator,
+        onLoadCategories = {
+            viewModel.loadCategories()
+        },
+        onOpenSearch = {
+            openSearch()
+        },
+        onSelectCategory = {
+            viewModel.selectCategory(it)
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProductListTabScreenContent(
+    statusStateCategory: StatusState,
+    categories: List<CategoryResponse>,
+    selectedCategory: CategoryResponse?,
+    products: LazyPagingItems<ProductResponse>,
+    scrollState: LazyListState,
+    currentIndicator: Int,
+    onLoadCategories : () -> Unit = {},
+    onOpenSearch : () -> Unit = {},
+    onSelectCategory : (CategoryResponse) -> Unit = {},
+    isPreview : Boolean = false
+) {
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -62,8 +104,8 @@ fun ProductListTabScreen(
             }
 
             is StatusState.Error -> {
-                ErrorDisplay((statusStateCategory as StatusState.Error).error.message) {
-                    viewModel.loadCategories()
+                ErrorDisplay(statusStateCategory.error.message) {
+                    onLoadCategories()
                 }
             }
 
@@ -82,7 +124,7 @@ fun ProductListTabScreen(
                             )
                         )
                         IconButton(onClick = {
-                            openSearch.invoke()
+                            onOpenSearch()
                         }) {
                             Icon(
                                 painter = painterResource(R.drawable.ic_search),
@@ -135,7 +177,8 @@ fun ProductListTabScreen(
                                             ProductCard(
                                                 modifier = Modifier.padding(start = if (index == 0) 20.dp else 0.dp),
                                                 product = product,
-                                                isHorizontal = true
+                                                isHorizontal = true,
+                                                isPreview = isPreview
                                             )
                                         }
 
@@ -184,10 +227,60 @@ fun ProductListTabScreen(
                     }
 
                     CategorySurface(categories, selectedCategory) { category ->
-                        viewModel.selectCategory(category)
+                        onSelectCategory(category)
                     }
                 }
             }
         }
     }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ProductListTabScreenContentPreview() {
+    val fakeProducts = listOf(
+        ProductResponse(id = 1, title = "Product 1", price = 100.0),
+        ProductResponse(id = 2, title = "Product 2", price = 150.0),
+        ProductResponse(id = 3, title = "Product 3", price = 200.0)
+    )
+    val products = listOf(
+        ProductResponse(
+            id = 1,
+            title = "Horizontal Product",
+            description = "This is shown in horizontal layout.",
+            brand = "Brand A",
+            category = "Category A",
+            price = 12.34,
+            thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+        ),
+        ProductResponse(
+            id = 2,
+            title = "Horizontal Product",
+            description = "This is shown in horizontal layout.",
+            brand = "Brand A",
+            category = "Category A",
+            price = 12.34,
+            thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+        )
+    )
+
+    val flowPaging = MutableStateFlow(
+        PagingData.from(
+            data = products
+        )
+    )
+
+    ProductListTabScreenContent(
+        statusStateCategory = StatusState.Success,
+        categories = listOf(
+            CategoryResponse(slug = "1", name = "Category 1"),
+            CategoryResponse(slug = "2", name = "Category 2")
+        ),
+        selectedCategory = CategoryResponse(slug = "1", name = "Category 1"),
+        products = flowPaging.collectAsLazyPagingItems(),
+        scrollState = rememberLazyListState(),
+        currentIndicator = 0,
+        isPreview = true
+    )
 }

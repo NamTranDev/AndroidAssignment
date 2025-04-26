@@ -27,14 +27,85 @@ import nam.tran.home.assignment.jetpack.compose.ui.Dimens.pageIndicatorWidth
 import nam.tran.home.assignment.jetpack.compose.ui.Dimens.spaceHeight
 import nam.tran.home.assignment.jetpack.compose.ui.common.ButtonApp
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.OnBoardingPage
-import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.OnBoardingScreenComponent
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.components.PageIndicator
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.model.PageInfo.Companion.pageInfos
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
 fun OnBoardingScreen(viewModel: OnBoardingViewModel = hiltViewModel()) {
-    OnBoardingScreenComponent{
+    OnBoardingScreenContent{
         viewModel.saveOnBoaringEntry()
+    }
+}
+
+@Composable
+fun OnBoardingScreenContent(
+    onSaveBoardingEntry : () -> Unit = {}
+){
+    Column(modifier = Modifier.fillMaxSize()) {
+
+        val pageState = rememberPagerState(initialPage = 0) {
+            pageInfos.size
+        }
+
+        val buttonState = remember {
+            derivedStateOf {
+                if (pageState.currentPage == 0) {
+                    listOf("", "Next")
+                } else if (pageState.currentPage == pageState.pageCount - 1) {
+                    listOf("Back", "Get Started")
+                } else {
+                    listOf("Back", "Next")
+                }
+            }
+        }
+
+        HorizontalPager(pageState) { index ->
+            OnBoardingPage(pageInfos.get(index))
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = mediumPadding)
+                .navigationBarsPadding(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            PageIndicator(
+                modifier = Modifier.width(pageIndicatorWidth),
+                pageSize = pageState.pageCount,
+                selectedPage = pageState.currentPage
+            )
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                val scope = rememberCoroutineScope()
+                if (buttonState.value[0].isNotEmpty()) {
+                    ButtonApp(onClick = {
+                        scope.launch {
+                            pageState.animateScrollToPage(page = pageState.currentPage - 1)
+                        }
+                    }, text = buttonState.value[0], isTextButton = true)
+                }
+                ButtonApp(onClick = {
+                    scope.launch {
+                        if (pageState.currentPage == pageState.pageCount - 1) {
+                            onSaveBoardingEntry.invoke()
+                        } else {
+                            pageState.animateScrollToPage(page = pageState.currentPage + 1)
+                        }
+                    }
+                }, text = buttonState.value[1])
+            }
+        }
+        Spacer(modifier = Modifier.height(spaceHeight))
+    }
+}
+
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+private fun OnBoardingScreenComponentPreview() {
+    JetpackComposeHomeAssignmentTheme {
+        OnBoardingScreenContent()
     }
 }

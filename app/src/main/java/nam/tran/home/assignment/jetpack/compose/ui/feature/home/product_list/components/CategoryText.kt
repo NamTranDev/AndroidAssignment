@@ -34,7 +34,7 @@ fun CategoryText(category: CategoryResponse, isSelected: Boolean, onClick: () ->
 }
 
 @Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun CategoryTextPreview() {
     JetpackComposeHomeAssignmentTheme {

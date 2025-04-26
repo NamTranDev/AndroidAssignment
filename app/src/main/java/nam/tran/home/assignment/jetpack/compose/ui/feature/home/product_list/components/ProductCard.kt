@@ -49,14 +49,15 @@ fun ProductCard(
     modifier: Modifier = Modifier,
     product: ProductResponse?,
     isHorizontal: Boolean = false,
+    isPreview : Boolean = false
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp.dp
     val widthCard = screenWidth * 4 / 6
 
-    val dispatcher = EntryPointAccessors.fromApplication(
+    val dispatcher = if (!isPreview) EntryPointAccessors.fromApplication(
         LocalContext.current.applicationContext,
         NavigationDispatcherEntryPoint::class.java
-    ).navigationDispatcher()
+    ).navigationDispatcher() else null
 
     Box(
         modifier = modifier
@@ -65,7 +66,7 @@ fun ProductCard(
         Card(
             modifier = (if (isHorizontal) Modifier.width(widthCard) else Modifier.fillMaxWidth()).clickable {
                 product?.id?.run {
-                    dispatcher.tryEmit(NavigationEvent.NavigateToProductDetail(this))
+                    dispatcher?.tryEmit(NavigationEvent.NavigateToProductDetail(this))
                 }
             },
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
@@ -121,12 +122,12 @@ fun ProductCard(
                     onProductCartClick = {})
             }
         }
-        BookmarkToggle(modifier = Modifier.align(Alignment.TopEnd), product = product)
+        BookmarkToggle(modifier = Modifier.align(Alignment.TopEnd), product = product, isPreview = isPreview)
     }
 }
 
 @Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ProductCardMultiPreview(
     @PreviewParameter(ProductCardPreviewProvider::class) data: Pair<Boolean, ProductResponse>,
@@ -136,7 +137,8 @@ private fun ProductCardMultiPreview(
     JetpackComposeHomeAssignmentTheme {
         ProductCard(
             product = product,
-            isHorizontal = isHorizontal
+            isHorizontal = isHorizontal,
+            isPreview = true
         )
     }
 }

@@ -60,7 +60,9 @@ fun AppGraphNav(
         }
 
         composable(route = Screen.ProductDetail.route) {
-            ProductDetailScreen()
+            ProductDetailScreen{
+                navController.popBackStack()
+            }
         }
     }
 }

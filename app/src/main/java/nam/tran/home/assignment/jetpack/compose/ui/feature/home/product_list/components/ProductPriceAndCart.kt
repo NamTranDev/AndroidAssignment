@@ -55,7 +55,7 @@ fun ProductPriceAndCart(
 }
 
 @Preview(showBackground = true)
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ProductPriceAndCartPreview() {
     JetpackComposeHomeAssignmentTheme {

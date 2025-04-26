@@ -1,5 +1,6 @@
 package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -75,7 +76,8 @@ fun IndicatorProduct(modifier: Modifier = Modifier, current: Int, total: Int) {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun IndicatorProductPreiew() {
     JetpackComposeHomeAssignmentTheme {
