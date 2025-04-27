@@ -50,12 +50,16 @@ fun OnBoardingScreenContent(
 
         val buttonState = remember {
             derivedStateOf {
-                if (pageState.currentPage == 0) {
-                    listOf("", "Next")
-                } else if (pageState.currentPage == pageState.pageCount - 1) {
-                    listOf("Back", "Get Started")
-                } else {
-                    listOf("Back", "Next")
+                when (pageState.currentPage) {
+                    0 -> {
+                        listOf("", "Next")
+                    }
+                    pageState.pageCount - 1 -> {
+                        listOf("Back", "Get Started")
+                    }
+                    else -> {
+                        listOf("Back", "Next")
+                    }
                 }
             }
         }

@@ -83,7 +83,7 @@ class ProductListViewModel @Inject constructor(
                 _statusStateCategory.value = StatusState.Loading
                 val categories = categoryUseCase.execute(Unit)
                 _categoriesDataState.value = categories
-                selectCategory(categories.get(0))
+                selectCategory(categories[0])
                 _statusStateCategory.value = StatusState.Success
             } catch (e: Exception) {
                 _statusStateCategory.value = StatusState.Error(error = e)

@@ -14,7 +14,6 @@ class LoadProductByCategoryUseCaseImpl(
     override suspend fun execute(params: ProductByCategoryParam): List<ProductResponse> {
         return productRepository.getProductByCategory(params.category,params.offset,params.limit)
     }
-
 }
 
 class LoadProductByQueryUseCaseImpl(

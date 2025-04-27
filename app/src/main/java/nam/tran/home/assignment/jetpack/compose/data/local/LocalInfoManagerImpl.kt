@@ -32,5 +32,5 @@ private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(Bu
 private object PreferencesKey {
     private const val APP_ONBOARDING_KEY = "OnBoarding Key"
 
-    val APP_ONBOARDING = booleanPreferencesKey(PreferencesKey.APP_ONBOARDING_KEY)
+    val APP_ONBOARDING = booleanPreferencesKey(APP_ONBOARDING_KEY)
 }

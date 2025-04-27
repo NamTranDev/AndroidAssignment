@@ -18,10 +18,7 @@ class SplashViewModel @Inject constructor(
 ) : ViewModel() {
 
     var splashCondition by mutableStateOf(true)
-        private set
-
     var startDestination by mutableStateOf(Screen.Loading.route)
-        private set
 
     init {
         viewModelScope.launch {
