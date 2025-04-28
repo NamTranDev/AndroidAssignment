@@ -15,7 +15,7 @@ class FakeProductRepository : ProductRepository {
             "category1" -> listOf(
                 ProductResponse(
                     id = 1,
-                    title = "category1",
+                    title = "Product 1",
                     description = "This is shown in horizontal layout.",
                     brand = "Brand A",
                     category = "Category A",
@@ -24,7 +24,7 @@ class FakeProductRepository : ProductRepository {
                 ),
                 ProductResponse(
                     id = 2,
-                    title = "category1-1",
+                    title = "Product 1-1",
                     description = "This is shown in horizontal layout.",
                     brand = "Brand A",
                     category = "Category A",
@@ -36,7 +36,7 @@ class FakeProductRepository : ProductRepository {
             "category2" -> listOf(
                 ProductResponse(
                     id = 3,
-                    title = "category2",
+                    title = "Product 2",
                     description = "This is shown in horizontal layout.",
                     brand = "Brand A",
                     category = "Category A",
@@ -45,7 +45,7 @@ class FakeProductRepository : ProductRepository {
                 ),
                 ProductResponse(
                     id = 4,
-                    title = "category2-1",
+                    title = "Product 2-2",
                     description = "This is shown in horizontal layout.",
                     brand = "Brand A",
                     category = "Category A",
