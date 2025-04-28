@@ -15,7 +15,7 @@ import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListViewModel
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepository
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepositoryImpl
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertTrue
@@ -34,12 +34,12 @@ class ProductListViewModelTest {
     val mainDispatcherRule = MainDispatcherRule()
 
     private val categoryUseCase: LoadCategoryUseCase = mock()
-    private val productPagingRepository: ProductPagingRepository = mock()
+    private val productPagingRepositoryImpl: ProductPagingRepositoryImpl = mock()
     private lateinit var viewModel: ProductListViewModel
 
     @Before
     fun setUp() {
-        viewModel = ProductListViewModel(categoryUseCase, productPagingRepository)
+        viewModel = ProductListViewModel(categoryUseCase, productPagingRepositoryImpl)
     }
 
     @Test
@@ -96,7 +96,7 @@ class ProductListViewModelTest {
         )
         val fakeFlowPaging = flowOf(PagingData.from(products))
 
-        Mockito.`when`(productPagingRepository.getProducts("electronics")).thenReturn(fakeFlowPaging)
+        Mockito.`when`(productPagingRepositoryImpl.getProducts("electronics")).thenReturn(fakeFlowPaging)
 
         val category = CategoryResponse(slug = "electronics", name = "Electronics")
         viewModel.selectCategory(category)
@@ -153,7 +153,7 @@ class ProductListViewModelTest {
         )
         val pagingData = PagingData.from(products)
 
-        Mockito.`when`(productPagingRepository.getProducts("electronics")).thenReturn(flowOf(pagingData))
+        Mockito.`when`(productPagingRepositoryImpl.getProducts("electronics")).thenReturn(flowOf(pagingData))
 
         viewModel.selectCategory(category)
 
@@ -165,7 +165,7 @@ class ProductListViewModelTest {
         advanceUntilIdle()
 
         assertEquals(1, collectedFirst.size)
-        verify(productPagingRepository).getProducts("electronics")
+        verify(productPagingRepositoryImpl).getProducts("electronics")
 
         val collectedSecond = mutableListOf<PagingData<ProductResponse>>()
         val job2 = launch {
@@ -175,7 +175,7 @@ class ProductListViewModelTest {
         advanceUntilIdle()
 
         assertEquals(1, collectedSecond.size)
-        verify(productPagingRepository, times(1)).getProducts("electronics")
+        verify(productPagingRepositoryImpl, times(1)).getProducts("electronics")
 
         job1.cancel()
         job2.cancel()

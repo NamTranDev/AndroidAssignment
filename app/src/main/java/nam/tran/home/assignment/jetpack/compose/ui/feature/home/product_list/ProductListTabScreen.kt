@@ -48,7 +48,6 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.com
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductListTabScreen(
     viewModel: ProductListViewModel = hiltViewModel(),

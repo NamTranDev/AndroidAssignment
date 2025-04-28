@@ -32,10 +32,12 @@ import nam.tran.home.assignment.jetpack.compose.domain.usecase.ProductDetailUseC
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.ToggleBookmarkProductUseCase
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.ToggleBookmarkProductUseCaseImpl
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepository
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepositoryImpl
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepository
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepositoryImpl
 import javax.inject.Singleton
 
-@Module(includes = [NetModule::class, DatabaseModule::class])
+@Module(includes = [NetModule::class, DatabaseModule::class, ProductModule::class])
 @InstallIn(SingletonComponent::class)
 class AppModule {
 
@@ -44,18 +46,6 @@ class AppModule {
     fun provideLocalInfoManager(
         application: Application,
     ): LocalInfoManager = LocalInfoManagerImpl(application)
-
-    @Provides
-    @Singleton
-    fun provideCategoryRepository(
-        categoryApi: CategoryApi,
-    ): CategoryRepository = CategoryRepositoryImpl(categoryApi)
-
-    @Provides
-    @Singleton
-    fun provideProductRepository(
-        productApi: ProductApi,
-    ): ProductRepository = ProductRepositoryImpl(productApi)
 
     @Provides
     @Singleton
@@ -109,11 +99,11 @@ class AppModule {
     @Singleton
     fun provideProductPagingRepository(
         loadProductByCategoryUsecase: LoadProductByCategoryUsecase
-    ): ProductPagingRepository = ProductPagingRepository(loadProductByCategoryUsecase)
+    ): ProductPagingRepository = ProductPagingRepositoryImpl(loadProductByCategoryUsecase)
 
     @Provides
     @Singleton
     fun provideProductSearchPagingRepository(
         loadProductByQueryUsecase: LoadProductByQueryUsecase
-    ): ProductSearchPagingRepository = ProductSearchPagingRepository(loadProductByQueryUsecase)
+    ): ProductSearchPagingRepository = ProductSearchPagingRepositoryImpl(loadProductByQueryUsecase)
 }

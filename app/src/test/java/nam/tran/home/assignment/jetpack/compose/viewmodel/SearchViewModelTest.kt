@@ -5,21 +5,18 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import kotlinx.coroutines.flow.toList
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepository
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepositoryImpl
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.SearchViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
@@ -32,14 +29,14 @@ class SearchViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val productSearchPagingRepository: ProductSearchPagingRepository = mock()
+    private val productSearchPagingRepositoryImpl: ProductSearchPagingRepositoryImpl = mock()
 
     @Before
     fun setup() {}
 
     @Test
     fun `updateSearch should update searchState`() = runTest {
-        val viewModel = SearchViewModel(productSearchPagingRepository)
+        val viewModel = SearchViewModel(productSearchPagingRepositoryImpl)
         viewModel.updateSearch("phone")
 
         assertEquals("phone", viewModel.searchState.value)
@@ -72,9 +69,9 @@ class SearchViewModelTest {
         val fakeFlow = flowOf(PagingData.from(products))
 
         val query = "laptop"
-        Mockito.`when`(productSearchPagingRepository.searchProducts(query)).thenReturn(fakeFlow)
+        Mockito.`when`(productSearchPagingRepositoryImpl.searchProducts(query)).thenReturn(fakeFlow)
 
-        val viewModel = SearchViewModel(productSearchPagingRepository)
+        val viewModel = SearchViewModel(productSearchPagingRepositoryImpl)
 
         val result = async {
             viewModel.productState.first()
@@ -87,8 +84,8 @@ class SearchViewModelTest {
         advanceTimeBy(300)
         advanceUntilIdle()
 
-        verify(productSearchPagingRepository, times(1)).searchProducts(query)
-        verify(productSearchPagingRepository, never()).searchProducts("abc")
+        verify(productSearchPagingRepositoryImpl, times(1)).searchProducts(query)
+        verify(productSearchPagingRepositoryImpl, never()).searchProducts("abc")
 
         val pagingData = result.await()
         assertNotNull(pagingData)
