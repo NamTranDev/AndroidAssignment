@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
+import nam.tran.home.assignment.jetpack.compose.fakes.CaseTest
 import nam.tran.home.assignment.jetpack.compose.fakes.FakeProductRepository
 import javax.inject.Singleton
 
@@ -18,7 +19,7 @@ class FakeProductListModule {
 
     @Provides
     @Singleton
-    fun provideFakeProductRepository(): ProductRepository {
-        return FakeProductRepository()
+    fun provideFakeProductRepository(case : CaseTest): ProductRepository {
+        return FakeProductRepository(case)
     }
 }

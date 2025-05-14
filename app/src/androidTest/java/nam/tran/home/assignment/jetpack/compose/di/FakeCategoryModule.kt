@@ -5,6 +5,7 @@ import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import nam.tran.home.assignment.jetpack.compose.domain.repository.CategoryRepository
+import nam.tran.home.assignment.jetpack.compose.fakes.CaseTest
 import nam.tran.home.assignment.jetpack.compose.fakes.FakeCategoryRepository
 import javax.inject.Singleton
 
@@ -17,7 +18,7 @@ class FakeCategoryModule {
 
     @Provides
     @Singleton
-    fun provideFakeCategoryRepository(): CategoryRepository {
-        return FakeCategoryRepository()
+    fun provideFakeCategoryRepository(case : CaseTest): CategoryRepository {
+        return FakeCategoryRepository(case)
     }
 }
