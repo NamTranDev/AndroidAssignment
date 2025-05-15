@@ -27,6 +27,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -104,7 +105,7 @@ fun ProductListTabScreenContent(
             }
 
             is StatusState.Error -> {
-                ErrorDisplay(statusStateCategory.error.message) {
+                ErrorDisplay(modifier = Modifier.testTag("load_category_error"),message = statusStateCategory.error.message) {
                     onLoadCategories()
                 }
             }
@@ -150,7 +151,7 @@ fun ProductListTabScreenContent(
                             state = pullRefreshState,
                             indicator = {
                                 Indicator(
-                                    modifier = Modifier.align(Alignment.TopCenter),
+                                    modifier = Modifier.align(Alignment.TopCenter).testTag("pull_to_refresh_indicator"),
                                     isRefreshing = refreshing,
                                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                                     color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -168,7 +169,7 @@ fun ProductListTabScreenContent(
                                     is LoadState.Error -> {
                                         val error =
                                             (products.loadState.refresh as LoadState.Error).error
-                                        ErrorDisplay(message = error.message, sizeImage = 200) {
+                                        ErrorDisplay(modifier = Modifier.testTag("load_product_error"),message = error.message, sizeImage = 200) {
                                             products.refresh()
                                         }
                                     }
@@ -179,7 +180,7 @@ fun ProductListTabScreenContent(
                                         LazyRow(
                                             modifier = Modifier
                                                 .fillMaxSize()
-                                                .weight(1f),
+                                                .weight(1f).testTag("product_list"),
                                             state = scrollState,
                                             verticalAlignment = Alignment.CenterVertically
                                         ) {
@@ -198,16 +199,7 @@ fun ProductListTabScreenContent(
                                                 when (loadState.append) {
                                                     is LoadState.Loading -> {
                                                         item {
-                                                            Box(
-                                                                modifier = Modifier.fillMaxWidth(),
-                                                                contentAlignment = Alignment.Center
-                                                            ) {
-                                                                CircularProgressIndicator(
-                                                                    modifier = Modifier.padding(
-                                                                        16.dp
-                                                                    )
-                                                                )
-                                                            }
+                                                            LoadingDisplay()
                                                         }
                                                     }
 
@@ -216,6 +208,7 @@ fun ProductListTabScreenContent(
                                                             val error =
                                                                 (loadState.append as LoadState.Error).error
                                                             ErrorDisplay(
+                                                                modifier = Modifier.testTag("load_product_more_error"),
                                                                 message = error.message,
                                                                 sizeImage = 200
                                                             ) {

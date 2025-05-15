@@ -70,7 +70,7 @@ fun ProductDetailScreen(
             }
 
             is StatusState.Error -> {
-                ErrorDisplay((statusState as StatusState.Error).error.message) {
+                ErrorDisplay(message = (statusState as StatusState.Error).error.message) {
                     viewModel.loadProductDetail()
                 }
             }

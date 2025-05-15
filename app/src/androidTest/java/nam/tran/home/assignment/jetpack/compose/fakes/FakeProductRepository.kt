@@ -6,36 +6,54 @@ import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResp
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 class FakeProductRepository(
-    private val case : CaseTest
-): ProductRepository {
+    private val case: CaseTest,
+) : ProductRepository {
 
     override suspend fun getProductByCategory(
         category: String?,
         offset: Int,
         limit: Int,
     ): List<ProductResponse> {
-        if (case.isProductSuccess){
+        delay(1000)
+        if (case.productType == 0) {
             return when (category) {
-                "category1" -> listOf(
-                    ProductResponse(
-                        id = 1,
-                        title = "Product 1",
-                        description = "This is shown in horizontal layout.",
-                        brand = "Brand A",
-                        category = "Category A",
-                        price = 12.34,
-                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
-                    ),
-                    ProductResponse(
-                        id = 2,
-                        title = "Product 1-1",
-                        description = "This is shown in horizontal layout.",
-                        brand = "Brand A",
-                        category = "Category A",
-                        price = 12.34,
-                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
-                    )
-                )
+                "category1" -> {
+                    if (offset == 0){
+                        mutableListOf<ProductResponse>().apply {
+                            for (i in 1..10) {
+                                add(
+                                    ProductResponse(
+                                        id = i,
+                                        title = "Product $i",
+                                        description = "This is shown in horizontal layout.",
+                                        brand = "Brand A",
+                                        category = "Category A",
+                                        price = 12.34,
+                                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+                                    )
+                                )
+                            }
+                        }
+                    }else if (offset == 10){
+                        mutableListOf<ProductResponse>().apply {
+                            for (i in 11..20) {
+                                add(
+                                    ProductResponse(
+                                        id = i,
+                                        title = "Product $i",
+                                        description = "This is shown in horizontal layout.",
+                                        brand = "Brand A",
+                                        category = "Category A",
+                                        price = 12.34,
+                                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+                                    )
+                                )
+                            }
+                        }
+                    }else{
+                        emptyList()
+                    }
+                }
 
                 "category2" -> listOf(
                     ProductResponse(
@@ -60,7 +78,54 @@ class FakeProductRepository(
 
                 else -> emptyList()
             }
-        }else{
+        } else if (case.productType == 2) {
+            if (offset == 0)
+                return when (category) {
+                    "category1" -> {
+                        mutableListOf<ProductResponse>().apply {
+                            for (i in 1..10) {
+                                add(
+                                    ProductResponse(
+                                        id = i,
+                                        title = "Product $i",
+                                        description = "This is shown in horizontal layout.",
+                                        brand = "Brand A",
+                                        category = "Category A",
+                                        price = 12.34,
+                                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+                                    )
+                                )
+                            }
+                        }
+                    }
+
+                    "category2" -> listOf(
+                        ProductResponse(
+                            id = 3,
+                            title = "Product 2",
+                            description = "This is shown in horizontal layout.",
+                            brand = "Brand A",
+                            category = "Category A",
+                            price = 12.34,
+                            thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+                        ),
+                        ProductResponse(
+                            id = 4,
+                            title = "Product 2-2",
+                            description = "This is shown in horizontal layout.",
+                            brand = "Brand A",
+                            category = "Category A",
+                            price = 12.34,
+                            thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
+                        )
+                    )
+
+                    else -> emptyList()
+                }
+            else {
+                throw RuntimeException()
+            }
+        } else {
             throw RuntimeException()
         }
     }
@@ -70,7 +135,7 @@ class FakeProductRepository(
         offset: Int,
         limit: Int,
     ): List<ProductResponse> {
-        if (case.isProductSuccess){
+        if (case.productType == 0) {
             return when (query) {
                 "a" -> listOf(
                     ProductResponse(
@@ -116,13 +181,13 @@ class FakeProductRepository(
 
                 else -> emptyList()
             }
-        }else{
+        } else {
             throw RuntimeException()
         }
     }
 
     override suspend fun getProductDetail(productId: String?): ProductDetailResponse {
-        if (case.isProductDetailSuccess){
+        if (case.isProductDetailSuccess) {
             return ProductDetailResponse(
                 id = 4,
                 title = "category2-1",
@@ -132,7 +197,7 @@ class FakeProductRepository(
                 price = 12.34,
                 thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
             )
-        }else{
+        } else {
             throw RuntimeException()
         }
     }

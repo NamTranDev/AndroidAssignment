@@ -24,13 +24,12 @@ import nam.tran.home.assignment.jetpack.compose.R
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
-fun ErrorDisplay(message: String?, sizeImage : Int = 350, onRetry: (() -> Unit)? = null) {
+fun ErrorDisplay(modifier: Modifier = Modifier.testTag("error"),message: String?, sizeImage : Int = 350, onRetry: (() -> Unit)? = null) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface)
-            .padding(all = 50.dp)
-            .testTag("error"),
+            .padding(all = 50.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -65,6 +64,6 @@ fun ErrorDisplay(message: String?, sizeImage : Int = 350, onRetry: (() -> Unit)?
 @Composable
 private fun ErrorDisplayPreview() {
     JetpackComposeHomeAssignmentTheme {
-        ErrorDisplay("Cannot connect to internet")
+        ErrorDisplay(message = "Cannot connect to internet")
     }
 }
