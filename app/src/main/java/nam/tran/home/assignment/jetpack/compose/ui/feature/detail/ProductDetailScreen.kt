@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
-import io.lifestyle.plus.utils.Logger
+import nam.tran.home.assignment.jetpack.compose.utils.Logger
 import nam.tran.home.assignment.jetpack.compose.R
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState

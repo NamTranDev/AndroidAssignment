@@ -1,6 +1,6 @@
 package nam.tran.home.assignment.jetpack.compose.data.repository
 
-import io.lifestyle.plus.utils.Logger
+import nam.tran.home.assignment.jetpack.compose.utils.Logger
 import nam.tran.home.assignment.jetpack.compose.data.local.db.ProductDao
 import nam.tran.home.assignment.jetpack.compose.data.local.model.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.domain.repository.BookmarkRepository

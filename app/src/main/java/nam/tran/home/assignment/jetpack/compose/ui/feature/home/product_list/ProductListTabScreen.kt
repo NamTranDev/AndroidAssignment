@@ -27,7 +27,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,12 +46,13 @@ import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.CategorySurface
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.IndicatorProduct
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
+import nam.tran.home.assignment.jetpack.compose.utils.Logger
 
 
 @Composable
 fun ProductListTabScreen(
     viewModel: ProductListViewModel = hiltViewModel(),
-    openSearch: () -> Unit
+    openSearch: () -> Unit,
 ) {
     val categories by viewModel.categoriesDataState.collectAsState()
     val selectedCategory by viewModel.selectedCategoryState.collectAsState()
@@ -89,10 +89,10 @@ fun ProductListTabScreenContent(
     products: LazyPagingItems<ProductResponse>,
     scrollState: LazyListState,
     currentIndicator: Int,
-    onLoadCategories : () -> Unit = {},
-    onOpenSearch : () -> Unit = {},
-    onSelectCategory : (CategoryResponse) -> Unit = {},
-    isPreview : Boolean = false
+    onLoadCategories: () -> Unit = {},
+    onOpenSearch: () -> Unit = {},
+    onSelectCategory: (CategoryResponse) -> Unit = {},
+    isPreview: Boolean = false,
 ) {
     Box(
         modifier = Modifier
@@ -161,66 +161,82 @@ fun ProductListTabScreenContent(
                             Column(
                                 Modifier.fillMaxSize()
                             ) {
-
-                                if (products.loadState.refresh !is LoadState.Loading) {
-                                    val total = products.itemCount
-
-                                    LazyRow(
-                                        modifier = Modifier
-                                            .fillMaxSize()
-                                            .weight(1f),
-                                        state = scrollState,
-                                        verticalAlignment = Alignment.CenterVertically
-                                    ) {
-                                        items(total) { index ->
-                                            val product = products[index]
-                                            ProductCard(
-                                                modifier = Modifier.padding(start = if (index == 0) 20.dp else 0.dp),
-                                                product = product,
-                                                isHorizontal = true,
-                                                isPreview = isPreview
-                                            )
-                                        }
-
-                                        products.apply {
-                                            when (loadState.append) {
-                                                is LoadState.Loading -> {
-                                                    item {
-                                                        Box(
-                                                            modifier = Modifier.fillMaxWidth(),
-                                                            contentAlignment = Alignment.Center
-                                                        ) {
-                                                            CircularProgressIndicator(
-                                                                modifier = Modifier.padding(
-                                                                    16.dp
-                                                                )
-                                                            )
-                                                        }
-                                                    }
-                                                }
-
-                                                is LoadState.Error -> {
-                                                    item {
-                                                        val error =
-                                                            (loadState.append as LoadState.Error).error
-                                                        ErrorDisplay(message = error.message) {
-                                                            products.refresh()
-                                                        }
-                                                    }
-                                                }
-
-                                                else -> {}
-                                            }
+                                Logger.debug(products.loadState)
+                                when (products.loadState.refresh) {
+                                    //pull to refresh loading
+                                    is LoadState.Loading -> {}
+                                    is LoadState.Error -> {
+                                        val error =
+                                            (products.loadState.refresh as LoadState.Error).error
+                                        ErrorDisplay(message = error.message, sizeImage = 200) {
+                                            products.refresh()
                                         }
                                     }
 
-                                    Spacer(Modifier.height(15.dp))
+                                    else -> {
+                                        val total = products.itemCount
 
-                                    IndicatorProduct(
-                                        modifier = Modifier.padding(start = 15.dp),
-                                        current = currentIndicator,
-                                        total = total
-                                    )
+                                        LazyRow(
+                                            modifier = Modifier
+                                                .fillMaxSize()
+                                                .weight(1f),
+                                            state = scrollState,
+                                            verticalAlignment = Alignment.CenterVertically
+                                        ) {
+                                            items(total) { index ->
+                                                val product = products[index]
+                                                ProductCard(
+                                                    modifier = Modifier.padding(start = if (index == 0) 20.dp else 0.dp),
+                                                    product = product,
+                                                    isHorizontal = true,
+                                                    isPreview = isPreview
+                                                )
+                                            }
+
+                                            products.apply {
+                                                Logger.debug(loadState.append)
+                                                when (loadState.append) {
+                                                    is LoadState.Loading -> {
+                                                        item {
+                                                            Box(
+                                                                modifier = Modifier.fillMaxWidth(),
+                                                                contentAlignment = Alignment.Center
+                                                            ) {
+                                                                CircularProgressIndicator(
+                                                                    modifier = Modifier.padding(
+                                                                        16.dp
+                                                                    )
+                                                                )
+                                                            }
+                                                        }
+                                                    }
+
+                                                    is LoadState.Error -> {
+                                                        item {
+                                                            val error =
+                                                                (loadState.append as LoadState.Error).error
+                                                            ErrorDisplay(
+                                                                message = error.message,
+                                                                sizeImage = 200
+                                                            ) {
+                                                                products.refresh()
+                                                            }
+                                                        }
+                                                    }
+
+                                                    else -> {}
+                                                }
+                                            }
+                                        }
+
+                                        Spacer(Modifier.height(15.dp))
+
+                                        IndicatorProduct(
+                                            modifier = Modifier.padding(start = 15.dp),
+                                            current = currentIndicator,
+                                            total = total
+                                        )
+                                    }
                                 }
                             }
                         }

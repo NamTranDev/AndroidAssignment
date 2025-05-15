@@ -15,6 +15,7 @@ import androidx.compose.ui.test.printToLog
 import androidx.hilt.navigation.compose.hiltViewModel
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.runTest
 import nam.tran.home.assignment.jetpack.compose.MainActivity
@@ -39,44 +40,64 @@ class ProductListScreenSuccessTest {
     @Before
     fun setup() {
         hiltTestRule.inject()
-    }
-
-    @Test
-    fun testLoadingState() {
         composeTestRule.activity.setContent {
             JetpackComposeHomeAssignmentTheme{
                 ProductListTabScreen { }
             }
         }
-
-        composeTestRule.onRoot().printToLog("ComposeTree")
-
-        // Check loading
-        composeTestRule.onNodeWithTag("loading").assertIsDisplayed()
     }
 
     @Test
-    fun loadCategoriesSuccessAndDisplayProducts() = runTest {
+    fun loadCategoriesFail() = runTest {
+        caseTest.isCategorySuccess = false
+
+        composeTestRule.onNodeWithTag("loading") .assertIsDisplayed()
+
+        composeTestRule.waitUntil(
+            condition = {
+                composeTestRule
+                    .onAllNodesWithTag("error")
+                    .fetchSemanticsNodes().isNotEmpty()
+            },
+            timeoutMillis = 5_000
+        )
+
+        composeTestRule.onNodeWithTag("error") .assertIsDisplayed()
+    }
+
+    @Test
+    fun loadCategoriesSuccessAndLoadProductsAlsoSuccess() = runTest {
 
         caseTest.isCategorySuccess = true
+        caseTest.isProductSuccess = true
 
-        composeTestRule.activity.setContent {
-            JetpackComposeHomeAssignmentTheme{
-                ProductListTabScreen { }
-            }
-        }
+        composeTestRule.onNodeWithTag("loading").assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag("loading").assertExists()
-
-        advanceTimeBy(5000)
+        composeTestRule.waitUntil(
+            condition = {
+                composeTestRule
+                    .onAllNodesWithText("Category 1")
+                    .fetchSemanticsNodes().isNotEmpty()
+            },
+            timeoutMillis = 5_000
+        )
 
         composeTestRule
-            .onAllNodesWithText("Category 1")
-            .fetchSemanticsNodes().isNotEmpty()
+            .onNodeWithText("Category 1")
+            .assertIsDisplayed()
 
         composeTestRule
             .onNodeWithText("Category 1")
             .performClick()
+
+        composeTestRule.waitUntil(
+            condition = {
+                composeTestRule
+                    .onAllNodesWithText("Product 1")
+                    .fetchSemanticsNodes().isNotEmpty()
+            },
+            timeoutMillis = 5_000
+        )
 
         composeTestRule
             .onNodeWithText("Product 1")
@@ -86,29 +107,50 @@ class ProductListScreenSuccessTest {
             .onNodeWithText("Category 2")
             .performClick()
 
+        composeTestRule.waitUntil(
+            condition = {
+                composeTestRule
+                    .onAllNodesWithText("Product 2")
+                    .fetchSemanticsNodes().isNotEmpty()
+            },
+            timeoutMillis = 5_000
+        )
+
         composeTestRule
             .onNodeWithText("Product 2")
             .assertIsDisplayed()
     }
 
     @Test
-    fun loadCategoriesFail() = runTest {
-        caseTest.isCategorySuccess = false
+    fun loadCategoriesSuccessButLoadProductFail() = runTest {
+        caseTest.isCategorySuccess = true
+        caseTest.isProductSuccess = false
 
-        composeTestRule.activity.setContent {
-            JetpackComposeHomeAssignmentTheme{
-                ProductListTabScreen { }
-            }
-        }
+        composeTestRule.onNodeWithTag("loading").assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag("loading") .assertIsDisplayed()
+        composeTestRule.waitUntil(
+            condition = {
+                composeTestRule
+                    .onAllNodesWithText("Category 1")
+                    .fetchSemanticsNodes().isNotEmpty()
+            },
+            timeoutMillis = 5_000
+        )
 
-        advanceTimeBy(5000)
+        composeTestRule
+            .onNodeWithText("Category 1")
+            .assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag("error")
+        composeTestRule
+            .onNodeWithText("Category 1")
+            .performClick()
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule
+            .onNodeWithTag("error")
             .assertIsDisplayed()
     }
-
 }
 
 

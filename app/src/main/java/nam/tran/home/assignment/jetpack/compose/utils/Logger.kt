@@ -1,10 +1,9 @@
-package io.lifestyle.plus.utils
+package nam.tran.home.assignment.jetpack.compose.utils
 
 import android.content.Intent
 import android.database.Cursor
 import android.util.Log
 import nam.tran.home.assignment.jetpack.compose.BuildConfig
-import java.lang.StringBuilder
 
 object Logger {
     private const val TAG = "NamTranDev"

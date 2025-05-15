@@ -2,8 +2,7 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.search
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import io.lifestyle.plus.utils.Logger
-import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
+import nam.tran.home.assignment.jetpack.compose.utils.Logger
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByQueryUsecase
 import nam.tran.home.assignment.jetpack.compose.model.param.ProductByQueryParam
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse

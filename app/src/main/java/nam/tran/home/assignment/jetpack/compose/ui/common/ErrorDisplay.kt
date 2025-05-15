@@ -24,7 +24,7 @@ import nam.tran.home.assignment.jetpack.compose.R
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
-fun ErrorDisplay(message: String?, onRetry: (() -> Unit)? = null) {
+fun ErrorDisplay(message: String?, sizeImage : Int = 350, onRetry: (() -> Unit)? = null) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -35,8 +35,8 @@ fun ErrorDisplay(message: String?, onRetry: (() -> Unit)? = null) {
     ) {
         Image(
             modifier = Modifier
-                .width(350.dp)
-                .height(300.dp),
+                .width(sizeImage.dp)
+                .height(sizeImage.dp),
             painter = painterResource(R.drawable.image_error),
             contentDescription = null
         )
@@ -53,7 +53,7 @@ fun ErrorDisplay(message: String?, onRetry: (() -> Unit)? = null) {
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.primary
         )
-        Spacer(modifier = Modifier.height(100.dp))
+        Spacer(modifier = Modifier.height(50.dp))
         ButtonApp(onClick = {
             onRetry?.invoke()
         }, text = "Retry")

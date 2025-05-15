@@ -1,5 +1,6 @@
 package nam.tran.home.assignment.jetpack.compose.fakes
 
+import kotlinx.coroutines.delay
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
