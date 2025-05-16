@@ -29,6 +29,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -37,6 +38,9 @@ import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import androidx.compose.ui.unit.dp
 import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.size.Scale
+import coil3.size.Size
 import dagger.hilt.android.EntryPointAccessors
 import nam.tran.home.assignment.jetpack.compose.R
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
@@ -60,7 +64,7 @@ fun ProductCard(
     ).navigationDispatcher() else null
 
     Box(
-        modifier = modifier
+        modifier = modifier.testTag("product_item")
             .padding(top = 10.dp, bottom = 10.dp, end = if (isHorizontal) 20.dp else 0.dp)
     ) {
         Card(
@@ -79,7 +83,11 @@ fun ProductCard(
                         .aspectRatio(0.8f)
                         .background(color = Color.Gray.copy(alpha = 0.2f)),
                     painter = rememberAsyncImagePainter(
-                        model = product?.thumbnail,
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(product?.thumbnail)
+                            .size(Size.ORIGINAL) // hoặc Size(width, height) tuỳ nhu cầu
+                            .scale(Scale.FILL) // hoặc Scale.FIT
+                            .build(),
                         placeholder = painterResource(R.drawable.image_place_holder),
                         error = painterResource(R.drawable.image_place_holder)
                     ),

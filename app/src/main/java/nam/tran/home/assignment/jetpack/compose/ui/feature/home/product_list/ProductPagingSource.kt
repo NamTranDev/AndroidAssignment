@@ -20,6 +20,7 @@ class ProductPagingSource(
         return try {
             val offset = params.key ?: 0
             val limit = params.loadSize
+//            Logger.debug(offset,limit)
             val response = loadProductByCategoryUsecase.execute(
                 ProductByCategoryParam(category = category, offset = offset,limit = limit)
             )
@@ -30,7 +31,7 @@ class ProductPagingSource(
                 nextKey = if (response.isEmpty()) null else offset + response.size
             )
         } catch (e: Exception) {
-            Logger.debug(e)
+//            Logger.debug(e)
             LoadResult.Error(e)
         }
     }

@@ -2,6 +2,8 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list
 
 import androidx.activity.compose.setContent
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
@@ -114,17 +116,41 @@ class ProductListScreenSuccessTest {
             .onNodeWithText("Product 1")
             .assertIsDisplayed()
 
-        composeTestRule.onNodeWithTag("product_list")
-            .performScrollToIndex(10)
+        composeTestRule
+            .onNodeWithTag("product_list")
+            .performScrollToIndex(9)
+
+//        composeTestRule.waitUntil(
+//            timeoutMillis = 1_000,
+//            condition = {
+//                composeTestRule
+//                    .onAllNodesWithTag("loading", useUnmergedTree = true)
+//                    .fetchSemanticsNodes()
+//                    .isNotEmpty()
+//            }
+//        )
+//
+        composeTestRule
+            .onNodeWithTag("loading", useUnmergedTree = true)
+            .assertIsDisplayed()
 
         composeTestRule.waitUntil(
+            timeoutMillis = 5_000,
             condition = {
                 composeTestRule
-                    .onAllNodesWithText("Product 11")
-                    .fetchSemanticsNodes().isNotEmpty()
-            },
-            timeoutMillis = 5_000
+                    .onAllNodesWithTag("loading", useUnmergedTree = true)
+                    .fetchSemanticsNodes()
+                    .isEmpty()
+            }
         )
+
+        composeTestRule
+            .onNodeWithTag("loading", useUnmergedTree = true)
+            .assertIsNotDisplayed()
+
+        composeTestRule
+            .onNodeWithTag("product_list")
+            .performScrollToIndex(10)
 
         composeTestRule
             .onNodeWithText("Product 11")

@@ -13,6 +13,7 @@ class ProductPagingRepositoryImpl(
     override fun getProducts(category: String?): Flow<PagingData<ProductResponse>> {
         return Pager(
             config = PagingConfig(
+                initialLoadSize = 10,
                 pageSize = 10,
                 enablePlaceholders = false
             ),

@@ -4,6 +4,7 @@ import nam.tran.home.assignment.jetpack.compose.data.network.api.ProductApi
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.home.assignment.jetpack.compose.utils.Logger
 
 class ProductRepositoryImpl(
     private val productApi: ProductApi,
@@ -14,6 +15,7 @@ class ProductRepositoryImpl(
         offset: Int,
         limit: Int
     ): List<ProductResponse> {
+        Logger.debug(category,offset,limit)
         return productApi.getProductByCategory(
             category = category,
             offset = offset,

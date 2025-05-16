@@ -13,7 +13,8 @@ class ProductSearchPagingRepositoryImpl(
     override fun searchProducts(query: String?): Flow<PagingData<ProductResponse>> {
         return Pager(
             config = PagingConfig(
-                pageSize = 20,
+                initialLoadSize = 10,
+                pageSize = 10,
                 enablePlaceholders = false
             ),
             pagingSourceFactory = { ProductSearchPagingSource(loadProductByQueryUsecase,query) }

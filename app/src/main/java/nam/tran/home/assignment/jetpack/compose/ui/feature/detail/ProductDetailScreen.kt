@@ -88,7 +88,7 @@ fun ProductDetailContent(
     onBack: () -> Unit = {},
     isPreview: Boolean = false
 ) {
-    Logger.debug(productDetail)
+//    Logger.debug(productDetail)
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     Column {
         Box(

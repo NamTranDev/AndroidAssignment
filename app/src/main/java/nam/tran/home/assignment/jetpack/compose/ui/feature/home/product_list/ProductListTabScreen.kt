@@ -162,7 +162,7 @@ fun ProductListTabScreenContent(
                             Column(
                                 Modifier.fillMaxSize()
                             ) {
-                                Logger.debug(products.loadState)
+//                                Logger.debug(products.loadState)
                                 when (products.loadState.refresh) {
                                     //pull to refresh loading
                                     is LoadState.Loading -> {}
@@ -176,7 +176,7 @@ fun ProductListTabScreenContent(
 
                                     else -> {
                                         val total = products.itemCount
-
+                                        Logger.debug(total)
                                         LazyRow(
                                             modifier = Modifier
                                                 .fillMaxSize()
@@ -195,7 +195,7 @@ fun ProductListTabScreenContent(
                                             }
 
                                             products.apply {
-                                                Logger.debug(loadState.append)
+//                                                Logger.debug(loadState.append)
                                                 when (loadState.append) {
                                                     is LoadState.Loading -> {
                                                         item {
