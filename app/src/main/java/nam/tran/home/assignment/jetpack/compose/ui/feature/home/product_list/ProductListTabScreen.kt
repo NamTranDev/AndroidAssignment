@@ -129,7 +129,7 @@ fun ProductListTabScreenContent(
                                 fontWeight = FontWeight.Bold
                             )
                         )
-                        IconButton(onClick = {
+                        IconButton(modifier = Modifier.testTag("search_icon"),onClick = {
                             onOpenSearch()
                         }) {
                             Icon(

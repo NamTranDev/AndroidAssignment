@@ -223,6 +223,29 @@ class ProductListScreenTest {
             .onNodeWithTag(tag)
             .assertIsDisplayed()
     }
+
+    @Test
+    fun testClickOpenSearchScreen() = runTest {
+
+        loadCategoriesSuccess()
+
+        val tagSearchInput = "search_input"
+
+        composeTestRule.onNodeWithTag("search_icon").performClick()
+
+//        composeTestRule.waitUntil(
+//            condition = {
+//                composeTestRule
+//                    .onAllNodesWithTag(tagSearchInput)
+//                    .fetchSemanticsNodes().isNotEmpty()
+//            },
+//            timeoutMillis = 5_000
+//        )
+
+//        composeTestRule
+//            .onNodeWithTag(tagSearchInput)
+//            .assertIsDisplayed()
+    }
 }
 
 

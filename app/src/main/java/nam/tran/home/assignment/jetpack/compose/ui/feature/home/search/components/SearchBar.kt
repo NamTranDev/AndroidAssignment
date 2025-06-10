@@ -86,7 +86,7 @@ fun SearchBar(
             },
             trailingIcon = {
                 if (text.isNotEmpty()) {
-                    IconButton(onClick = {
+                    IconButton(modifier = Modifier.testTag("bt_clear_input"),onClick = {
                         onValueChange("")
                         focusRequester.requestFocus()
                     }) {

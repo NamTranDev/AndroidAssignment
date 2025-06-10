@@ -3,11 +3,13 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.search
 import androidx.activity.compose.setContent
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.compose.ui.test.performTextInput
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -244,5 +246,18 @@ class SearchProductScreenTest {
         composeTestRule
             .onNodeWithTag("load_product_more_error")
             .assertIsDisplayed()
+    }
+
+    @Test
+    fun testDisplayClearInputAndClickClear() = runTest {
+        val search = "abc"
+
+        composeTestRule.onNodeWithTag("search_input").performTextInput(search)
+
+        composeTestRule.onNodeWithTag("bt_clear_input").assertIsDisplayed()
+
+        composeTestRule.onNodeWithTag("bt_clear_input").performClick()
+
+        composeTestRule.onNodeWithTag("search_input").assertTextContains("")
     }
 }
