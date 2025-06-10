@@ -32,6 +32,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -57,7 +58,7 @@ fun SearchBar(
 
     Box(modifier = modifier) {
         TextField(
-            modifier = Modifier
+            modifier = Modifier.testTag("search_input")
                 .fillMaxWidth()
                 .searchBarBorder()
                 .onFocusEvent { focusState ->

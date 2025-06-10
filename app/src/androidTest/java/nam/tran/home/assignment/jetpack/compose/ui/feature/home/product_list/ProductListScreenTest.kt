@@ -3,7 +3,6 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list
 import androidx.activity.compose.setContent
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
@@ -13,7 +12,6 @@ import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToIndex
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import junit.framework.TestCase.assertEquals
 import kotlinx.coroutines.test.runTest
 import nam.tran.home.assignment.jetpack.compose.MainActivity
 import nam.tran.home.assignment.jetpack.compose.fakes.CaseTest
@@ -24,7 +22,7 @@ import org.junit.Test
 import javax.inject.Inject
 
 @HiltAndroidTest
-class ProductListScreenSuccessTest {
+class ProductListScreenTest {
 
     @get:Rule(order = 1)
     var hiltTestRule = HiltAndroidRule(this)
@@ -98,8 +96,28 @@ class ProductListScreenSuccessTest {
     }
 
     @Test
+    fun loadProductEmpty() = runTest {
+        caseTest.productType = CaseTest.ProductType.SuccessButEmpty
+
+        performClickAndLoadProduct()
+
+        composeTestRule.waitUntil(
+            condition = {
+                composeTestRule
+                    .onAllNodesWithTag("empty_display")
+                    .fetchSemanticsNodes().isNotEmpty()
+            },
+            timeoutMillis = 5_000
+        )
+
+        composeTestRule
+            .onNodeWithTag("empty_display")
+            .assertIsDisplayed()
+    }
+
+    @Test
     fun loadProductsAndLoadMoreSuccess() = runTest {
-        caseTest.productType = 0
+        caseTest.productType = CaseTest.ProductType.Success
 
         performClickAndLoadProduct()
 
@@ -120,16 +138,6 @@ class ProductListScreenSuccessTest {
             .onNodeWithTag("product_list")
             .performScrollToIndex(9)
 
-//        composeTestRule.waitUntil(
-//            timeoutMillis = 1_000,
-//            condition = {
-//                composeTestRule
-//                    .onAllNodesWithTag("loading", useUnmergedTree = true)
-//                    .fetchSemanticsNodes()
-//                    .isNotEmpty()
-//            }
-//        )
-//
         composeTestRule
             .onNodeWithTag("loading", useUnmergedTree = true)
             .assertIsDisplayed()
@@ -159,7 +167,7 @@ class ProductListScreenSuccessTest {
 
     @Test
     fun loadProductsFail() = runTest {
-        caseTest.productType = 1
+        caseTest.productType = CaseTest.ProductType.Error
 
         val tag = "load_product_error"
 
@@ -181,7 +189,7 @@ class ProductListScreenSuccessTest {
 
     @Test
     fun loadProductLoadMoreFail() = runTest {
-        caseTest.productType = 2
+        caseTest.productType = CaseTest.ProductType.LoadMoreError
         val tag = "load_product_more_error"
 
         performClickAndLoadProduct()

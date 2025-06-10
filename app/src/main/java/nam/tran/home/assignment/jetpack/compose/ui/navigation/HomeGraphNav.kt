@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkTabScreen
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListTabScreen
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.profile.ProfileScreenTab
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.SearchScreen
+import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.SearchProductTabScreen
 
 @Composable
 fun HomeGraphNav(navController: NavHostController) {
@@ -27,7 +27,7 @@ fun HomeGraphNav(navController: NavHostController) {
             ProfileScreenTab()
         }
         composable(Screen.Search.route) {
-            SearchScreen {
+            SearchProductTabScreen {
                 navController.popBackStack()
             }
         }

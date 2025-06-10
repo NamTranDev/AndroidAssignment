@@ -19,7 +19,7 @@ class FakeProductRepository(
 
         delay(1000)
 
-        if (case.productType == 0) {
+        if (case.productType == CaseTest.ProductType.Success) {
             return when (category) {
                 "category1" -> {
                     val products = when (offset) {
@@ -32,11 +32,12 @@ class FakeProductRepository(
                 }
 
                 "category2" -> {
-                    val products = listOf(
-                        ProductResponse(3, "Product 2", "This is shown in horizontal layout.", "Brand A", "Category A", 12.34, "https://cdn.dummyjson.com/product-image.jpg"),
-                        ProductResponse(4, "Product 2-2", "This is shown in horizontal layout.", "Brand A", "Category A", 12.34, "https://cdn.dummyjson.com/product-image.jpg")
-                    )
-                    Logger.debug("Loaded ${products.size} products for category2")
+                    val products = when (offset) {
+                        0 -> generateDummyProducts(30, 40)
+                        10 -> generateDummyProducts(40, 50)
+                        else -> emptyList()
+                    }
+                    Logger.debug("Loaded ${products.size} products for category1 at offset $offset")
                     products
                 }
 
@@ -45,7 +46,9 @@ class FakeProductRepository(
                     emptyList()
                 }
             }
-        } else if (case.productType == 2) {
+        } else if(case.productType == CaseTest.ProductType.SuccessButEmpty){
+            return emptyList()
+        } else if (case.productType == CaseTest.ProductType.LoadMoreError) {
             if (offset == 0) {
                 val products = when (category) {
                     "category1" -> generateDummyProducts(1, 10)
@@ -72,51 +75,34 @@ class FakeProductRepository(
         offset: Int,
         limit: Int,
     ): List<ProductResponse> {
-        if (case.productType == 0) {
+        if (case.productType == CaseTest.ProductType.Success) {
             return when (query) {
-                "a" -> listOf(
-                    ProductResponse(
-                        id = 1,
-                        title = "category1",
-                        description = "This is shown in horizontal layout.",
-                        brand = "Brand A",
-                        category = "Category A",
-                        price = 12.34,
-                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
-                    ),
-                    ProductResponse(
-                        id = 2,
-                        title = "category1-1",
-                        description = "This is shown in horizontal layout.",
-                        brand = "Brand A",
-                        category = "Category A",
-                        price = 12.34,
-                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
-                    )
-                )
-
-                "b" -> listOf(
-                    ProductResponse(
-                        id = 3,
-                        title = "category2",
-                        description = "This is shown in horizontal layout.",
-                        brand = "Brand A",
-                        category = "Category A",
-                        price = 12.34,
-                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
-                    ),
-                    ProductResponse(
-                        id = 4,
-                        title = "category2-1",
-                        description = "This is shown in horizontal layout.",
-                        brand = "Brand A",
-                        category = "Category A",
-                        price = 12.34,
-                        thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
-                    )
-                )
+                "" -> {
+                    val products = when (offset) {
+                        0 -> generateDummyProducts(1, 10)
+                        10 -> generateDummyProducts(11, 20)
+                        20 -> generateDummyProducts(21, 30)
+                        else -> emptyList()
+                    }
+                    products
+                }
+                "a" -> {
+                    val products = when (offset) {
+                        0 -> generateDummyProducts(1, 10, search = "a")
+                        else -> emptyList()
+                    }
+                    products
+                }
 
                 else -> emptyList()
+            }
+        } else if (case.productType == CaseTest.ProductType.SuccessButEmpty){
+            return emptyList()
+        } else if (case.productType == CaseTest.ProductType.LoadMoreError) {
+            if (offset == 0) {
+                return generateDummyProducts(1, 10,search = query ?: "")
+            } else {
+                throw RuntimeException("Unsupported offset == 2")
             }
         } else {
             throw RuntimeException()
@@ -124,7 +110,7 @@ class FakeProductRepository(
     }
 
     override suspend fun getProductDetail(productId: String?): ProductDetailResponse {
-        if (case.isProductDetailSuccess) {
+        if (case.productType == CaseTest.ProductType.Success) {
             return ProductDetailResponse(
                 id = 4,
                 title = "category2-1",
@@ -139,11 +125,11 @@ class FakeProductRepository(
         }
     }
 
-    private fun generateDummyProducts(start: Int, end: Int): List<ProductResponse> {
+    private fun generateDummyProducts(start: Int, end: Int,search : String = ""): List<ProductResponse> {
         return (start..end).map { i ->
             ProductResponse(
                 id = i,
-                title = "Product $i",
+                title = "Product $i$search",
                 description = "This is shown in horizontal layout.",
                 brand = "Brand A",
                 category = "Category A",

@@ -42,8 +42,10 @@ import nam.tran.home.assignment.jetpack.compose.R
 import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
+import nam.tran.home.assignment.jetpack.compose.ui.common.EmptyDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay
+import nam.tran.home.assignment.jetpack.compose.ui.common.PullToRefresh
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.CategorySurface
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.IndicatorProduct
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
@@ -105,7 +107,10 @@ fun ProductListTabScreenContent(
             }
 
             is StatusState.Error -> {
-                ErrorDisplay(modifier = Modifier.testTag("load_category_error"),message = statusStateCategory.error.message) {
+                ErrorDisplay(
+                    modifier = Modifier.testTag("load_category_error"),
+                    message = statusStateCategory.error.message
+                ) {
                     onLoadCategories()
                 }
             }
@@ -141,24 +146,9 @@ fun ProductListTabScreenContent(
                             .weight(1f),
                     ) {
                         val refreshing = products.loadState.refresh is LoadState.Loading
-                        val pullRefreshState = rememberPullToRefreshState()
-                        PullToRefreshBox(
-                            modifier = Modifier.fillMaxSize(),
-                            isRefreshing = refreshing,
-                            onRefresh = {
-                                products.refresh()
-                            },
-                            state = pullRefreshState,
-                            indicator = {
-                                Indicator(
-                                    modifier = Modifier.align(Alignment.TopCenter).testTag("pull_to_refresh_indicator"),
-                                    isRefreshing = refreshing,
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                    state = pullRefreshState
-                                )
-                            }
-                        ) {
+                        PullToRefresh(refreshing = refreshing, onRefresh = {
+                            products.refresh()
+                        }) {
                             Column(
                                 Modifier.fillMaxSize()
                             ) {
@@ -169,66 +159,74 @@ fun ProductListTabScreenContent(
                                     is LoadState.Error -> {
                                         val error =
                                             (products.loadState.refresh as LoadState.Error).error
-                                        ErrorDisplay(modifier = Modifier.testTag("load_product_error"),message = error.message, sizeImage = 200) {
+                                        ErrorDisplay(
+                                            modifier = Modifier.testTag("load_product_error"),
+                                            message = error.message,
+                                            sizeImage = 200
+                                        ) {
                                             products.refresh()
                                         }
                                     }
 
                                     else -> {
                                         val total = products.itemCount
-                                        Logger.debug(total)
-                                        LazyRow(
-                                            modifier = Modifier
-                                                .fillMaxSize()
-                                                .weight(1f).testTag("product_list"),
-                                            state = scrollState,
-                                            verticalAlignment = Alignment.CenterVertically
-                                        ) {
-                                            items(total) { index ->
-                                                val product = products[index]
-                                                ProductCard(
-                                                    modifier = Modifier.padding(start = if (index == 0) 20.dp else 0.dp),
-                                                    product = product,
-                                                    isHorizontal = true,
-                                                    isPreview = isPreview
-                                                )
-                                            }
+                                        if (total == 0) {
+                                            EmptyDisplay()
+                                        } else {
+                                            LazyRow(
+                                                modifier = Modifier
+                                                    .fillMaxSize()
+                                                    .weight(1f)
+                                                    .testTag("product_list"),
+                                                state = scrollState,
+                                                verticalAlignment = Alignment.CenterVertically
+                                            ) {
+                                                items(total) { index ->
+                                                    val product = products[index]
+                                                    ProductCard(
+                                                        modifier = Modifier.padding(start = if (index == 0) 20.dp else 0.dp),
+                                                        product = product,
+                                                        isHorizontal = true,
+                                                        isPreview = isPreview
+                                                    )
+                                                }
 
-                                            products.apply {
+                                                products.apply {
 //                                                Logger.debug(loadState.append)
-                                                when (loadState.append) {
-                                                    is LoadState.Loading -> {
-                                                        item {
-                                                            LoadingDisplay()
-                                                        }
-                                                    }
-
-                                                    is LoadState.Error -> {
-                                                        item {
-                                                            val error =
-                                                                (loadState.append as LoadState.Error).error
-                                                            ErrorDisplay(
-                                                                modifier = Modifier.testTag("load_product_more_error"),
-                                                                message = error.message,
-                                                                sizeImage = 200
-                                                            ) {
-                                                                products.refresh()
+                                                    when (loadState.append) {
+                                                        is LoadState.Loading -> {
+                                                            item {
+                                                                LoadingDisplay()
                                                             }
                                                         }
-                                                    }
 
-                                                    else -> {}
+                                                        is LoadState.Error -> {
+                                                            item {
+                                                                val error =
+                                                                    (loadState.append as LoadState.Error).error
+                                                                ErrorDisplay(
+                                                                    modifier = Modifier.testTag("load_product_more_error"),
+                                                                    message = error.message,
+                                                                    sizeImage = 200
+                                                                ) {
+                                                                    products.refresh()
+                                                                }
+                                                            }
+                                                        }
+
+                                                        else -> {}
+                                                    }
                                                 }
                                             }
+
+                                            Spacer(Modifier.height(15.dp))
+
+                                            IndicatorProduct(
+                                                modifier = Modifier.padding(start = 15.dp),
+                                                current = currentIndicator,
+                                                total = total
+                                            )
                                         }
-
-                                        Spacer(Modifier.height(15.dp))
-
-                                        IndicatorProduct(
-                                            modifier = Modifier.padding(start = 15.dp),
-                                            current = currentIndicator,
-                                            total = total
-                                        )
                                     }
                                 }
                             }

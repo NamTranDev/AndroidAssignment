@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
@@ -17,6 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,6 +28,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.MutableStateFlow
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.home.assignment.jetpack.compose.ui.common.EmptyDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.PullToRefresh
@@ -34,24 +37,29 @@ import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.component
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
-fun SearchScreen(
+fun SearchProductTabScreen(
     viewModel: SearchViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
     val queryState by viewModel.searchState.collectAsState()
     val products = viewModel.productState.collectAsLazyPagingItems()
-    SearchScreenContent(query = queryState, products = products, onSearchQuery = { query ->
-        viewModel.updateSearch(query)
-    }, onBack = onBack)
+    SearchProductTabScreenContent(
+        query = queryState,
+        products = products,
+        onSearchQuery = { query ->
+            viewModel.updateSearch(query)
+        },
+        onBack = onBack
+    )
 }
 
 @Composable
-fun SearchScreenContent(
+fun SearchProductTabScreenContent(
     query: String,
     products: LazyPagingItems<ProductResponse>,
     onSearchQuery: (String) -> Unit = {},
     onBack: () -> Unit = {},
-    isPreview : Boolean = false
+    isPreview: Boolean = false
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -77,40 +85,66 @@ fun SearchScreenContent(
                 PullToRefresh(refreshing = refreshing, onRefresh = {
                     products.refresh()
                 }) {
-                    if (products.loadState.refresh !is LoadState.Loading) {
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            contentPadding = PaddingValues(vertical = 10.dp),
-                        ) {
-                            items(products.itemCount) { index ->
-                                val product = products[index]
-                                ProductCard(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 10.dp, end = 10.dp),
-                                    product = product,
-                                    isPreview = isPreview
-                                )
+                    when (products.loadState.refresh) {
+                        is LoadState.Loading -> {}
+                        is LoadState.Error -> {
+                            val error =
+                                (products.loadState.refresh as LoadState.Error).error
+                            ErrorDisplay(
+                                modifier = Modifier.testTag("load_product_error"),
+                                message = error.message,
+                                sizeImage = 200
+                            ) {
+                                products.refresh()
                             }
+                        }
 
-                            products.apply {
-                                when (loadState.append) {
-                                    is LoadState.Loading -> {
-                                        item(span = { GridItemSpan(maxLineSpan) }) {
-                                            LoadingDisplay()
-                                        }
+                        else -> {
+                            val total = products.itemCount
+                            if (total == 0) {
+                                EmptyDisplay()
+                            } else {
+                                LazyVerticalGrid(
+                                    modifier = Modifier.testTag("product_list"),
+                                    columns = GridCells.Fixed(2),
+                                    contentPadding = PaddingValues(vertical = 10.dp),
+                                ) {
+                                    items(total) { index ->
+                                        val product = products[index]
+                                        ProductCard(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(start = 10.dp, end = 10.dp),
+                                            product = product,
+                                            isPreview = isPreview
+                                        )
                                     }
 
-                                    is LoadState.Error -> {
-                                        item {
-                                            val error = (loadState.append as LoadState.Error).error
-                                            ErrorDisplay(message = error.message) {
-                                                products.refresh()
+                                    products.apply {
+                                        when (loadState.append) {
+                                            is LoadState.Loading -> {
+                                                item {
+                                                    LoadingDisplay()
+                                                }
                                             }
+
+                                            is LoadState.Error -> {
+                                                item {
+                                                    val error =
+                                                        (loadState.append as LoadState.Error).error
+                                                    ErrorDisplay(
+                                                        modifier = Modifier.testTag("load_product_more_error"),
+                                                        message = error.message,
+                                                        sizeImage = 200
+                                                    ) {
+                                                        products.refresh()
+                                                    }
+                                                }
+                                            }
+
+                                            else -> {}
                                         }
                                     }
-
-                                    else -> {}
                                 }
                             }
                         }
@@ -152,7 +186,7 @@ private fun SearchScreenComponentPreview() {
         )
     )
     JetpackComposeHomeAssignmentTheme {
-        SearchScreenContent(
+        SearchProductTabScreenContent(
             query = "abc", products = flowPaging.collectAsLazyPagingItems(), isPreview = true
         )
     }
