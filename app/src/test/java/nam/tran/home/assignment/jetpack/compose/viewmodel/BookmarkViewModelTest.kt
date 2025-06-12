@@ -6,7 +6,6 @@ import kotlinx.coroutines.test.runTest
 import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadBookmarkProductUseCase
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkShareViewModel
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Before

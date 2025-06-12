@@ -13,15 +13,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.material3.pulltorefresh.PullToRefreshDefaults.Indicator
-import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -49,7 +45,6 @@ import nam.tran.home.assignment.jetpack.compose.ui.common.PullToRefresh
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.CategorySurface
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.IndicatorProduct
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
-import nam.tran.home.assignment.jetpack.compose.utils.Logger
 
 
 @Composable

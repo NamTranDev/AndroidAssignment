@@ -4,7 +4,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import nam.tran.home.assignment.jetpack.compose.utils.Logger
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByQueryUsecase
-import nam.tran.home.assignment.jetpack.compose.model.param.ProductByQueryParam
+import nam.tran.domain.model.param.ProductByQueryParam
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 class ProductSearchPagingSource(

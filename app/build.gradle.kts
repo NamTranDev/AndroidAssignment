@@ -70,9 +70,10 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(libs.androidx.datastore.core.android)
-    implementation(libs.androidx.datastore)
-    implementation(libs.androidx.datastore.preferences.core.jvm)
+    implementation(project(":data"))
+    implementation(project(":domain"))
+    implementation(project(":di"))
+
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -89,11 +90,6 @@ dependencies {
 
     implementation(libs.accompanist.systemuicontroller)
 
-    implementation(libs.retrofit)
-    implementation(libs.converter.gson)
-    implementation(libs.logging.interceptor)
-    implementation(libs.converter.scalars)
-
     implementation("androidx.paging:paging-runtime:3.3.6")
     implementation("androidx.paging:paging-compose:3.3.6")
 
@@ -101,11 +97,6 @@ dependencies {
     implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
 
     implementation("androidx.compose.material:material:1.7.8")
-
-    val room_version = "2.7.0"
-    implementation("androidx.room:room-runtime:$room_version")
-    implementation("androidx.room:room-ktx:$room_version")
-    kapt("androidx.room:room-compiler:$room_version")
 
     testImplementation(libs.junit)
     testImplementation("org.mockito:mockito-core:5.13.0")
@@ -128,5 +119,4 @@ dependencies {
 
     //chạy mỗi test trong 1 process khác
     androidTestUtil("androidx.test:orchestrator:1.5.1")
-
 }

@@ -2,9 +2,8 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import nam.tran.home.assignment.jetpack.compose.utils.Logger
 import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByCategoryUsecase
-import nam.tran.home.assignment.jetpack.compose.model.param.ProductByCategoryParam
+import nam.tran.domain.model.param.ProductByCategoryParam
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 
 class ProductPagingSource(
