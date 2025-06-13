@@ -6,20 +6,20 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import nam.tran.data.local.model.ProductEntityDB
+import nam.tran.data.local.model.ProductDb
 
 @Dao
 interface ProductDao {
 
     @Query("SELECT * FROM product")
-    fun getAllProducts(): Flow<List<ProductEntityDB>>
+    fun getAllProducts(): Flow<List<ProductDb>>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(product: ProductEntityDB)
+    suspend fun insert(product: ProductDb)
 
     @Query("SELECT EXISTS(SELECT 1 FROM product WHERE id = :id)")
     suspend fun isBookmarked(id: Int): Boolean
 
     @Delete
-    suspend fun delete(product: ProductEntityDB)
+    suspend fun delete(product: ProductDb)
 }

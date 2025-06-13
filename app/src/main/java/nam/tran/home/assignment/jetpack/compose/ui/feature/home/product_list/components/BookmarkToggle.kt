@@ -14,15 +14,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkShareViewModel
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
 fun BookmarkToggle(
     modifier: Modifier = Modifier,
-    product: ProductResponse?,
+    product: ProductEntity?,
     isPreview : Boolean = false,
 ){
     val bookmarkViewModel: BookmarkShareViewModel? = if (!isPreview) hiltViewModel() else null
@@ -45,7 +45,7 @@ fun BookmarkToggle(
 @Composable
 private fun BookmarkTogglePreview() {
     JetpackComposeHomeAssignmentTheme {
-        BookmarkToggle(product = ProductResponse(
+        BookmarkToggle(product = ProductEntity(
             id = 1,
             title = "Horizontal Product",
             description = "This is shown in horizontal layout.",

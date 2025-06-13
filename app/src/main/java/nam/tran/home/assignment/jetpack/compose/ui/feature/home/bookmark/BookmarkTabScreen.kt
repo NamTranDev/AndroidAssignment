@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.ui.common.EmptyDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
@@ -31,7 +31,7 @@ fun BookmarkTabScreen(
 }
 
 @Composable
-fun BookmarkTabScreenContent(products : List<ProductResponse>, isPreview : Boolean = false){
+fun BookmarkTabScreenContent(products : List<ProductEntity>, isPreview : Boolean = false){
     Column(modifier = Modifier
         .fillMaxSize()
         .padding(start = 20.dp, end = 20.dp, top = 15.dp)) {
@@ -72,7 +72,7 @@ private fun BookmarkTabScreenComponentPreview() {
     JetpackComposeHomeAssignmentTheme {
         val products = remember {
             listOf(
-                ProductResponse(
+                ProductEntity(
                     id = 1,
                     title = "Horizontal Product",
                     description = "This is shown in horizontal layout.",
@@ -81,7 +81,7 @@ private fun BookmarkTabScreenComponentPreview() {
                     price = 12.34,
                     thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
                 ),
-                ProductResponse(
+                ProductEntity(
                     id = 2,
                     title = "Horizontal Product",
                     description = "This is shown in horizontal layout.",

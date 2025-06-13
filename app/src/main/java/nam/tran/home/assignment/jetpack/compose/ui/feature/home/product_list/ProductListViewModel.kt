@@ -17,9 +17,9 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadCategoryUseCase
-import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.domain.model.entity.CategoryEntity
+import nam.tran.domain.model.entity.ProductEntity
+import nam.tran.domain.usecase.LoadCategoryUseCase
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import javax.inject.Inject
 
@@ -32,13 +32,13 @@ class ProductListViewModel @Inject constructor(
     private val _statusStateCategory = MutableStateFlow<StatusState>(StatusState.Loading)
     val statusStateCategory: StateFlow<StatusState> = _statusStateCategory
 
-    private val _categoriesDataState = MutableStateFlow<List<CategoryResponse>>(emptyList())
-    val categoriesDataState: StateFlow<List<CategoryResponse>> = _categoriesDataState
+    private val _categoriesDataState = MutableStateFlow<List<CategoryEntity>>(emptyList())
+    val categoriesDataState: StateFlow<List<CategoryEntity>> = _categoriesDataState
 
-    private val _selectedCategoryState = MutableStateFlow<CategoryResponse?>(null)
-    val selectedCategoryState: StateFlow<CategoryResponse?> = _selectedCategoryState
+    private val _selectedCategoryState = MutableStateFlow<CategoryEntity?>(null)
+    val selectedCategoryState: StateFlow<CategoryEntity?> = _selectedCategoryState
 
-    private val productCache = mutableMapOf<String, Flow<PagingData<ProductResponse>>>()
+    private val productCache = mutableMapOf<String, Flow<PagingData<ProductEntity>>>()
 
     private val _scrollStates = mutableMapOf<String, MutableStateFlow<LazyListState>>()
     val scrollState = _selectedCategoryState.map {
@@ -66,9 +66,10 @@ class ProductListViewModel @Inject constructor(
     val productsState = _selectedCategoryState.filter {
         it?.slug?.isNotEmpty() == true
     }.flatMapLatest {
-        val slug = it?.slug ?: return@flatMapLatest flowOf<PagingData<ProductResponse>>(PagingData.empty())
+        val slug =
+            it?.slug ?: return@flatMapLatest flowOf<PagingData<ProductEntity>>(PagingData.empty())
 
-        productCache.getOrPut(slug){
+        productCache.getOrPut(slug) {
             productPagingRepository.getProducts(slug).cachedIn(viewModelScope)
         }
     }
@@ -91,7 +92,7 @@ class ProductListViewModel @Inject constructor(
         }
     }
 
-    fun selectCategory(category: CategoryResponse) {
+    fun selectCategory(category: CategoryEntity) {
         _selectedCategoryState.value = category
     }
 }

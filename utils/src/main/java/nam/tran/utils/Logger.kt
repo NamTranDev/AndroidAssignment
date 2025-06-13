@@ -1,9 +1,8 @@
-package nam.tran.home.assignment.jetpack.compose.utils
+package nam.tran.utils
 
 import android.content.Intent
 import android.database.Cursor
 import android.util.Log
-import nam.tran.home.assignment.jetpack.compose.BuildConfig
 
 object Logger {
     private const val TAG = "NamTranDev"

@@ -1,7 +1,7 @@
 package nam.tran.data.network.api
 
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductListResponse
+import nam.tran.data.model.response.ProductDetailResponse
+import nam.tran.data.model.response.ProductListResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

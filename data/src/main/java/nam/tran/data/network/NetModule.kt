@@ -6,8 +6,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nam.tran.home.assignment.jetpack.compose.BuildConfig
-import nam.tran.home.assignment.jetpack.compose.model.response.BaseResponse
+import nam.tran.data.BuildConfig
+import nam.tran.data.model.response.BaseResponse
 import nam.tran.data.network.api.CategoryApi
 import nam.tran.data.network.api.ProductApi
 import nam.tran.data.network.named.HasDeserializer

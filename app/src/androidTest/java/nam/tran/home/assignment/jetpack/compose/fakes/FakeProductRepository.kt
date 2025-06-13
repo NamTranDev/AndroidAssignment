@@ -4,7 +4,7 @@ import kotlinx.coroutines.delay
 import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
-import nam.tran.home.assignment.jetpack.compose.utils.Logger
+import nam.tran.utils.Logger
 
 class FakeProductRepository(
     private val case: CaseTest,
@@ -15,7 +15,7 @@ class FakeProductRepository(
         offset: Int,
         limit: Int,
     ): List<ProductResponse> {
-        Logger.debug("Fetching products | category=$category, offset=$offset, limit=$limit")
+        nam.tran.utils.Logger.debug("Fetching products | category=$category, offset=$offset, limit=$limit")
 
         delay(1000)
 
@@ -27,7 +27,7 @@ class FakeProductRepository(
                         10 -> generateDummyProducts(11, 20)
                         else -> emptyList()
                     }
-                    Logger.debug("Loaded ${products.size} products for category1 at offset $offset")
+                    nam.tran.utils.Logger.debug("Loaded ${products.size} products for category1 at offset $offset")
                     products
                 }
 
@@ -37,12 +37,12 @@ class FakeProductRepository(
                         10 -> generateDummyProducts(40, 50)
                         else -> emptyList()
                     }
-                    Logger.debug("Loaded ${products.size} products for category1 at offset $offset")
+                    nam.tran.utils.Logger.debug("Loaded ${products.size} products for category1 at offset $offset")
                     products
                 }
 
                 else -> {
-                    Logger.debug("Unknown category: $category")
+                    nam.tran.utils.Logger.debug("Unknown category: $category")
                     emptyList()
                 }
             }
@@ -58,14 +58,14 @@ class FakeProductRepository(
                     )
                     else -> emptyList()
                 }
-                Logger.debug("Loaded ${products.size} products for productType=2 at offset 0")
+                nam.tran.utils.Logger.debug("Loaded ${products.size} products for productType=2 at offset 0")
                 return products
             } else {
-                Logger.debug("Error: Invalid offset=$offset for productType=2")
+                nam.tran.utils.Logger.debug("Error: Invalid offset=$offset for productType=2")
                 throw RuntimeException("Unsupported offset for productType=2")
             }
         } else {
-            Logger.debug("Error: Unsupported productType=${case.productType}")
+            nam.tran.utils.Logger.debug("Error: Unsupported productType=${case.productType}")
             throw RuntimeException("Unsupported productType")
         }
     }

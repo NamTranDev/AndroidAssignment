@@ -1,5 +1,7 @@
 package nam.tran.data.model.response
 
+import nam.tran.domain.model.entity.ProductDetailEntity
+
 data class ProductDetailResponse(
     val id: Int,
     val title: String? = null,
@@ -25,6 +27,26 @@ data class ProductDetailResponse(
             brand = brand,
             category = category,
             price = price,
+            thumbnail = thumbnail
+        )
+    }
+
+    fun toProductDetailEntity(): ProductDetailEntity {
+        return ProductDetailEntity(
+            id = id,
+            title = title,
+            description = description,
+            category = category,
+            price = price,
+            discountPercentage = discountPercentage,
+            rating = rating,
+            tags = tags,
+            brand = brand,
+            sku = sku,
+            weight = weight,
+            warrantyInformation = warrantyInformation,
+            shippingInformation = shippingInformation,
+            availabilityStatus = availabilityStatus,
             thumbnail = thumbnail
         )
     }

@@ -15,6 +15,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
+
+        buildConfigField("String", "NAME_DATA_STORE", "\"NamTranDev\"")
+        buildConfigField("String", "API_URL", "\"https://dummyjson.com/\"")
     }
 
     buildTypes {
@@ -26,6 +29,11 @@ android {
             )
         }
     }
+
+    buildFeatures {
+        buildConfig = true
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -66,4 +74,5 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
 
     implementation(project(":domain"))
+    implementation(project(":utils"))
 }

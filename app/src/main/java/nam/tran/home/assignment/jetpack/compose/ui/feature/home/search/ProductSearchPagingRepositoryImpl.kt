@@ -4,13 +4,13 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import kotlinx.coroutines.flow.Flow
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByQueryUsecase
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.domain.model.entity.ProductEntity
+import nam.tran.domain.usecase.LoadProductByQueryUsecase
 
 class ProductSearchPagingRepositoryImpl(
     private val loadProductByQueryUsecase: LoadProductByQueryUsecase
 ) : ProductSearchPagingRepository{
-    override fun searchProducts(query: String?): Flow<PagingData<ProductResponse>> {
+    override fun searchProducts(query: String?): Flow<PagingData<ProductEntity>> {
         return Pager(
             config = PagingConfig(
                 initialLoadSize = 10,

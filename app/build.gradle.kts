@@ -18,9 +18,6 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "nam.tran.home.assignment.jetpack.compose.HiltTestRunner"
-
-        buildConfigField("String", "NAME_DATA_STORE", "\"NamTranDev\"")
-        buildConfigField("String", "API_URL", "\"https://dummyjson.com/\"")
     }
 
     buildTypes {
@@ -70,7 +67,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(project(":data"))
+    implementation(project(":utils"))
     implementation(project(":domain"))
     implementation(project(":di"))
 

@@ -13,11 +13,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
+import nam.tran.domain.model.entity.CategoryEntity
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
-fun CategoryText(category: CategoryResponse, isSelected: Boolean, onClick: () -> Unit) {
+fun CategoryText(category: CategoryEntity, isSelected: Boolean, onClick: () -> Unit) {
     val interactionSource = remember { MutableInteractionSource() }
     Text(
         text = category.name ?: "",
@@ -39,7 +39,7 @@ fun CategoryText(category: CategoryResponse, isSelected: Boolean, onClick: () ->
 private fun CategoryTextPreview() {
     JetpackComposeHomeAssignmentTheme {
         CategoryText(
-            category = CategoryResponse(
+            category = CategoryEntity(
                 slug = "",
                 name = "Recipes"
             ), isSelected = false

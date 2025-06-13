@@ -25,7 +25,7 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.MutableStateFlow
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.ui.common.EmptyDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay
@@ -54,7 +54,7 @@ fun SearchProductTabScreen(
 @Composable
 fun SearchProductTabScreenContent(
     query: String,
-    products: LazyPagingItems<ProductResponse>,
+    products: LazyPagingItems<ProductEntity>,
     onSearchQuery: (String) -> Unit = {},
     onBack: () -> Unit = {},
     isPreview: Boolean = false
@@ -158,7 +158,7 @@ fun SearchProductTabScreenContent(
 @Composable
 private fun SearchScreenComponentPreview() {
     val products = listOf(
-        ProductResponse(
+        ProductEntity(
             id = 1,
             title = "Horizontal Product",
             description = "This is shown in horizontal layout.",
@@ -167,7 +167,7 @@ private fun SearchScreenComponentPreview() {
             price = 12.34,
             thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
         ),
-        ProductResponse(
+        ProductEntity(
             id = 2,
             title = "Horizontal Product",
             description = "This is shown in horizontal layout.",

@@ -17,7 +17,7 @@ data class ProductDetailEntity(
     val availabilityStatus: String? = null,
     val thumbnail: String? = null,
 ) {
-    fun toProduct(): ProductEntity? {
+    fun toProduct(): ProductEntity {
         return ProductEntity(
             id = id,
             title = title,

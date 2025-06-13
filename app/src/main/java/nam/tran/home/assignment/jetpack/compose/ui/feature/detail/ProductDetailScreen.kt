@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
+import nam.tran.domain.model.entity.ProductDetailEntity
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.feature.detail.components.DiscountBadge
@@ -83,7 +83,7 @@ fun ProductDetailScreen(
 
 @Composable
 fun ProductDetailContent(
-    productDetail: ProductDetailResponse?,
+    productDetail: ProductDetailEntity?,
     onBack: () -> Unit = {},
     isPreview: Boolean = false
 ) {
@@ -189,7 +189,7 @@ fun ProductDetailContent(
 private fun ProductDetailPreview() {
     JetpackComposeHomeAssignmentTheme {
         ProductDetailContent(
-            productDetail = ProductDetailResponse(
+            productDetail = ProductDetailEntity(
                 id = 1,
                 title = "Essence Mascara Lash Princess",
                 description = "The Essence Mascara Lash Princess is a popular mascara known for its volumizing and lengthening effects. Achieve dramatic lashes with this long-lasting and cruelty-free formula.",

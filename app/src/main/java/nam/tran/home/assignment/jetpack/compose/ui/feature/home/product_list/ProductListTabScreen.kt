@@ -34,9 +34,9 @@ import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import kotlinx.coroutines.flow.MutableStateFlow
+import nam.tran.domain.model.entity.CategoryEntity
+import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.EmptyDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
@@ -82,14 +82,14 @@ fun ProductListTabScreen(
 @Composable
 fun ProductListTabScreenContent(
     statusStateCategory: StatusState,
-    categories: List<CategoryResponse>,
-    selectedCategory: CategoryResponse?,
-    products: LazyPagingItems<ProductResponse>,
+    categories: List<CategoryEntity>,
+    selectedCategory: CategoryEntity?,
+    products: LazyPagingItems<ProductEntity>,
     scrollState: LazyListState,
     currentIndicator: Int,
     onLoadCategories: () -> Unit = {},
     onOpenSearch: () -> Unit = {},
-    onSelectCategory: (CategoryResponse) -> Unit = {},
+    onSelectCategory: (CategoryEntity) -> Unit = {},
     isPreview: Boolean = false,
 ) {
     Box(
@@ -242,12 +242,12 @@ fun ProductListTabScreenContent(
 @Composable
 fun ProductListTabScreenContentPreview() {
     val fakeProducts = listOf(
-        ProductResponse(id = 1, title = "Product 1", price = 100.0),
-        ProductResponse(id = 2, title = "Product 2", price = 150.0),
-        ProductResponse(id = 3, title = "Product 3", price = 200.0)
+        ProductEntity(id = 1, title = "Product 1", price = 100.0),
+        ProductEntity(id = 2, title = "Product 2", price = 150.0),
+        ProductEntity(id = 3, title = "Product 3", price = 200.0)
     )
     val products = listOf(
-        ProductResponse(
+        ProductEntity(
             id = 1,
             title = "Horizontal Product",
             description = "This is shown in horizontal layout.",
@@ -256,7 +256,7 @@ fun ProductListTabScreenContentPreview() {
             price = 12.34,
             thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
         ),
-        ProductResponse(
+        ProductEntity(
             id = 2,
             title = "Horizontal Product",
             description = "This is shown in horizontal layout.",
@@ -276,10 +276,10 @@ fun ProductListTabScreenContentPreview() {
     ProductListTabScreenContent(
         statusStateCategory = StatusState.Success,
         categories = listOf(
-            CategoryResponse(slug = "1", name = "Category 1"),
-            CategoryResponse(slug = "2", name = "Category 2")
+            CategoryEntity(slug = "1", name = "Category 1"),
+            CategoryEntity(slug = "2", name = "Category 2")
         ),
-        selectedCategory = CategoryResponse(slug = "1", name = "Category 1"),
+        selectedCategory = CategoryEntity(slug = "1", name = "Category 1"),
         products = flowPaging.collectAsLazyPagingItems(),
         scrollState = rememberLazyListState(),
         currentIndicator = 0,

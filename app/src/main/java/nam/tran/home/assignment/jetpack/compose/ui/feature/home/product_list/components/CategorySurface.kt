@@ -10,20 +10,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
+import nam.tran.domain.model.entity.CategoryEntity
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
 
 @Composable
 fun CategorySurface(
-    categories: List<CategoryResponse>,
-    selectedCategory: CategoryResponse?,
-    onCategoryClick: ((CategoryResponse) -> Unit)? = null
+    categories: List<CategoryEntity>,
+    selectedCategory: CategoryEntity?,
+    onCategoryClick: ((CategoryEntity) -> Unit)? = null
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         Box(
@@ -62,10 +63,10 @@ private fun CategorySurfacePreview() {
     JetpackComposeHomeAssignmentTheme {
         CategorySurface(
             categories = listOf(
-                CategoryResponse(name = "Hello"),
-                CategoryResponse(name = "World"),
-                CategoryResponse(name = "Android")
-            ), selectedCategory = CategoryResponse(name = "Android")
+                CategoryEntity(name = "Hello"),
+                CategoryEntity(name = "World"),
+                CategoryEntity(name = "Android")
+            ), selectedCategory = CategoryEntity(name = "Android")
         )
     }
 }

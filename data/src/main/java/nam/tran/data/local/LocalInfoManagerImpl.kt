@@ -8,8 +8,8 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import nam.tran.home.assignment.jetpack.compose.BuildConfig
-import nam.tran.home.assignment.jetpack.compose.domain.manager.LocalInfoManager
+import nam.tran.data.BuildConfig
+import nam.tran.domain.manager.LocalInfoManager
 
 class LocalInfoManagerImpl(
     private val context : Context

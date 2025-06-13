@@ -37,8 +37,8 @@ import coil3.request.ImageRequest
 import coil3.size.Scale
 import coil3.size.Size
 import dagger.hilt.android.EntryPointAccessors
+import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.navigation.NavigationDispatcherEntryPoint
 import nam.tran.home.assignment.jetpack.compose.ui.navigation.NavigationEvent
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
@@ -46,7 +46,7 @@ import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssig
 @Composable
 fun ProductCard(
     modifier: Modifier = Modifier,
-    product: ProductResponse?,
+    product: ProductEntity?,
     isHorizontal: Boolean = false,
     isPreview : Boolean = false
 ) {
@@ -133,7 +133,7 @@ fun ProductCard(
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 private fun ProductCardMultiPreview(
-    @PreviewParameter(ProductCardPreviewProvider::class) data: Pair<Boolean, ProductResponse>,
+    @PreviewParameter(ProductCardPreviewProvider::class) data: Pair<Boolean, ProductEntity>,
 ) {
     val (isHorizontal, product) = data
 
@@ -146,9 +146,9 @@ private fun ProductCardMultiPreview(
     }
 }
 
-class ProductCardPreviewProvider : PreviewParameterProvider<Pair<Boolean, ProductResponse>> {
+class ProductCardPreviewProvider : PreviewParameterProvider<Pair<Boolean, ProductEntity>> {
 
-    val product = ProductResponse(
+    val product = ProductEntity(
         id = 1,
         title = "Horizontal Product",
         description = "This is shown in horizontal layout.",
@@ -158,6 +158,6 @@ class ProductCardPreviewProvider : PreviewParameterProvider<Pair<Boolean, Produc
         thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
     )
 
-    override val values: Sequence<Pair<Boolean, ProductResponse>> =
+    override val values: Sequence<Pair<Boolean, ProductEntity>> =
         sequenceOf(true to product, false to product)
 }

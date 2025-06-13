@@ -1,12 +1,12 @@
-package nam.tran.home.assignment.jetpack.compose.di
+package nam.tran.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nam.tran.home.assignment.jetpack.compose.data.network.api.ProductApi
-import nam.tran.home.assignment.jetpack.compose.data.repository.ProductRepositoryImpl
-import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
+import nam.tran.data.network.api.ProductApi
+import nam.tran.data.repository.ProductRepositoryImpl
+import nam.tran.domain.repository.ProductRepository
 import javax.inject.Singleton
 
 @Module

@@ -2,21 +2,20 @@ package nam.tran.home.assignment.jetpack.compose.ui.feature.home.search
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import nam.tran.home.assignment.jetpack.compose.utils.Logger
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadProductByQueryUsecase
+import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.domain.model.param.ProductByQueryParam
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
+import nam.tran.domain.usecase.LoadProductByQueryUsecase
 
 class ProductSearchPagingSource(
     private val loadProductByQueryUsecase: LoadProductByQueryUsecase,
     private val query: String?
-) : PagingSource<Int, ProductResponse>() {
+) : PagingSource<Int, ProductEntity>() {
 
-    override fun getRefreshKey(state: PagingState<Int, ProductResponse>): Int? {
+    override fun getRefreshKey(state: PagingState<Int, ProductEntity>): Int? {
         return 0
     }
 
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductResponse> {
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductEntity> {
         return try {
             val offset = params.key ?: 0
             val limit = params.loadSize
@@ -30,7 +29,7 @@ class ProductSearchPagingSource(
                 nextKey = if (response.isEmpty()) null else offset + response.size
             )
         } catch (e: Exception) {
-            Logger.debug(e)
+            nam.tran.utils.Logger.debug(e)
             LoadResult.Error(e)
         }
     }
