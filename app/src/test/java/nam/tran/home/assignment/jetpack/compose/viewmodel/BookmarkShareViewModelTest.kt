@@ -5,10 +5,10 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import nam.tran.domain.model.entity.ProductEntity
+import nam.tran.domain.usecase.LoadBookmarkProductUseCase
+import nam.tran.domain.usecase.ToggleBookmarkProductUseCase
 import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadBookmarkProductUseCase
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.ToggleBookmarkProductUseCase
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.bookmark.BookmarkShareViewModel
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -33,8 +33,8 @@ class BookmarkShareViewModelTest {
     @Test
     fun `bookmarkedIds should emit set of ids`() = runTest {
         val bookmarkedProducts = listOf(
-            ProductResponse(1, "Title1", "Desc1", "Brand1", "Category1", 10.0, "thumb1"),
-            ProductResponse(2, "Title2", "Desc2", "Brand2", "Category2", 20.0, "thumb2")
+            ProductEntity(1, "Title1", "Desc1", "Brand1", "Category1", 10.0, "thumb1"),
+            ProductEntity(2, "Title2", "Desc2", "Brand2", "Category2", 20.0, "thumb2")
         )
 
         Mockito.`when`(loadBookmarkProductUseCase.execute(Unit)).thenReturn(flowOf(bookmarkedProducts))
@@ -49,7 +49,7 @@ class BookmarkShareViewModelTest {
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
     fun `toggleBookmark should call toggleBookmarkProductUseCase`() = runTest {
-        val product = ProductResponse(1, "Title1", "Desc1", "Brand1", "Category1", 10.0, "thumb1")
+        val product = ProductEntity(1, "Title1", "Desc1", "Brand1", "Category1", 10.0, "thumb1")
 
         val viewModel = BookmarkShareViewModel(loadBookmarkProductUseCase, toggleBookmarkProductUseCase)
         viewModel.toggleBookmark(product)

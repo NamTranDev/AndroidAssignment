@@ -1,10 +1,9 @@
 package nam.tran.home.assignment.jetpack.compose.fakes
 
 import kotlinx.coroutines.delay
-import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductDetailResponse
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
-import nam.tran.utils.Logger
+import nam.tran.domain.model.entity.ProductDetailEntity
+import nam.tran.domain.model.entity.ProductEntity
+import nam.tran.domain.repository.ProductRepository
 
 class FakeProductRepository(
     private val case: CaseTest,
@@ -14,7 +13,7 @@ class FakeProductRepository(
         category: String?,
         offset: Int,
         limit: Int,
-    ): List<ProductResponse> {
+    ): List<ProductEntity> {
         nam.tran.utils.Logger.debug("Fetching products | category=$category, offset=$offset, limit=$limit")
 
         delay(1000)
@@ -53,8 +52,8 @@ class FakeProductRepository(
                 val products = when (category) {
                     "category1" -> generateDummyProducts(1, 10)
                     "category2" -> listOf(
-                        ProductResponse(3, "Product 2", "This is shown in horizontal layout.", "Brand A", "Category A", 12.34, "https://cdn.dummyjson.com/product-image.jpg"),
-                        ProductResponse(4, "Product 2-2", "This is shown in horizontal layout.", "Brand A", "Category A", 12.34, "https://cdn.dummyjson.com/product-image.jpg")
+                        ProductEntity(3, "Product 2", "This is shown in horizontal layout.", "Brand A", "Category A", 12.34, "https://cdn.dummyjson.com/product-image.jpg"),
+                        ProductEntity(4, "Product 2-2", "This is shown in horizontal layout.", "Brand A", "Category A", 12.34, "https://cdn.dummyjson.com/product-image.jpg")
                     )
                     else -> emptyList()
                 }
@@ -74,7 +73,7 @@ class FakeProductRepository(
         query: String?,
         offset: Int,
         limit: Int,
-    ): List<ProductResponse> {
+    ): List<ProductEntity> {
         if (case.productType == CaseTest.ProductType.Success) {
             return when (query) {
                 "" -> {
@@ -109,9 +108,9 @@ class FakeProductRepository(
         }
     }
 
-    override suspend fun getProductDetail(productId: String?): ProductDetailResponse {
+    override suspend fun getProductDetail(productId: String?): ProductDetailEntity {
         if (case.productType == CaseTest.ProductType.Success) {
-            return ProductDetailResponse(
+            return ProductDetailEntity(
                 id = 4,
                 title = "category2-1",
                 description = "This is shown in horizontal layout.",
@@ -125,9 +124,9 @@ class FakeProductRepository(
         }
     }
 
-    private fun generateDummyProducts(start: Int, end: Int,search : String = ""): List<ProductResponse> {
+    private fun generateDummyProducts(start: Int, end: Int,search : String = ""): List<ProductEntity> {
         return (start..end).map { i ->
-            ProductResponse(
+            ProductEntity(
                 id = i,
                 title = "Product $i$search",
                 description = "This is shown in horizontal layout.",

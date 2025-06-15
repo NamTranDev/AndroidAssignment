@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.ProductSearchPagingRepositoryImpl
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.SearchViewModel
 import org.junit.Assert.assertEquals
@@ -46,7 +46,7 @@ class SearchViewModelTest {
     fun `productState should call searchProducts with debounced input`() = runTest {
 
         val products = listOf(
-            ProductResponse(
+            ProductEntity(
                 id = 1,
                 title = "Horizontal Product",
                 description = "This is shown in horizontal layout.",
@@ -55,7 +55,7 @@ class SearchViewModelTest {
                 price = 12.34,
                 thumbnail = "https://cdn.dummyjson.com/product-image.jpg"
             ),
-            ProductResponse(
+            ProductEntity(
                 id = 2,
                 title = "Horizontal Product",
                 description = "This is shown in horizontal layout.",

@@ -3,7 +3,7 @@ package nam.tran.home.assignment.jetpack.compose.viewmodel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.OnBoardingUseCase
+import nam.tran.domain.usecase.OnBoardingUseCase
 import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.OnBoardingViewModel
 import org.junit.Before
 import org.junit.Test

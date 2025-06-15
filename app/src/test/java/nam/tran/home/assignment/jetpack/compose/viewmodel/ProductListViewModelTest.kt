@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import nam.tran.domain.model.entity.CategoryEntity
+import nam.tran.domain.model.entity.ProductEntity
+import nam.tran.domain.usecase.LoadCategoryUseCase
 import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
-import nam.tran.home.assignment.jetpack.compose.domain.usecase.LoadCategoryUseCase
-import nam.tran.home.assignment.jetpack.compose.model.response.CategoryResponse
-import nam.tran.home.assignment.jetpack.compose.model.response.ProductResponse
 import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListViewModel
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepositoryImpl
@@ -45,8 +45,8 @@ class ProductListViewModelTest {
     @Test
     fun `loadCategories should load categories and set status to success`() = runTest {
         val categories = listOf(
-            CategoryResponse(slug = "electronics", name = "Electronics"),
-            CategoryResponse(slug = "fashion", name = "Fashion")
+            CategoryEntity(slug = "electronics", name = "Electronics"),
+            CategoryEntity(slug = "fashion", name = "Fashion")
         )
 
         Mockito.`when`(categoryUseCase.execute(Unit)).thenReturn(categories)
@@ -74,7 +74,7 @@ class ProductListViewModelTest {
 
     @Test
     fun `selectCategory should update selectedCategoryState`() {
-        val category = CategoryResponse(slug = "home", name = "Home")
+        val category = CategoryEntity(slug = "home", name = "Home")
 
         viewModel.selectCategory(category)
 
@@ -84,7 +84,7 @@ class ProductListViewModelTest {
     @Test
     fun `productsState should return product list when category selected`() = runTest {
         val products = listOf(
-            ProductResponse(
+            ProductEntity(
                 id = 1,
                 title = "Phone",
                 description = "Latest phone",
@@ -98,7 +98,7 @@ class ProductListViewModelTest {
 
         Mockito.`when`(productPagingRepositoryImpl.getProducts("electronics")).thenReturn(fakeFlowPaging)
 
-        val category = CategoryResponse(slug = "electronics", name = "Electronics")
+        val category = CategoryEntity(slug = "electronics", name = "Electronics")
         viewModel.selectCategory(category)
 
         val result = async {
@@ -113,12 +113,12 @@ class ProductListViewModelTest {
 
     @Test
     fun `productsState should emit empty when slug is null or empty`() = runTest {
-        val categoryWithEmptySlug = CategoryResponse(slug = "", name = "Empty")
-        val categoryWithNullSlug = CategoryResponse(slug = null, name = "Null")
+        val categoryWithEmptySlug = CategoryEntity(slug = "", name = "Empty")
+        val categoryWithNullSlug = CategoryEntity(slug = null, name = "Null")
 
         viewModel.selectCategory(categoryWithEmptySlug)
 
-        val collected = mutableListOf<PagingData<ProductResponse>>()
+        val collected = mutableListOf<PagingData<ProductEntity>>()
         val job = launch {
             viewModel.productsState.toList(collected)
         }
@@ -138,10 +138,10 @@ class ProductListViewModelTest {
 
     @Test
     fun `productsState should cache products for each category`() = runTest {
-        val category = CategoryResponse(slug = "electronics", name = "Electronics")
+        val category = CategoryEntity(slug = "electronics", name = "Electronics")
 
         val products = listOf(
-            ProductResponse(
+            ProductEntity(
                 id = 1,
                 title = "Phone",
                 description = "Latest phone",
@@ -157,7 +157,7 @@ class ProductListViewModelTest {
 
         viewModel.selectCategory(category)
 
-        val collectedFirst = mutableListOf<PagingData<ProductResponse>>()
+        val collectedFirst = mutableListOf<PagingData<ProductEntity>>()
         val job1 = launch {
             viewModel.productsState.toList(collectedFirst)
         }
@@ -167,7 +167,7 @@ class ProductListViewModelTest {
         assertEquals(1, collectedFirst.size)
         verify(productPagingRepositoryImpl).getProducts("electronics")
 
-        val collectedSecond = mutableListOf<PagingData<ProductResponse>>()
+        val collectedSecond = mutableListOf<PagingData<ProductEntity>>()
         val job2 = launch {
             viewModel.productsState.toList(collectedSecond)
         }
@@ -183,7 +183,7 @@ class ProductListViewModelTest {
 
     @Test
     fun `scrollState should provide default LazyListState when no scroll state`() = runTest {
-        val category = CategoryResponse(slug = "electronics", name = "Electronics")
+        val category = CategoryEntity(slug = "electronics", name = "Electronics")
         viewModel.selectCategory(category)
 
         val scrollState = viewModel.scrollState.first()

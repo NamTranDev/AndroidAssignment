@@ -4,7 +4,8 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
-import nam.tran.home.assignment.jetpack.compose.domain.repository.ProductRepository
+import nam.tran.di.ProductModule
+import nam.tran.domain.repository.ProductRepository
 import nam.tran.home.assignment.jetpack.compose.fakes.CaseTest
 import nam.tran.home.assignment.jetpack.compose.fakes.FakeProductRepository
 import javax.inject.Singleton
