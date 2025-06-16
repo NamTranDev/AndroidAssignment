@@ -37,7 +37,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import nam.tran.domain.model.entity.CategoryEntity
 import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
+import nam.tran.home.assignment.jetpack.compose.model.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.EmptyDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.common.LoadingDisplay

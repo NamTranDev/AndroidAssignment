@@ -152,7 +152,7 @@ class SearchProductScreenTest {
             .assertIsNotDisplayed()
 
         composeTestRule
-            .onNodeWithText("Product 1$search")
+            .onNodeWithText("Product 10$search")
             .assertIsDisplayed()
     }
 
@@ -164,7 +164,23 @@ class SearchProductScreenTest {
 
         composeTestRule.onNodeWithTag("search_input").performTextInput(search)
 
+        composeTestRule.waitForIdle()
+
         composeTestRule.onNodeWithTag("pull_to_refresh_indicator").assertIsDisplayed()
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule.waitUntil(
+            condition = {
+                composeTestRule
+                    .onAllNodesWithTag("loading", useUnmergedTree = true)
+                    .fetchSemanticsNodes()
+                    .isEmpty()
+            },
+            timeoutMillis = 30_000,
+        )
+
+        composeTestRule.onNodeWithTag("loading").assertIsNotDisplayed()
 
         composeTestRule.waitUntil(
             condition = {

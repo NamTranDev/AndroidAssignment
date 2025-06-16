@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose.model.ui
+package nam.tran.home.assignment.jetpack.compose.model
 
 sealed interface StatusState{
     data object Loading : StatusState

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -33,11 +34,12 @@ import nam.tran.home.assignment.jetpack.compose.ui.common.PullToRefresh
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.ProductCard
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.search.components.SearchBar
 import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
+import nam.tran.utils.Logger
 
 @Composable
 fun SearchProductTabScreen(
     viewModel: SearchViewModel = hiltViewModel(),
-    onBack: () -> Unit
+    onBack: () -> Unit,
 ) {
     val queryState by viewModel.searchState.collectAsState()
     val products = viewModel.productState.collectAsLazyPagingItems()
@@ -57,7 +59,7 @@ fun SearchProductTabScreenContent(
     products: LazyPagingItems<ProductEntity>,
     onSearchQuery: (String) -> Unit = {},
     onBack: () -> Unit = {},
-    isPreview: Boolean = false
+    isPreview: Boolean = false,
 ) {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
@@ -100,6 +102,7 @@ fun SearchProductTabScreenContent(
                         else -> {
                             val total = products.itemCount
                             if (total == 0) {
+                                Logger.debug("Empty products")
                                 EmptyDisplay()
                             } else {
                                 LazyVerticalGrid(
@@ -121,21 +124,23 @@ fun SearchProductTabScreenContent(
                                     products.apply {
                                         when (loadState.append) {
                                             is LoadState.Loading -> {
-                                                item {
-                                                    LoadingDisplay()
+                                                item(span = { GridItemSpan(maxLineSpan) }) { // maxLineSpan tương đương với số cột
+                                                    LoadingDisplay(modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(vertical = 16.dp))
                                                 }
                                             }
 
                                             is LoadState.Error -> {
-                                                item {
+                                                item(span = { GridItemSpan(maxLineSpan) }) {
                                                     val error =
                                                         (loadState.append as LoadState.Error).error
                                                     ErrorDisplay(
-                                                        modifier = Modifier.testTag("load_product_more_error"),
+                                                        modifier = Modifier.testTag("load_product_more_error").fillMaxWidth().padding(16.dp),
                                                         message = error.message,
-                                                        sizeImage = 200
+                                                        sizeImage = 150 // Có thể giảm kích thước ảnh cho lỗi tải thêm
                                                     ) {
-                                                        products.refresh()
+                                                        retry() // Sử dụng retry() cho append thay vì refresh()
                                                     }
                                                 }
                                             }

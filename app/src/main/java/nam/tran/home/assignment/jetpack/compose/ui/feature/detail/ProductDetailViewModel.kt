@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import nam.tran.domain.model.entity.ProductDetailEntity
 import nam.tran.domain.usecase.ProductDetailUseCase
-import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
+import nam.tran.home.assignment.jetpack.compose.model.StatusState
 import javax.inject.Inject
 
 @HiltViewModel

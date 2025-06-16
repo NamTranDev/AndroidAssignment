@@ -39,7 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil3.compose.rememberAsyncImagePainter
 import nam.tran.domain.model.entity.ProductDetailEntity
 import nam.tran.home.assignment.jetpack.compose.R
-import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
+import nam.tran.home.assignment.jetpack.compose.model.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.common.ErrorDisplay
 import nam.tran.home.assignment.jetpack.compose.ui.feature.detail.components.DiscountBadge
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.components.BookmarkToggle

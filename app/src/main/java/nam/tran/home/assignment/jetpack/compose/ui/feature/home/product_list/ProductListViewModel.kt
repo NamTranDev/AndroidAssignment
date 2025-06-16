@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import nam.tran.domain.model.entity.CategoryEntity
 import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.domain.usecase.LoadCategoryUseCase
-import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
+import nam.tran.home.assignment.jetpack.compose.model.StatusState
 import javax.inject.Inject
 
 @HiltViewModel

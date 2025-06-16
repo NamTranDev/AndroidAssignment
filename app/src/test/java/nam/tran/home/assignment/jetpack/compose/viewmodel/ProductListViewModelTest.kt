@@ -13,7 +13,7 @@ import nam.tran.domain.model.entity.CategoryEntity
 import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.domain.usecase.LoadCategoryUseCase
 import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
-import nam.tran.home.assignment.jetpack.compose.model.ui.StatusState
+import nam.tran.home.assignment.jetpack.compose.model.StatusState
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListViewModel
 import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepositoryImpl
 import org.junit.Assert.assertEquals
