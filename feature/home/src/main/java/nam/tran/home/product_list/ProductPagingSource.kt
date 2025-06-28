@@ -1,0 +1,37 @@
+package nam.tran.home.product_list
+
+import androidx.paging.PagingSource
+import androidx.paging.PagingState
+import nam.tran.domain.model.entity.ProductEntity
+import nam.tran.domain.model.param.ProductByCategoryParam
+import nam.tran.domain.usecase.LoadProductByCategoryUsecase
+
+class ProductPagingSource(
+    private val loadProductByCategoryUsecase: LoadProductByCategoryUsecase,
+    private val category: String?
+) : PagingSource<Int, ProductEntity>() {
+
+    override fun getRefreshKey(state: PagingState<Int, ProductEntity>): Int? {
+        return 0
+    }
+
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, ProductEntity> {
+        return try {
+            val offset = params.key ?: 0
+            val limit = params.loadSize
+//            Logger.debug(offset,limit)
+            val response = loadProductByCategoryUsecase.execute(
+                ProductByCategoryParam(category = category, offset = offset, limit = limit)
+            )
+
+            LoadResult.Page(
+                data = response,
+                prevKey = null,
+                nextKey = if (response.isEmpty()) null else offset + response.size
+            )
+        } catch (e: Exception) {
+//            Logger.debug(e)
+            LoadResult.Error(e)
+        }
+    }
+}

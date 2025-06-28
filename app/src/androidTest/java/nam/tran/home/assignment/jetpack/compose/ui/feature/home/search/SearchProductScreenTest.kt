@@ -17,8 +17,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
 import nam.tran.home.assignment.jetpack.compose.MainActivity
 import nam.tran.home.assignment.jetpack.compose.fakes.CaseTest
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListTabScreen
-import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
+import nam.tran.resource.theme.AppTheme
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -40,7 +39,7 @@ class SearchProductScreenTest {
     fun setup() {
         hiltTestRule.inject()
         composeTestRule.activity.setContent {
-            JetpackComposeHomeAssignmentTheme {
+            AppTheme {
                 SearchProductTabScreen { }
             }
         }

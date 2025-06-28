@@ -1,6 +1,3 @@
 <resources>
     <string name="app_name">JetpackComposeHomeAssignment</string>
-    <string name="product_list_tab_title">Product List</string>
-    <string name="bookmark_tab_title">Bookmark</string>
-    <string name="profile_tab_title">Profile</string>
 </resources>

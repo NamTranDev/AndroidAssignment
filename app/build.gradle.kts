@@ -67,9 +67,17 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.runtime.ktx)
-    implementation(project(":utils"))
+    implementation(project(":core:components"))
+    implementation(project(":core:resource"))
+    implementation(project(":core:navigation"))
+    implementation(project(":core:utils"))
+    implementation(project(":core:ui_state"))
     implementation(project(":domain"))
     implementation(project(":di"))
+    implementation(project(":shared:bookmark"))
+    implementation(project(":feature:onboarding"))
+    implementation(project(":feature:home"))
+    implementation(project(":feature:product_detail"))
 
 
     androidTestImplementation(libs.androidx.espresso.core)
@@ -86,14 +94,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     implementation(libs.accompanist.systemuicontroller)
-
-    implementation("androidx.paging:paging-runtime:3.3.6")
-    implementation("androidx.paging:paging-compose:3.3.6")
-
-    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
-    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
-
-    implementation("androidx.compose.material:material:1.7.8")
 
     testImplementation(libs.junit)
     testImplementation("org.mockito:mockito-core:5.13.0")
@@ -116,4 +116,7 @@ dependencies {
 
     //chạy mỗi test trong 1 process khác
     androidTestUtil("androidx.test:orchestrator:1.5.1")
+
+    implementation("io.coil-kt.coil3:coil-compose:3.1.0")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:3.1.0")
 }

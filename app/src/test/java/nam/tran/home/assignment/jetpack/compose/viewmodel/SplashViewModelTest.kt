@@ -8,7 +8,7 @@ import kotlinx.coroutines.test.runTest
 import nam.tran.domain.usecase.OnBoardingUseCase
 import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
 import nam.tran.home.assignment.jetpack.compose.SplashViewModel
-import nam.tran.home.assignment.jetpack.compose.ui.navigation.Screen
+import nam.tran.home.assignment.jetpack.compose.navigation.Screen
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Before

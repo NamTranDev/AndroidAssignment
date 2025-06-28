@@ -23,5 +23,16 @@ rootProject.name = "JetpackComposeHomeAssignment"
 include(":app")
 include(":domain")
 include(":data")
-include(":utils")
 include(":di")
+
+include(":core:utils")
+include(":core:ui_state")
+include(":core:components")
+include(":core:resource")
+include(":core:navigation")
+
+include(":feature:onboarding")
+include(":feature:home")
+
+include(":shared:bookmark")
+include(":feature:product_detail")

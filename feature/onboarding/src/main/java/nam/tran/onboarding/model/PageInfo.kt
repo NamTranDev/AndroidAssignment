@@ -1,0 +1,18 @@
+package nam.tran.onboarding.model
+
+import androidx.annotation.DrawableRes
+import nam.tran.onboarding.R
+
+data class PageInfo(
+    @DrawableRes val image: Int,
+    val title: String,
+    val description: String,
+){
+    companion object{
+        val pageInfos = mutableListOf<PageInfo>().apply {
+            add(PageInfo(image = R.drawable.image_page_1, title = "Lorem Ipsum is simply dummy", description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
+            add(PageInfo(image = R.drawable.image_page_2, title = "Lorem Ipsum is simply dummy", description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
+            add(PageInfo(image = R.drawable.image_page_3, title = "Lorem Ipsum is simply dummy", description = "Lorem Ipsum is simply dummy text of the printing and typesetting industry."))
+        }
+    }
+}

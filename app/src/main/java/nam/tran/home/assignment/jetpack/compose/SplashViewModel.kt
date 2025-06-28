@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import nam.tran.domain.usecase.OnBoardingUseCase
-import nam.tran.home.assignment.jetpack.compose.ui.navigation.Screen
+import nam.tran.home.assignment.jetpack.compose.navigation.Screen
 import javax.inject.Inject
 
 @HiltViewModel

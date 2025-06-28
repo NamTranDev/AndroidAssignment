@@ -74,5 +74,5 @@ dependencies {
     kapt("androidx.room:room-compiler:$room_version")
     implementation(project(":domain"))
 
-    implementation(project(":utils"))
+    implementation(project(":core:utils"))
 }

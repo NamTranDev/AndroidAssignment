@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="product_list_tab_title">Product List</string>
+    <string name="bookmark_tab_title">Bookmark</string>
+    <string name="profile_tab_title">Profile</string>
+</resources>

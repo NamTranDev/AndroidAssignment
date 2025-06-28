@@ -15,8 +15,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.core.view.WindowInsetsControllerCompat
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
-import nam.tran.home.assignment.jetpack.compose.ui.navigation.AppGraphNav
-import nam.tran.home.assignment.jetpack.compose.ui.theme.JetpackComposeHomeAssignmentTheme
+import nam.tran.home.assignment.jetpack.compose.navigation.AppGraphNav
+import nam.tran.resource.theme.AppTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -34,7 +34,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
-            JetpackComposeHomeAssignmentTheme {
+            AppTheme {
                 val isSystemInDarkMode = isSystemInDarkTheme()
                 val systemController = rememberSystemUiController()
                 val backgroundColor = MaterialTheme.colorScheme.background

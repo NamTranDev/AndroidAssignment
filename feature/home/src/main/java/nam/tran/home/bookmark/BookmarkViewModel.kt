@@ -1,0 +1,18 @@
+package nam.tran.home.bookmark
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.stateIn
+import nam.tran.domain.usecase.LoadBookmarkProductUseCase
+import javax.inject.Inject
+
+@HiltViewModel
+class BookmarkViewModel @Inject constructor(
+    loadBookmarkProductUseCase: LoadBookmarkProductUseCase
+) : ViewModel() {
+
+    val bookmarkedProducts = loadBookmarkProductUseCase.execute(Unit)
+        .stateIn(viewModelScope, SharingStarted.Lazily, emptyList())
+}
