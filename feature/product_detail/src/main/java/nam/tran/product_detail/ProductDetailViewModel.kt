@@ -1,4 +1,4 @@
-package nam.tran.product_detail
+package nam.tran.home.assignment.jetpack.compose.ui.feature.detail
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -10,11 +10,11 @@ import kotlinx.coroutines.launch
 import nam.tran.domain.model.entity.ProductDetailEntity
 import nam.tran.domain.usecase.ProductDetailUseCase
 import nam.tran.ui_state.StatusState
-import nam.tran.utils.Logger
 import javax.inject.Inject
 
 @HiltViewModel
 class ProductDetailViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val useCase: ProductDetailUseCase,
 ) : ViewModel() {
 
@@ -24,12 +24,15 @@ class ProductDetailViewModel @Inject constructor(
     private val _statusState = MutableStateFlow<StatusState>(StatusState.Loading)
     val statusState: StateFlow<StatusState> = _statusState
 
-    fun loadProductDetail(productId : String){
-        Logger.debug(productId)
+    init {
+        loadProductDetail()
+    }
+
+    fun loadProductDetail(){
         viewModelScope.launch {
             try {
                 _statusState.value = StatusState.Loading
-                _detailDataState.value = useCase.execute(productId)
+                _detailDataState.value = useCase.execute(savedStateHandle.get("productId"))
                 _statusState.value = StatusState.Success
             }catch (e : Exception){
                 _statusState.value = StatusState.Error(error = e)

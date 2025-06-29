@@ -7,18 +7,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navArgument
 import dagger.hilt.android.EntryPointAccessors
-import nam.tran.home.navigation.HomeNavHost
+import nam.tran.home.navigation.HomeGraph
 import nam.tran.navigation.NavigationDispatcherEntryPoint
 import nam.tran.navigation.NavigationEvent
-import nam.tran.onboarding.navigation.OnboardingNavHost
-import nam.tran.product_detail.navigation.ProductDetailNavHost
-import nam.tran.utils.Logger
+import nam.tran.onboarding.navigation.OnBoardingGraph
+import nam.tran.product_detail.navigation.ProductDetailGraph
+import nam.tran.product_detail.navigation.ProductDetailRouter
 
 @Composable
 fun AppGraphNav(
@@ -36,7 +34,7 @@ fun AppGraphNav(
         dispatcher.navigationEvents.collect { event ->
             when (event) {
                 is NavigationEvent.NavigateToProductDetail -> {
-                    navController.navigate(Screen.ProductDetail.routeWithArgs(event.productId))
+                    navController.navigate(ProductDetailRouter.ProductDetail.routeWithArgs(event.productId))
                 }
             }
 
@@ -44,26 +42,16 @@ fun AppGraphNav(
     }
 
     NavHost(navController = navController, startDestination = startDestination) {
-        composable(route = Screen.Loading.route) {
+        composable(route = "loading") {
             Box(modifier = Modifier.fillMaxSize()) {
                 CircularProgressIndicator()
             }
         }
-        composable(route = Screen.OnBoarding.route) {
-            OnboardingNavHost(navController)
-        }
 
-        composable(route = Screen.Home.route) {
-            HomeNavHost(navController)
-        }
+        OnBoardingGraph()
 
-        composable(
-            route = Screen.ProductDetail.route,
-            arguments = listOf(navArgument("productId") { type = NavType.IntType })
-        ) { backStackEntry ->
-            val productId = backStackEntry.arguments?.getInt("productId") ?: return@composable
-            Logger.debug(productId)
-            ProductDetailNavHost(rootNavHost = navController, productId = productId.toString())
-        }
+        HomeGraph()
+
+        ProductDetailGraph(navController)
     }
 }

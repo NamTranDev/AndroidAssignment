@@ -42,6 +42,7 @@ import nam.tran.bookmark.BookmarkToggle
 import nam.tran.components.ErrorDisplay
 import nam.tran.components.ProductPriceAndCart
 import nam.tran.domain.model.entity.ProductDetailEntity
+import nam.tran.home.assignment.jetpack.compose.ui.feature.detail.ProductDetailViewModel
 import nam.tran.product_detail.components.DiscountBadge
 import nam.tran.resource.R
 import nam.tran.resource.theme.AppTheme
@@ -49,16 +50,11 @@ import nam.tran.ui_state.StatusState
 
 @Composable
 fun ProductDetailScreen(
-    productId : String,
     viewModel: ProductDetailViewModel = hiltViewModel(),
     onBack: () -> Unit
 ) {
     val statusState by viewModel.statusState.collectAsState()
     val productDetailState by viewModel.detailDataState.collectAsState()
-
-    LaunchedEffect(Unit) {
-        viewModel.loadProductDetail(productId)
-    }
 
     Box(
         modifier = Modifier
@@ -76,7 +72,7 @@ fun ProductDetailScreen(
 
             is StatusState.Error -> {
                 ErrorDisplay(message = (statusState as StatusState.Error).error.message) {
-                    viewModel.loadProductDetail(productId)
+                    viewModel.loadProductDetail()
                 }
             }
 
