@@ -60,7 +60,6 @@ dependencies {
     implementation(project(":core:navigation"))
     implementation(project(":core:utils"))
     implementation(project(":domain"))
-    implementation(project(":di"))
 
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)

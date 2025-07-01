@@ -52,7 +52,7 @@ dependencies {
     implementation(project(":core:utils"))
     implementation(project(":shared:bookmark"))
     implementation(project(":domain"))
-    implementation(project(":di"))
+//    implementation(project(":di"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

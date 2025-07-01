@@ -4,7 +4,6 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import nam.tran.di.DataModule
 import nam.tran.domain.usecase.LoadProductByCategoryUsecase
 import nam.tran.domain.usecase.LoadProductByQueryUsecase
 import nam.tran.home.product_list.ProductPagingRepository
@@ -13,7 +12,7 @@ import nam.tran.home.search.ProductSearchPagingRepository
 import nam.tran.home.search.ProductSearchPagingRepositoryImpl
 import javax.inject.Singleton
 
-@Module(includes = [DataModule::class])
+@Module
 @InstallIn(SingletonComponent::class)
 class HomeModule {
 
