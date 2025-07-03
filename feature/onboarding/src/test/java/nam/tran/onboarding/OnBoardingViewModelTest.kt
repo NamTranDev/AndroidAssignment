@@ -1,10 +1,9 @@
-package nam.tran.home.assignment.jetpack.compose.viewmodel
+package nam.tran.onboarding
 
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import nam.tran.domain.usecase.OnBoardingUseCase
-import nam.tran.home.assignment.jetpack.compose.ui.feature.onboarding.OnBoardingViewModel
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito

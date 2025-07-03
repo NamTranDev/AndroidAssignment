@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose
+package nam.tran.rules
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi

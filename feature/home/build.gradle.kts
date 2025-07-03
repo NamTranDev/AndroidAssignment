@@ -52,7 +52,8 @@ dependencies {
     implementation(project(":core:utils"))
     implementation(project(":shared:bookmark"))
     implementation(project(":domain"))
-//    implementation(project(":di"))
+
+    testImplementation(testFixtures(project(":core:test")))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)

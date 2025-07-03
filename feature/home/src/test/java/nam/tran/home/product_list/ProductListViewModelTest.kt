@@ -1,4 +1,4 @@
-package nam.tran.home.assignment.jetpack.compose.viewmodel
+package nam.tran.home.product_list
 
 import androidx.paging.PagingData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -12,20 +12,13 @@ import kotlinx.coroutines.test.runTest
 import nam.tran.domain.model.entity.CategoryEntity
 import nam.tran.domain.model.entity.ProductEntity
 import nam.tran.domain.usecase.LoadCategoryUseCase
-import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
-import nam.tran.home.assignment.jetpack.compose.model.StatusState
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductListViewModel
-import nam.tran.home.assignment.jetpack.compose.ui.feature.home.product_list.ProductPagingRepositoryImpl
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
+import nam.tran.rules.MainDispatcherRule
+import nam.tran.ui_state.StatusState
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.mockito.Mockito
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.times
-import org.mockito.Mockito.verify
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProductListViewModelTest {
@@ -33,8 +26,8 @@ class ProductListViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val categoryUseCase: LoadCategoryUseCase = mock()
-    private val productPagingRepositoryImpl: ProductPagingRepositoryImpl = mock()
+    private val categoryUseCase: LoadCategoryUseCase = Mockito.mock()
+    private val productPagingRepositoryImpl: ProductPagingRepositoryImpl = Mockito.mock()
     private lateinit var viewModel: ProductListViewModel
 
     @Before
@@ -55,9 +48,9 @@ class ProductListViewModelTest {
 
         advanceUntilIdle()
 
-        assertEquals(StatusState.Success, viewModel.statusStateCategory.value)
-        assertEquals(categories, viewModel.categoriesDataState.value)
-        assertEquals(categories.first(), viewModel.selectedCategoryState.value)
+        Assert.assertEquals(StatusState.Success, viewModel.statusStateCategory.value)
+        Assert.assertEquals(categories, viewModel.categoriesDataState.value)
+        Assert.assertEquals(categories.first(), viewModel.selectedCategoryState.value)
     }
 
     @Test
@@ -68,8 +61,8 @@ class ProductListViewModelTest {
         viewModel.loadCategories()
 
         val status = viewModel.statusStateCategory.value
-        assertTrue(status is StatusState.Error)
-        assertEquals(exception, (status as StatusState.Error).error)
+        Assert.assertTrue(status is StatusState.Error)
+        Assert.assertEquals(exception, (status as StatusState.Error).error)
     }
 
     @Test
@@ -78,7 +71,7 @@ class ProductListViewModelTest {
 
         viewModel.selectCategory(category)
 
-        assertEquals(category, viewModel.selectedCategoryState.value)
+        Assert.assertEquals(category, viewModel.selectedCategoryState.value)
     }
 
     @Test
@@ -94,9 +87,10 @@ class ProductListViewModelTest {
                 thumbnail = "https://image.jpg"
             )
         )
-        val fakeFlowPaging = flowOf(PagingData.from(products))
+        val fakeFlowPaging = flowOf(PagingData.Companion.from(products))
 
-        Mockito.`when`(productPagingRepositoryImpl.getProducts("electronics")).thenReturn(fakeFlowPaging)
+        Mockito.`when`(productPagingRepositoryImpl.getProducts("electronics"))
+            .thenReturn(fakeFlowPaging)
 
         val category = CategoryEntity(slug = "electronics", name = "Electronics")
         viewModel.selectCategory(category)
@@ -108,7 +102,7 @@ class ProductListViewModelTest {
         advanceUntilIdle()
 
         val pagingData = result.await()
-        assertNotNull(pagingData)
+        Assert.assertNotNull(pagingData)
     }
 
     @Test
@@ -125,13 +119,13 @@ class ProductListViewModelTest {
 
         advanceUntilIdle()
 
-        assertTrue(collected.isEmpty())
+        Assert.assertTrue(collected.isEmpty())
 
         viewModel.selectCategory(categoryWithNullSlug)
 
         advanceUntilIdle()
 
-        assertTrue(collected.isEmpty())
+        Assert.assertTrue(collected.isEmpty())
 
         job.cancel()
     }
@@ -151,9 +145,10 @@ class ProductListViewModelTest {
                 thumbnail = "https://image.jpg"
             )
         )
-        val pagingData = PagingData.from(products)
+        val pagingData = PagingData.Companion.from(products)
 
-        Mockito.`when`(productPagingRepositoryImpl.getProducts("electronics")).thenReturn(flowOf(pagingData))
+        Mockito.`when`(productPagingRepositoryImpl.getProducts("electronics"))
+            .thenReturn(flowOf(pagingData))
 
         viewModel.selectCategory(category)
 
@@ -164,8 +159,8 @@ class ProductListViewModelTest {
 
         advanceUntilIdle()
 
-        assertEquals(1, collectedFirst.size)
-        verify(productPagingRepositoryImpl).getProducts("electronics")
+        Assert.assertEquals(1, collectedFirst.size)
+        Mockito.verify(productPagingRepositoryImpl).getProducts("electronics")
 
         val collectedSecond = mutableListOf<PagingData<ProductEntity>>()
         val job2 = launch {
@@ -174,8 +169,8 @@ class ProductListViewModelTest {
 
         advanceUntilIdle()
 
-        assertEquals(1, collectedSecond.size)
-        verify(productPagingRepositoryImpl, times(1)).getProducts("electronics")
+        Assert.assertEquals(1, collectedSecond.size)
+        Mockito.verify(productPagingRepositoryImpl, Mockito.times(1)).getProducts("electronics")
 
         job1.cancel()
         job2.cancel()
@@ -187,6 +182,6 @@ class ProductListViewModelTest {
         viewModel.selectCategory(category)
 
         val scrollState = viewModel.scrollState.first()
-        assertEquals(0, scrollState.firstVisibleItemIndex)
+        Assert.assertEquals(0, scrollState.firstVisibleItemIndex)
     }
 }

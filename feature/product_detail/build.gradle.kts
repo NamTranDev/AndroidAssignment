@@ -53,6 +53,8 @@ dependencies {
     implementation(project(":shared:bookmark"))
     implementation(project(":domain"))
 
+    testImplementation(testFixtures(project(":core:test")))
+
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)

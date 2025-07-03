@@ -79,6 +79,7 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:product_detail"))
 
+    testImplementation(testFixtures(project(":core:test")))
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
