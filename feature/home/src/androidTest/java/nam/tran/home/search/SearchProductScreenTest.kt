@@ -1,10 +1,9 @@
-package nam.tran.home.assignment.jetpack.compose.ui.feature.home.search
+package nam.tran.home.search
 
-import androidx.activity.compose.setContent
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextContains
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithTag
@@ -16,8 +15,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.test.runTest
 import nam.tran.fake.CaseTest
-import nam.tran.home.assignment.jetpack.compose.MainActivity
-import nam.tran.home.search.SearchProductTabScreen
 import nam.tran.resource.theme.AppTheme
 import org.junit.Before
 import org.junit.Rule
@@ -31,7 +28,7 @@ class SearchProductScreenTest {
     var hiltTestRule = HiltAndroidRule(this)
 
     @get:Rule(order = 2)
-    var composeTestRule = createAndroidComposeRule<MainActivity>()
+    var composeTestRule = createComposeRule()
 
     @Inject
     lateinit var caseTest: CaseTest
@@ -39,7 +36,7 @@ class SearchProductScreenTest {
     @Before
     fun setup() {
         hiltTestRule.inject()
-        composeTestRule.activity.setContent {
+        composeTestRule.setContent {
             AppTheme {
                 SearchProductTabScreen { }
             }

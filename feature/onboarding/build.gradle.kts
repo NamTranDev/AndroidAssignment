@@ -61,7 +61,7 @@ dependencies {
     implementation(project(":core:utils"))
     implementation(project(":domain"))
 
-    testImplementation(testFixtures(project(":core:test")))
+    testImplementation(testFixtures(project(":testing:common")))
 
     implementation(libs.hilt.android)
     implementation(libs.androidx.hilt.navigation.compose)

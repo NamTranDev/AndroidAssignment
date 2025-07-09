@@ -53,7 +53,8 @@ dependencies {
     implementation(project(":shared:bookmark"))
     implementation(project(":domain"))
 
-    testImplementation(testFixtures(project(":core:test")))
+    testImplementation(testFixtures(project(":testing:common")))
+    androidTestImplementation(project(":testing:fake"))
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -76,4 +77,15 @@ dependencies {
 
     implementation("androidx.paging:paging-runtime:3.3.6")
     implementation("androidx.paging:paging-compose:3.3.6")
+
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.8.0")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.8.0")
+
+    testImplementation(libs.junit)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.51.1")
+    kaptAndroidTest("com.google.dagger:hilt-compiler:2.51.1")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.51.1")
 }

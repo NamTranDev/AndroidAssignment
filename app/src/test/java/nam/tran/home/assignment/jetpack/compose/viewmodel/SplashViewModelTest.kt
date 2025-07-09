@@ -6,8 +6,10 @@ import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import nam.tran.domain.usecase.OnBoardingUseCase
-import nam.tran.home.assignment.jetpack.compose.MainDispatcherRule
 import nam.tran.home.assignment.jetpack.compose.SplashViewModel
+import nam.tran.home.navigation.HomeRouter
+import nam.tran.onboarding.navigation.OnBoardingRouter
+import nam.tran.rules.MainDispatcherRule
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Before
@@ -31,7 +33,7 @@ class SplashViewModelTest {
         val viewmodel = SplashViewModel(usecase)
         advanceUntilIdle()
         advanceTimeBy(300)
-        assertEquals(Screen.Home.route, viewmodel.startDestination)
+        assertEquals(HomeRouter.Main.route, viewmodel.startDestination)
         assertFalse(viewmodel.splashCondition)
     }
 
@@ -42,7 +44,7 @@ class SplashViewModelTest {
         val viewmodel = SplashViewModel(usecase)
         advanceUntilIdle()
         advanceTimeBy(300)
-        assertEquals(Screen.OnBoarding.route, viewmodel.startDestination)
+        assertEquals(OnBoardingRouter.OnBoarding.route, viewmodel.startDestination)
         assertFalse(viewmodel.splashCondition)
     }
 }

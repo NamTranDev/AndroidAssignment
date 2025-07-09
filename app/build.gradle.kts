@@ -41,11 +41,6 @@ android {
         buildConfig = true
     }
 
-    testOptions {
-        unitTests.isIncludeAndroidResources = true
-        execution = "ANDROIDX_TEST_ORCHESTRATOR"
-    }
-
     packagingOptions {
         resources.excludes += "/META-INF/AL2.0"
         resources.excludes += "/META-INF/LGPL2.1"
@@ -79,7 +74,8 @@ dependencies {
     implementation(project(":feature:home"))
     implementation(project(":feature:product_detail"))
 
-    testImplementation(testFixtures(project(":core:test")))
+    testImplementation(testFixtures(project(":testing:common")))
+    androidTestImplementation(project(":testing:fake"))
 
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))

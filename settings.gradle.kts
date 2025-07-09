@@ -36,4 +36,5 @@ include(":feature:home")
 
 include(":shared:bookmark")
 include(":feature:product_detail")
-include(":core:test")
+include(":testing:common")
+include(":testing:fake")
