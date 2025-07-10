@@ -2,6 +2,9 @@
 
 The sample app shopping product from api [https://dummyjson.com/docs] demo for jetpack compose
 
+## More Features:
+Migrade to clean architecture 
+
 ## Features:
 - OnBoarding.
 - Product List.
@@ -13,33 +16,42 @@ The sample app shopping product from api [https://dummyjson.com/docs] demo for j
 
 <div style="display: flex; justify-content: space-around;">
     <img src="images/1.onboard_light.png" height="300px">
+    <span style="width: 40px; display: inline-block;"></span>
     <img src="images/1.onboard_dark.png" height="300px">
 </div>
 
 <div style="display: flex; justify-content: space-around;">
     <img src="images/2.home_light.png" height="300px">
+    <span style="width: 40px; display: inline-block;"></span>
     <img src="images/2.home_dark.png" height="300px">
 </div>
 
 <div style="display: flex; justify-content: space-around;">
     <img src="images/5.search_light.png" height="300px">
+    <span style="width: 40px; display: inline-block;"></span>
     <img src="images/5.search_dark.png" height="300px">
 </div>
 
 <div style="display: flex; justify-content: space-around;">
     <img src="images/3.detail_light.png" height="300px">
+    <span style="width: 40px; display: inline-block;"></span>
     <img src="images/3.detail_dark.png" height="300px">
 </div>
 
 <div style="display: flex; justify-content: space-around;">
     <img src="images/4.bookmark_light.png" height="300px">
+    <span style="width: 40px; display: inline-block;"></span>
     <img src="images/4.bookmark_dark.png" height="300px">
 </div>
 
 ## Architecture
-**MVVM**
+**Clean Architecture - MVVM**
 
-<img src="images/structure1.png" />
+<div style="display: flex; justify-content: space-around;">
+    <img src="images/clean_architecture.png" height="250px">
+    <span style="width: 20px; display: inline-block;"></span>
+    <img src="images/clean_architecture_structure.png" height="250px">
+</div>
 
 ## Library reference resources
 
