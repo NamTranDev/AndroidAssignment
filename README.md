@@ -48,10 +48,16 @@ Migrade to clean architecture
 **Clean Architecture - MVVM**
 
 <div style="display: flex; justify-content: space-around;">
-    <img src="images/clean_architecture.png" height="250px">
+    <img src="images/clean_architecture.png" height="275px">
     <span style="width: 20px; display: inline-block;"></span>
-    <img src="images/clean_architecture_structure.png" height="250px">
+    <img src="images/clean_architecture_structure.png" height="275px">
 </div>
+
+<span style="height: 40px; display: inline-block;"></span>
+
+**Modularization** : [https://developer.android.com/topic/modularization]
+
+<img src="images/modulization_structure.png">
 
 ## Library reference resources
 
